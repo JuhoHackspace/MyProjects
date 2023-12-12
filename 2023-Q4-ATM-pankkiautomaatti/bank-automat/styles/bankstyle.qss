@@ -1,0 +1,239 @@
+
+QStatusBar {
+    background-color: #100f1d;
+    color: #ffffff;
+    font-size: 12 pt;
+}
+
+MainWindow {
+    background-image: url(:/brushedsteel.jpg);
+    background-repeat: repeat-xy;
+    background-position: top left;
+    background-attachment: fixed;
+    background-color: #363636;
+}
+
+#Mapframe {
+    background-color: #100f1d;
+    background-image: url(:/map.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    border-width: 0px;
+}
+
+#Title2 { 
+    color: #267414;
+    font: 33pt "Segoe UI";
+}
+
+#atm1, #atm2, #atm3, #atm4 {
+    background-color: #33aa16;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0d0d0d;
+    border-radius: 24px;
+    color: #ffffff;
+}
+
+#atm1:hover, #atm2:hover, #atm3:hover, #atm4:hover {
+    background-color: #62ed41;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #5fb64a;
+    color: #18450d;
+}
+
+#pushButton1, #pushButton2, #pushButton3, #pushButton4, #pushButton5, #pushButton6, #pushButton7, #pushButton8 {
+    background-color: #ada9a5;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #505050;
+    border-radius: 11px;
+    color: #2b1d65;
+}
+
+QLineEdit {
+    background: transparent;
+    border: none;
+    qproperty-alignment: 'AlignCenter';
+}
+
+#Kilke  { 
+    background-image: url(:/suoja.png);
+    background-repeat: no-repeat;
+}
+
+
+#MoneyOutput  { 
+    background-image: url(:/money-output.png);
+    background-repeat: no-repeat;
+}
+
+#CardInput  { 
+    background-image: url(:/card-input.png);
+    background-repeat: no-repeat;
+}
+
+#CardGif { 
+
+}
+
+#pushButton1:hover, #pushButton2:hover, #pushButton3:hover, #pushButton4:hover, #pushButton5:hover, #pushButton6:hover, #pushButton7:hover, #pushButton8:hover {
+    background-color: #c0bcb8;
+}
+
+#pushButton1:pressed, #pushButton2:pressed, #pushButton3:pressed, #pushButton4:pressed, #pushButton5:pressed, #pushButton6:pressed, #pushButton7:pressed, #pushButton8:pressed {
+    background-color: #100640;
+    color: #876ff9;
+}
+
+#Title { 
+    color: #ffffff;
+    font: 33pt "Segoe UI";
+}
+
+#SecondTitle { 
+    color: #ffffff;
+    font: 24pt "Segoe UI";
+}
+
+#ThirdTitle, #FourthTitle { 
+    color: #b5a6f2;
+    font: 18pt "Segoe UI";
+}
+
+#Content { 
+    color: #ffffff;
+    font: 24pt "Segoe UI";
+}
+
+#Content2, #Content4, #Content5, #Content6 { 
+    color: #ffffff;
+    font: 18pt "Segoe UI";
+    alignment: top left;
+}
+
+#Content3 { 
+    color: #b5a6f2;
+    font: 18pt "Segoe UI";
+    alignment: top left;
+}
+
+#PushText1, #PushText2, #PushText3, #PushText4, #PushText5, #PushText6, #PushText7, #PushText8 { 
+    color: #ffffff;
+    font: 18pt "Segoe UI";
+}
+
+#MainFrame {
+    background-color: #100f1d;
+    background-image: url(:/bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #505050;
+}
+
+#Frames1 {
+    background-color: #070e1d;
+    background-image: url(:/numbers.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #505050;
+}
+
+#RED {
+    background-color: #ca0004;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #505050;
+    border-radius: 11px;
+}
+
+#RED:hover { 
+    background-color: #f40c10;
+}
+
+#RED:pressed { 
+    background-color: #ca0004;
+}
+
+#YELLOW {
+    background-color: #eff000;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #505050;
+    border-radius: 11px;
+}
+
+#YELLOW:hover { 
+    background-color: #fbf93d;
+}
+
+#YELLOW:pressed { 
+    background-color: #eff000;
+}
+
+#GREY {
+    background-color: #cbcbcb;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #505050;
+    border-radius: 11px;
+}
+
+#GREY:hover { 
+    background-color: #d8d8d8;
+}
+
+#GREY:pressed { 
+    background-color: #cbcbcb;
+}
+
+#GREEN {
+    background-color: #0fca00;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #505050;
+    border-radius: 11px;
+}
+
+#GREEN:hover { 
+    background-color: #20f103;
+}
+
+#GREEN:pressed { 
+    background-color: #0fca00;
+}
+
+#N0, #N1, #N2, #N3, #N4, #N5, #N6, #N7, #N8, #N9 {
+    background-color: #dfdfdf;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0d0d0d;
+    border-radius: 8px;
+}
+
+#plus, #minus {
+    background-color: #dfdfdf;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0d0d0d;
+    border-radius: 8px;
+}
+
+#N0:hover, #N1:hover, #N2:hover, #N3:hover, #N4:hover, #N5:hover, #N6:hover, #N7:hover, #N8:hover, #N9:hover {
+    background-color: #efefef;
+}
+
+#plus:hover, #minus:hover {
+    background-color: #efefef;
+}
+
+#N0:pressed, #N1:pressed, #N2:pressed, #N3:pressed, #N4:pressed, #N5:pressed, #N6:pressed, #N7:pressed, #N8:pressed, #N9:pressed, #plus:pressed, #minus:pressed {
+    background-color: #876ff9;
+    color: #100640;
+}

@@ -1,0 +1,13 @@
+backend/node_modules/
+backend/.history/
+bank-automat/build/
+bank-automat/*.user
+backend/*.env
+
+# Robot Framework
+robot/log.html
+robot/report.html
+robot/output.xml
+
+#VS Code
+.vscode/

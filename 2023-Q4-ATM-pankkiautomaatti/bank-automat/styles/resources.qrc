@@ -1,0 +1,16 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource>
+        <file>brushedsteel.jpg</file>
+		<file>map.png</file>
+		<file>bg.jpg</file>
+		<file>suoja.png</file>
+		<file>numbers.png</file>
+        <file>bankstyle.qss</file>
+		<file>cardRed.gif</file>
+		<file>cardGreen.gif</file>
+		<file>money-output.png</file>
+		<file>money-output-withdrawal.gif</file>
+		<file>card-input.png</file>
+    </qresource>
+</RCC>
