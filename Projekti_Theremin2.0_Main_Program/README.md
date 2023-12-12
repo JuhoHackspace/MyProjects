@@ -9,7 +9,7 @@
 - Oliver Jäälehto
 - Tauno Jokinen	
 
-**Projektin tarkoitus ja tavoitteet*
+**Projektin tarkoitus ja tavoitteet**
 
 Projekti Theremin 2.0 on Oulun ammattikorkeakoulun ensimmäisen vuoden ICT alan insinööriopiskelijoiden ryhmäprojekti. Projekti toteutettiin toisella periodilla Tietotekniikan sovellusprojektina.
 
