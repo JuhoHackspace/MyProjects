@@ -1,0 +1,42 @@
+* {
+    border: 0;
+    padding: 0;
+}
+#banner {
+    background-image: url("../images/javascript-on-screen.jpg");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    min-height: 270px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#heading {
+    text-align: center;
+    font-size: 100px;
+    text-shadow: -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black;
+    color: #fff;
+    text-decoration: none
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+#menu {
+    display: flex;
+    justify-content: center;
+    background-color: #151515;
+}
+#menu li {
+    display: inline-block;
+}
+#menu ul {
+    list-style-type: none;
+    background-color: #151515;
+    overflow: auto;
+}
+#menu li a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 50px;
+    padding: 0.1em 0.1em;
+    margin: 0.1em 2em;
+    color: #fff;
+}
