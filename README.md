@@ -15,12 +15,18 @@ More school projects and assignments will be added as I progress in my studies. 
 > Arduino(C++)
 
 > C++
+
 > SQL
+
 > JavaScript
+
 > HTML
+
 > CSS
 
 ## Environments used
-> Node.js -
-> Arduino IDE -
+> Node.js
+
+> Arduino IDE
+
 > QT
