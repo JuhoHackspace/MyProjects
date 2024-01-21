@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./css/common_styles.css" rel="stylesheet">
     <link href="./css/coderunner_styles.css" rel="stylesheet">
-    <script src="./scripts/http_request.js" defer></script>
+    <script src="./scripts/coderunner_scripts.js" defer></script>
 
+    <!--Scripts and styles for Syntax highlighting and row numbering in code runner-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
@@ -36,7 +37,15 @@
         </div>    
     </div>
     <main>
-
+        <div class="info">
+            <p>Important: This coderunner only provides the standard output of the code sent to the server. This means that only lines printed out with
+                "console.log" will be visible. Using console.log() in this editor, does not automatically add a newline character in the print statement.
+                Use "\n" to achieve a line break. This is due to the coderunner not accepting methods such as "process.stdout.write()", that do not include the newline character by default.
+                The coderunner was also implemented in a way, that it does not recognize keywords such as "document",
+                as they are not defined in the context where the code is executed(server). To use a more comprehensive HTML/JavaScript coderunner, where
+                you can test JavaScript in a more complete environment and manipulate HTML content, visit the Learning tab and follow instructions.
+            </p>
+        </div>
     </main>
     <div class="footer">
         <footer>

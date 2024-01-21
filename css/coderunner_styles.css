@@ -18,6 +18,7 @@ body {
     width: 99%;
     height: 250px;
     margin: 5px 5px;
+    resize: none;
 }
 #output_frame {
     width: 50%;
@@ -29,6 +30,7 @@ body {
     background-color: #eee;
     margin: 0px 5px;
     white-space: pre-line;
+    overflow: auto;
 }
 #code_form label {
     color: #fff;
@@ -48,4 +50,15 @@ input[type="submit"]:hover {
     color: #fff;
     font-size: 20px;
     margin: 0px 5px;
+}
+.info {
+    width: 100% auto;
+    padding: 2em;
+    justify-content: center;
+    align-items: center;
+}
+.info p {
+    color: #fff;
+    font-size: 1.2em;
+    text-align: justify;
 }

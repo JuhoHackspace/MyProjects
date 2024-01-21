@@ -14,29 +14,30 @@ document.getElementById('code_form').addEventListener('submit', function(event) 
     })
     .catch(error => {
         console.error('Error:', error);
+        document.getElementById("code_output").textContent = "Error: Server offline";
     });
 });
-const textarea = document.getElementById('codebox');
 
-    textarea.addEventListener('keydown', function (event) {
+const codebox = document.getElementById('codebox');
+
+    codebox.addEventListener('keydown', function (event) {
         if (event.key === 'Tab') {
             event.preventDefault();  // Prevent the default behavior (focus change)
 
             // Insert a tab character at the current cursor position
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
+            const start = codebox.selectionStart;
+            const end = codebox.selectionEnd;
 
             // Insert a tab character at the cursor position
             const tabCharacter = '\t';
-            textarea.value = textarea.value.substring(0, start) + tabCharacter + textarea.value.substring(end);
+            codebox.value = codebox.value.substring(0, start) + tabCharacter + codebox.value.substring(end);
 
             // Move the cursor to the end of the inserted tab
-            textarea.selectionStart = textarea.selectionEnd = start + tabCharacter.length;
+            codebox.selectionStart = codebox.selectionEnd = start + tabCharacter.length;
         }
     });
 
-    const codeBox = document.getElementById('codebox');
-    const editor = CodeMirror.fromTextArea(codeBox, {
-        mode: 'javascript',
-        lineNumbers: true,
-    });
+const editor = CodeMirror.fromTextArea(codebox, {
+    mode: 'javascript',
+    lineNumbers: true,
+});
