@@ -9,15 +9,14 @@ body {
     display: flex;
     justify-content: center;
     align-content: center;
-    margin: 20px;
+    margin: 30px;
 }
 #code_form {
     width: 50%;
 }
 #codebox {
     width: 99%;
-    height: 250px;
-    margin: 5px 5px;
+    margin: 0px 5px;
     resize: none;
 }
 #output_frame {
@@ -34,7 +33,7 @@ body {
 }
 #code_form label {
     color: #fff;
-    margin: 0px 0px;
+    margin: 5px 0px;
     font-size: 20px;
 }
 input[type="submit"] {
@@ -53,9 +52,9 @@ input[type="submit"]:hover {
 }
 .info {
     width: 100% auto;
-    padding: 2em;
-    justify-content: center;
-    align-items: center;
+    margin: 30px;
+    padding: 20px;
+    border: 5px solid #f00;
 }
 .info p {
     color: #fff;

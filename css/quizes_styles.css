@@ -1,0 +1,54 @@
+#current {
+    text-decoration: underline;
+}
+.quiz_frame {
+    display: flex;
+    margin: 30px;;
+}
+.quiz_container, .quiz_links {
+    background-color: #fff;
+    width: 50%;
+    height: 300px;
+    overflow: auto;
+}
+.quiz_container {
+    margin-left: 15px;
+    padding: 15px;
+}
+.quiz_links {
+    margin-right: 15px;
+    padding: 15px;
+}
+.quiz_links ul {
+    margin: 15px;
+}
+.quiz_links ul a {
+    color: #000;
+    font-size: 1.5em;
+}
+.quiz_links h3 {
+    color: #000;
+    font-size: 30px;
+}
+.quiz.active {
+    display: block;
+}
+.quiz {
+    display: none;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.quiz p {
+    padding: 5px;
+    font-size: 25px;
+}
+.blank {
+    display: inline-block;
+    width: 60px; /* Set your desired width */
+    height: 25px; /* Set your desired height */
+    background-color: #f0f0f0; /* Optional: Set a background color for better visibility */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+    white-space: nowrap; /* Prevent line breaks within the span */
+    margin-right: 5px; /*
+}

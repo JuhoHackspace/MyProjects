@@ -5,6 +5,7 @@
 }
 main {
     flex: 1;
+    background-color: #000;
 }
 body {
     min-height: 100vh;
@@ -28,20 +29,20 @@ body {
     text-decoration: none;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
-#menu {
+.menu {
     display: flex;
     justify-content: center;
     background-color: #151515;
 }
-#menu li {
+.menu li {
     display: inline-block;
 }
-#menu ul {
+.menu ul {
     list-style-type: none;
     background-color: #151515;
     overflow: none;
 }
-#menu li a {
+.menu li a {
     display: inline-block;
     text-decoration: none;
     font-size: 50px;
@@ -49,7 +50,7 @@ body {
     margin: 0.1em 2em;
     color: #fff;
 }
-#menu li a:hover {
+.menu li a:hover {
     font-weight: bold;
 }
 .footer{

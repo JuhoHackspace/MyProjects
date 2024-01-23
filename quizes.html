@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/common_styles.css" rel="stylesheet">
+    <link href="./css/learning_styles.css" rel="stylesheet">
+    <link href="./css/quizes_styles.css" rel="stylesheet">
+    <script src="./scripts/quiz_script.js" defer></script>
+    <title>Learning JavaScript</title>
+</head>
+<body>
+    <div id="banner">
+        <h1 id="heading">Welcome to Learning JavaScript</h1>
+    </div>
+    <div class="menu">
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./learning.html">Learning</a></li>
+            <li><a href="./coderunner.html">Coderunner</a></li>
+        </ul>
+    </div>
+    <main>
+        <div class="content_menu">
+            <ul>
+                <li><a href="./learning.html">Links</a></li>
+                <li><a id="current" href="./quizes.html">Quizes</a></li>
+            </ul>
+        </div>
+        <div class="quiz_frame">
+            <div class="quiz_links">
+                <h3>If statements</h3>
+                <ul>
+                    <li><a href="#" onclick="showQuiz('quiz1')">Quiz 1</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz2')">Quiz 2</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz3')">Quiz 3</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz4')">Quiz 4</a></li>
+                </ul>
+                <h3>Loop structures</h3>
+                <ul>
+                    <li><a href="#" onclick="showQuiz('quiz5')">Quiz 1</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz6')">Quiz 2</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz7')">Quiz 3</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz8')">Quiz 4</a></li>
+                </ul>
+                <h3>Functions</h3>
+                <ul>
+                    <li><a href="#" onclick="showQuiz('quiz9')">Quiz 1</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz10')">Quiz 2</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz11')">Quiz 3</a></li>
+                    <li><a href="#" onclick="showQuiz('quiz12')">Quiz 4</a></li>
+                </ul>
+            </div>
+            <div class="quiz_container">
+                <div id="quiz1" class="quiz">
+                    <h3>Type in the correct code to get following output: 0, "odd_number", 2, "odd number", 4<br></h3>
+                    <p>for(let i = 0; i < 5; i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="blank" contenteditable="true"></span>(i % 2 == 0) {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="blank" contenteditable="true"></span>.log(i)<br>&nbsp;&nbsp;&nbsp;&nbsp;}<span class="blank" contenteditable="true"></span>
+                    {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="blank" contenteditable="true"></span>.log("odd number");<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</p>
+                </div>
+                <div id="quiz2" class="quiz">
+
+                </div>
+                <div id="quiz3" class="quiz">
+
+                </div>
+                <div id="quiz4" class="quiz">
+
+                </div>
+                <div id="quiz5" class="quiz">
+
+                </div>
+                <div id="quiz6" class="quiz">
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="footer">
+        <footer>
+            <ul>
+                <li><a href="./index.html">Help/FAQ</a></li>
+                <li><a href="./learning.html">Contact</a></li>
+                <li><a href="./about.html">About</a></li>
+            </ul>
+        </footer>
+    </div> 
+</body>
+</html>

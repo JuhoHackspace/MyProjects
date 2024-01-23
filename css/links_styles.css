@@ -1,0 +1,53 @@
+#current {
+    text-decoration: underline;
+}
+.container {
+    display: flex;
+    justify-content: space-around; /* or use 'space-between' for more spacing between items */
+    margin: 20px;
+}
+
+.W3Schools, .Programiz, .JetBrains {
+    width: 33.333%; /* Each div takes up 33% of the container width */
+    text-align: center; /* Center text within each div */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    margin-top: 0em;
+    border-top: 3px solid #ccc;
+    border-left: 3px solid #ccc;
+    border-bottom: 3px solid #ccc;
+}
+.container div:last-child {
+    border-right: 3px solid #ccc;
+}
+.container .W3Schools .logo {
+    background-image: url('../images/w3schools.jpg');
+}
+.container .JetBrains .logo {
+    background-image: url('../images/jetbrains.jpg');
+}
+.container .Programiz .logo {
+    background-image: url('../images/programiz.png');
+}
+.logo {
+    background-size: contain; /* or cover, or specific dimensions */
+    background-repeat: no-repeat;
+    width: 150px;
+    height: 150px;
+    margin: 10px auto;
+}
+.container a {
+    display: block; /* Make the link a block-level element to center text */
+    width: 100%; /* Full width of its parent (the div) */
+    text-decoration: none; /* Remove underline from links if needed */
+    margin-top: 10px;
+    color: #00f;
+    font-size: 1.5em;
+}
+.container p {
+    margin-top: 10px;
+    color: #fff;
+    padding: 10px;
+}
+.container a:hover {
+    text-decoration: underline;
+}
