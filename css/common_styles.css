@@ -11,6 +11,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: #000;
 }
 #banner {
     background-image: url("../images/javascript-on-screen.jpg");
@@ -20,10 +21,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
 }
 #heading {
     text-align: center;
-    font-size: 5em;
+    font-size: 5vw;
     text-shadow: -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black;
     color: #fff;
     text-decoration: none;
@@ -33,6 +35,7 @@ body {
     display: flex;
     justify-content: center;
     background-color: #151515;
+    width:100vw;
 }
 .menu li {
     display: inline-block;
@@ -45,40 +48,35 @@ body {
 .menu li a {
     display: inline-block;
     text-decoration: none;
-    font-size: 50px;
+    font-size: 3vw;
     padding: 0.1em 0.1em;
     margin: 0.1em 2em;
     color: #fff;
 }
-.menu li a:hover {
-    font-weight: bold;
-}
-.footer{
+.content {
     display: flex;
-    justify-content: center;
-    background-color: #151515;
+    margin: 30px;
+}
+.shared {
+    flex: 0 0 50%;
+    box-sizing: border-box;
+}
+#current {
+    text-decoration: underline;
 }
 footer {
     bottom: 0;
     margin: 0;
     padding: 0;
 }
-.footer ul {
-    list-style-type: none;
-    background-color:#151515;
-    overflow: auto;
-}
-.footer li {
-    display: inline-block;
-}
-.footer li a {
-    color: #fff;
-    display: inline-block;
-    text-decoration: none;
-    font-size: 50px;
-    padding: 0.1em 0.1em;
-    margin: 0.1em 2em;
-}
-.footer li a:hover {
+a:hover {
     font-weight: bold;
+}
+@media (max-width: 768px) {
+    .box, {
+        flex: 0 0 100%;
+    }
+    .content {
+        display: block;
+    }
 }

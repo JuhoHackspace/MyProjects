@@ -1,27 +1,9 @@
-.content_menu {
-    display: flex;
-    justify-content: center;
-    background-color: #aaa;
+#content_menu {
+    background-color: #464646;
 }
-.content_menu li {
-    display: inline-block;
+#content_menu ul {
+    background-color: #464646;
 }
-.content_menu ul {
-    list-style-type: none;
-    background-color: #aaa;
-    overflow: none;
-}
-.content_menu li a {
-    display: inline-block;
-    text-decoration: none;
-    font-size: 50px;
-    padding: 0.1em 0.1em;
-    margin: 0.1em 2em;
+#content_menu li a {
     color: #fff;
-}
-.content_menu li a:hover {
-    font-weight: bold;
-}
-#current_main {
-    text-decoration: underline;
 }
