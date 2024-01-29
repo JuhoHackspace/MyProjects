@@ -1,8 +1,13 @@
 #content_menu {
-    background-color: #464646;
+    background-color: #000;
 }
 #content_menu ul {
-    background-color: #464646;
+    background-color: #000;
+}
+#content_menu ul li {
+    border: 4px solid #464646;
+    border-radius: 10px;
+    margin: 5px;
 }
 #content_menu li a {
     color: #fff;

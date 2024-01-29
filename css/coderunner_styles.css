@@ -1,28 +1,24 @@
 #code_form {
     flex: 0 0 50%;
-    box-sizing: border-box;
+    margin-right: 5px
 }
 #codebox {
-    width: 99%;
-    margin: 0px 5px;
+    width: 100%;
     resize: none;
 }
 #output_frame {
     flex: 0 0 50%;
-    box-sizing: border-box;
     height: 300px;
-    
+    margin-left: 5px;   
 }
 #code_output {
     height: 100%;
-    background-color: #eee;
-    margin: 0px 5px;
+    background-color: #fff;
     white-space: pre-line;
     overflow: auto;
 }
 #code_form label {
     color: #fff;
-    margin: 5px 0px;
     font-size: 20px;
 }
 input[type="submit"] {
@@ -37,13 +33,12 @@ input[type="submit"]:hover {
 #output_frame label {
     color: #fff;
     font-size: 20px;
-    margin: 0px 5px;
 }
 .info {
-    width: 100% auto;
     margin: 30px;
     padding: 20px;
     border: 5px solid #f00;
+    flex: 1;
 }
 .info p {
     color: #fff;
@@ -52,6 +47,10 @@ input[type="submit"]:hover {
 }
 @media (max-width: 768px) {
     #code_from, #output_frame {
+        margin: 0;
         flex: 0 0 100%;
+    }
+    .info {
+        margin-top: 50px;
     }
 }

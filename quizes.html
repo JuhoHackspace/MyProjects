@@ -20,91 +20,86 @@
             <li><a href="./coderunner.html">Coderunner</a></li>
         </ul>
     </div>
-    <main>
-        <div class="menu" id="content_menu">
+    <div class="menu" id="content_menu">
+        <ul>
+            <li><a href="./learning.html">Links</a></li>
+            <li><a id="current" href="./quizes.html">Quizes</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div id="quiz_links">
+            <h3>If statements</h3>
             <ul>
-                <li><a href="./learning.html">Links</a></li>
-                <li><a id="current" href="./quizes.html">Quizes</a></li>
+                <li><a href="#" onclick="showQuiz('quiz1')">Quiz 1</a><p id="completed_1"></p></li>
+                <li><a href="#" onclick="showQuiz('quiz2')">Quiz 2</a><p id="completed_2"></p></li>
+                <li><a href="#" onclick="showQuiz('quiz3')">Quiz 3</a><p id="completed_3"></p></li>
+                <li><a href="#" onclick="showQuiz('quiz4')">Quiz 4</a><p id="completed_4"></p></li>
+            </ul>
+            <h3>Loop structures</h3>
+            <ul>
+                <li><a href="#" onclick="showQuiz('quiz5')">Quiz 1</a><p id="completed_5"></p></li>
+                <li><a href="#" onclick="showQuiz('quiz6')">Quiz 2</a><p id="completed_6"></p></li>
+                <li><a href="#" onclick="showQuiz('quiz7')">Quiz 3</a><p id="completed_7"></p></li>
+                <li><a href="#" onclick="showQuiz('quiz8')">Quiz 4</a><p id="completed_8"></p></li>
+            </ul>
+            <h3>Functions</h3>
+            <ul>
+                <li><a href="#" onclick="showQuiz('quiz9')">Quiz 1</a></li>
+                <li><a href="#" onclick="showQuiz('quiz10')">Quiz 2</a></li>
+                <li><a href="#" onclick="showQuiz('quiz11')">Quiz 3</a></li>
+                <li><a href="#" onclick="showQuiz('quiz12')">Quiz 4</a></li>
             </ul>
         </div>
-        <div class="content">
-            <div class="quiz_links">
-                <h3>If statements</h3>
-                <ul>
-                    <li><a href="#" onclick="showQuiz('quiz1')">Quiz 1</a><p id="completed_1"></p></li>
-                    <li><a href="#" onclick="showQuiz('quiz2')">Quiz 2</a><p id="completed_2"></p></li>
-                    <li><a href="#" onclick="showQuiz('quiz3')">Quiz 3</a><p id="completed_3"></p></li>
-                    <li><a href="#" onclick="showQuiz('quiz4')">Quiz 4</a><p id="completed_4"></p></li>
-                </ul>
-                <h3>Loop structures</h3>
-                <ul>
-                    <li><a href="#" onclick="showQuiz('quiz5')">Quiz 1</a><p id="completed_5"></p></li>
-                    <li><a href="#" onclick="showQuiz('quiz6')">Quiz 2</a><p id="completed_6"></p></li>
-                    <li><a href="#" onclick="showQuiz('quiz7')">Quiz 3</a><p id="completed_7"></p></li>
-                    <li><a href="#" onclick="showQuiz('quiz8')">Quiz 4</a><p id="completed_8"></p></li>
-                </ul>
-                <h3>Functions</h3>
-                <ul>
-                    <li><a href="#" onclick="showQuiz('quiz9')">Quiz 1</a></li>
-                    <li><a href="#" onclick="showQuiz('quiz10')">Quiz 2</a></li>
-                    <li><a href="#" onclick="showQuiz('quiz11')">Quiz 3</a></li>
-                    <li><a href="#" onclick="showQuiz('quiz12')">Quiz 4</a></li>
-                </ul>
-            </div>
-            <div class="quiz_container">
-                <div id="quiz1" class="quiz">
-                    <p>Fill in the blanks</p>
-                    <p>Desired output: 0, odd number, 2, odd number, 4</p>
-                    <pre class="code" id="code_1">
-                            for(<span class="blank" contenteditable="true"></span> i; i < 5; i++) {
-                                <span class="blank" contenteditable="true"></span>(i % <span class="blank" contenteditable="true"></span>) === 0) {
-                                    console.log(<span class="blank" contenteditable="true"></span>);
-                                }<span class="blank" contenteditable="true"></span> {
-                                    console.log("<span class="blank" contenteditable="true"></span>");
-                                }
+        <div id="quiz_container">
+            <div id="quiz1" class="quiz">
+                <p>Fill in the blanks</p>
+                <p>Desired output: 0, odd number, 2, odd number, 4</p>
+                <pre class="code" id="code_1">
+                        for(<span class="blank" contenteditable="true"></span> i; i < 5; i++) {
+                            <span class="blank" contenteditable="true"></span>(i % <span class="blank" contenteditable="true"></span>) === 0) {
+                                console.log(<span class="blank" contenteditable="true"></span>);
+                            }<span class="blank" contenteditable="true"></span> {
+                                console.log("<span class="blank" contenteditable="true"></span>");
                             }
-                    </pre>
-                </div>
-                <div id="quiz2" class="quiz">
-                    <p>Fill in the blanks</p>
-                    <p>Desired output:</p><p id="output_2">10</p>
-                    <pre class="code" id="code_2">
-                            <span class="blank_l" contenteditable="true"></span> myFunction(num1, num2) {
-                                <span class="blank_l" contenteditable="true"></span> num1 + num2;
-                            }
-                            console.log(myFunction(<span class="blank_s" contenteditable="true"></span>,<span class="blank_s" contenteditable="true"></span>));
-                    </pre>
-                    <button onclick="submitQuiz('quiz2','code_2','output_2')">Submit</button>
-                </div>
-                <div id="quiz3" class="quiz">
-                    <p>Fill in the blanks</p>
-                    <p>Desired output: I am learning </p>
-                    <pre class="code" id="code_3">
-                        <span class="blank" contenteditable="true"></span> words = {'learning','am','I'};
-                        function printText() {
-                            return <span class="blank" contenteditable="true"></span>+' '+<span class="blank" contenteditable="true"></span>+' '+<span class="blank" contenteditable="true"></span>;
                         }
-                        console.log(printText());
-                    </pre>
-                </div>
-                <div id="quiz4" class="quiz"></div>
-                <label for="results_frame">Output and result:</label>
-                <div class="results_frame">                
-                    <div id="quiz_output"></div>              
-                    <div id="quiz_result"></div>
-                </div>    
+                </pre>
             </div>
-            
-        </div>
-    </main>
-    <div class="menu">
-        <footer>
-            <ul>
-                <li><a href="./index.html">Help/FAQ</a></li>
-                <li><a href="./learning.html">Contact</a></li>
-                <li><a href="./about.html">About</a></li>
-            </ul>
-        </footer>
+            <div id="quiz2" class="quiz">
+                <p>Fill in the blanks</p>
+                <p>Desired output:</p><p id="output_2">10</p>
+                <pre class="code" id="code_2">
+                        <span class="blank_l" contenteditable="true"></span> myFunction(num1, num2) {
+                            <span class="blank_l" contenteditable="true"></span> num1 + num2;
+                        }
+                        console.log(myFunction(<span class="blank_s" contenteditable="true"></span>,<span class="blank_s" contenteditable="true"></span>));
+                </pre>
+                <button onclick="submitQuiz('quiz2','code_2','output_2')">Submit</button>
+            </div>
+            <div id="quiz3" class="quiz">
+                <p>Fill in the blanks</p>
+                <p>Desired output: I am learning </p>
+                <pre class="code" id="code_3">
+                    <span class="blank" contenteditable="true"></span> words = {'learning','am','I'};
+                    function printText() {
+                        return <span class="blank" contenteditable="true"></span>+' '+<span class="blank" contenteditable="true"></span>+' '+<span class="blank" contenteditable="true"></span>;
+                    }
+                    console.log(printText());
+                </pre>
+            </div>
+            <label for="results_frame">Output and result:</label>
+            <div class="results_frame">                
+                <div id="quiz_output"></div>              
+                <div id="quiz_result"></div>
+            </div>    
+        </div>      
+    </div>
+    <footer class="menu">
+        <ul>
+            <li><a href="./index.html">Help/FAQ</a></li>
+            <li><a href="./learning.html">Contact</a></li>
+            <li><a href="./about.html">About</a></li>
+        </ul>
+    </footer>
     </div> 
 </body>
 </html>

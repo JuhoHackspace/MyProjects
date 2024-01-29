@@ -2,17 +2,15 @@
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
     margin: 1em;
-    font-size: 2vw;
+    font-size: 2em;
     color: #fff;
 }
 #about_me p {
     text-align: justify;
-    font-size: 1vw;
+    font-size: 1em;
     color: #fff;
 }
 #about_content {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     padding: 20px;
@@ -35,10 +33,6 @@
 }
 
 @media (max-width: 768px) {
-    #about_content {
-        flex-direction: column;
-    }
-
     #image_container,
     #about_me {
         max-width: 100%;

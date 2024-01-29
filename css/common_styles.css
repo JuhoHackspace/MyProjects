@@ -2,28 +2,25 @@
     border: 0;
     padding: 0;
     margin: 0;
-}
-main {
-    flex: 1;
-    background-color: #000;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     background-color: #000;
+    padding-bottom: 50px;
 }
 #banner {
     background-image: url("../images/javascript-on-screen.jpg");
-    background-size: 100% auto;
+    background-size: cover;
     background-repeat: no-repeat;
-    min-height: 200px;
+    height: 20vh;
+    min-height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
+    width: 100%;
 }
-#heading {
+#banner h1 {
     text-align: center;
     font-size: 5vw;
     text-shadow: -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black;
@@ -35,20 +32,20 @@ body {
     display: flex;
     justify-content: center;
     background-color: #151515;
-    width:100vw;
+    width:100%;
 }
 .menu li {
-    display: inline-block;
+    display: inline-block;   
 }
 .menu ul {
     list-style-type: none;
     background-color: #151515;
-    overflow: none;
+
 }
 .menu li a {
     display: inline-block;
     text-decoration: none;
-    font-size: 3vw;
+    font-size: 2em;
     padding: 0.1em 0.1em;
     margin: 0.1em 2em;
     color: #fff;
@@ -57,26 +54,29 @@ body {
     display: flex;
     margin: 30px;
 }
-.shared {
-    flex: 0 0 50%;
-    box-sizing: border-box;
-}
 #current {
     text-decoration: underline;
 }
 footer {
     bottom: 0;
-    margin: 0;
-    padding: 0;
+    position: fixed;
 }
 a:hover {
     font-weight: bold;
 }
 @media (max-width: 768px) {
-    .box, {
+    .box {
         flex: 0 0 100%;
+        border-right: 5px solid #464646;
     }
     .content {
         display: block;
+    }
+    #banner {
+        min-height: 100px;
+        max-height: 150px;
+    }
+    .menu li a {
+        font-size: 3vw;
     }
 }
