@@ -58,7 +58,7 @@ function getQuizStatus(quizID) {
 }
 
 function retrieveQuizes() {
-    for(let i = 1; i < 4; i++) {
+    for(let i = 1; i < 10; i++) {
         let quizname = 'quiz' + i;
 
         if(getQuizStatus(quizname)) {
@@ -72,7 +72,7 @@ function submitQuiz(quizID,codeContent,answer) {
     var code = document.getElementById(codeContent).textContent;
     var correctAnswer = document.getElementById(answer).textContent;
 
-    fetch('http://localhost:3000/runcode', {
+    fetch('http://127.0.0.1:5001/learningjavascript-1288a/us-central1/runcode', {
         method: 'POST',
         body: code
     })

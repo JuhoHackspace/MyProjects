@@ -4,6 +4,7 @@
     margin: 0;
     text-decoration: none;
     box-sizing: border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 body {
     background-color: #000;
@@ -26,7 +27,6 @@ body {
     text-shadow: -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black;
     color: #fff;
     text-decoration: none;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 .menu {
     display: flex;

@@ -3,7 +3,7 @@ document.getElementById('code_form').addEventListener('submit', function(event) 
 
     const codeboxContent = document.getElementById('codebox').value;
 
-    fetch('http://localhost:3000/runcode', {
+    fetch('http://127.0.0.1:5001/learningjavascript-1288a/us-central1/runcode', {
         method: 'POST',
         body: codeboxContent,
     })
@@ -12,7 +12,7 @@ document.getElementById('code_form').addEventListener('submit', function(event) 
         document.getElementById("code_output").textContent = data;
     })
     .catch(error => {
-        document.getElementById("code_output").textContent = "Error: Server offline";
+        document.getElementById("code_output").textContent = "Error: "+error;
     });
 });
 

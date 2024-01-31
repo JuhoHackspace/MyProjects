@@ -1,5 +1,4 @@
 #about_me h3 {
-    font-family: 'Courier New', Courier, monospace;
     text-align: center;
     margin: 1em;
     font-size: 2em;
@@ -31,7 +30,9 @@
     max-width: 600px;
     padding: 20px;
 }
-
+#about_me a {
+    color: #0f0;
+}
 @media (max-width: 768px) {
     #image_container,
     #about_me {

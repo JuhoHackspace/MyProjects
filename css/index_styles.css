@@ -1,0 +1,29 @@
+#welcome {
+    justify-content: space-around;
+    align-items: center;
+    margin: 50px;
+    flex: 0 0 50%;
+}
+#welcome h2{
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+}
+#welcome p {
+    color: #fff;
+    text-align: center;
+    font-size: 1.5em;
+    margin: 50px;
+}
+#quide {
+    flex: 0 0 50%;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 100px;
+}
+#quide h3 {
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    margin: 40px;
+}

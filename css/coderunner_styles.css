@@ -2,6 +2,10 @@
     flex: 0 0 50%;
     margin-right: 5px
 }
+#code_form label {
+    color: #fff;
+    font-size: 20px;
+}
 #codebox {
     width: 100%;
     resize: none;
@@ -11,15 +15,15 @@
     height: 300px;
     margin-left: 5px;   
 }
+#output_frame label {
+    color: #fff;
+    font-size: 20px;
+}
 #code_output {
     height: 100%;
     background-color: #fff;
     white-space: pre-line;
     overflow: auto;
-}
-#code_form label {
-    color: #fff;
-    font-size: 20px;
 }
 input[type="submit"] {
     margin: 5px 0px;
@@ -29,10 +33,6 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #45a049;
     font-weight: bold;
-}
-#output_frame label {
-    color: #fff;
-    font-size: 20px;
 }
 .info {
     margin: 30px;
