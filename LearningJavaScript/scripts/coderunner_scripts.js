@@ -3,7 +3,7 @@ document.getElementById('code_form').addEventListener('submit', function(event) 
 
     const codeboxContent = document.getElementById('codebox').value;
 
-    fetch('http://127.0.0.1:5001/learningjavascript-1288a/us-central1/runcode', {
+    fetch('https://runcode-k32h4hyj3a-uc.a.run.app', {
         method: 'POST',
         body: codeboxContent,
     })

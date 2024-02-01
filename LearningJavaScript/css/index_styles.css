@@ -1,0 +1,48 @@
+section#frontpage_content {
+    display: inherit;
+    flex-direction: column;
+    padding: var(--padding);
+}
+
+article#welcome {
+   flex: 50%;
+}
+
+article#welcome h2{
+    color: var(--white);
+    font-size: 5vw;
+    text-align: center;
+}
+
+article#welcome p {
+    color: var(--broken-white);
+    text-align: center;
+    font-size: 1.2vw;
+    padding-left: calc(var(--padding)*3);
+    padding-right: calc(var(--padding)*3);
+    padding-top: calc(var(--padding));
+}
+
+div#quide {
+    flex: 50%;
+    display:inherit;
+    flex-direction: column;
+    align-items: center;
+    margin: calc(var(--margin) * 2);
+}
+
+div#quide h3 {
+    color: var(--light-grey);
+    font-size: 2vw;
+    text-align: center;
+    margin: calc(var(--margin) / 2);
+}
+
+@media only screen and (max-width: 768px) {
+    article#welcome p {
+        font-size: 2vw;
+    }
+    div#quide h3 {
+        font-size: 3.5vw;
+    }
+}

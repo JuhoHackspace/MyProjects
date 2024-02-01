@@ -72,7 +72,7 @@ function submitQuiz(quizID,codeContent,answer) {
     var code = document.getElementById(codeContent).textContent;
     var correctAnswer = document.getElementById(answer).textContent;
 
-    fetch('http://127.0.0.1:5001/learningjavascript-1288a/us-central1/runcode', {
+    fetch('https://runcode-k32h4hyj3a-uc.a.run.app', {
         method: 'POST',
         body: code
     })

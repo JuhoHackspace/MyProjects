@@ -1,0 +1,13 @@
+#content_menu {
+    background-color: var(--background-black);
+}
+
+#content_menu ul {
+    background-color: var(--background-black);
+}
+
+#content_menu ul li {
+    border: 4px solid var(--dark-grey);
+    border-radius: 10px;
+    margin: calc(var(--margin) / 3);
+}

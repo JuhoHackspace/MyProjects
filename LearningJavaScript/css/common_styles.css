@@ -1,0 +1,107 @@
+:root {
+    --background-black: #000;
+    --light-black: #151515;
+    --light-grey: #7f7979;
+    --dark-grey: #464646;
+    --broken-white: #f5f5f5;
+    --white: #fff;
+    --padding: 2em;
+    --margin: 1em;
+}
+* {
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+*,*::before,*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-black);
+}
+
+div#container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-black);
+    padding-bottom: calc(var(--padding) * 2);
+}
+
+header#banner {
+    background-image: url("../images/javascript-on-screen.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 20vh;
+    min-height: 150px;
+    display: inherit;
+    justify-content: center;
+    align-items: center;
+}
+
+header#banner h1 {
+    font-size: 5vw;
+    text-shadow: -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black;
+    color: var(--broken-white);
+}
+
+.menu {
+    display: inherit;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--light-black);
+    width: 100%;
+}
+
+.menu ul {
+    list-style-type: none;
+    background-color: var(--light-black);
+}
+
+.menu li {
+    display: inline-block;   
+}
+
+.menu li a {
+    display: inline-block;
+    font-size: 2em;
+    padding: calc(var(--padding) / 20);
+    margin: calc(var(--margin) / 10) calc(var(--margin) * 2);
+    color: var(--white);
+}
+
+div#main_content {
+    display: inherit;
+    flex-direction: column;
+    margin: 30px;
+}
+
+#current {
+    text-decoration: underline;
+}
+
+footer {
+    bottom: 0;
+    position: fixed;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+    .box {
+        flex: 100%;
+        border-right: 5px solid #464646;
+    }
+    header#banner {
+        min-height: 100px;
+        max-height: 150px;
+    }
+    .menu li a {
+        font-size: 3vw;
+    }
+}

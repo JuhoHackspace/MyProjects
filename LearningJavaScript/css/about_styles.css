@@ -1,0 +1,56 @@
+section#about_content {
+    display: inherit;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: var(--padding);
+}
+
+article#about_me {
+    flex: 1;
+    max-width: 600px;
+    margin: var(--margin);
+    padding: var(--padding);
+}
+
+article#about_me h3 {
+    color: var(--white);
+    text-align: center;
+    margin: var(--margin);
+    font-size: 1.5em;
+}
+
+article#about_me p {
+    color: var(--white);
+    text-align: justify;
+}
+
+div#image_container {
+    flex: 1;
+    max-width: 400px;
+}
+
+div#image_container img {
+    width: 100%;
+    height: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    section#about_content {
+        flex-direction: column;
+    }
+    div#image_container,
+    article#about_me {
+        max-width: 100%;
+    }
+}
+
+@media only screen and (max-width: 460px) {
+    article#about_me {
+        padding: 0;
+        margin: 0;
+    }
+    div#image_container img {
+        margin-top: calc(var(--margin)*3);
+    }
+}

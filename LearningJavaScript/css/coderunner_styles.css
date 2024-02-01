@@ -1,0 +1,76 @@
+section#coderunner {
+    display: inherit;
+    flex-direction: row;
+}
+
+form#code_form {
+    flex: 50%;
+    margin-right: 5px
+}
+
+form#code_form label {
+    color: var(--white);
+    font-size: 1.3em;
+}
+
+textarea#codebox {
+    width: 100%;
+    resize: none;
+}
+
+div#output_frame {
+    flex: 50%;
+    height: 300px;
+    margin-left: 5px;   
+}
+
+div#output_frame label {
+    color: var(--white);
+    font-size: 1.3em;
+}
+
+div#code_output {
+    height: 100%;
+    background-color: var(--white);
+    white-space: pre-line;
+    overflow: auto;
+}
+
+input[type="submit"] {
+    margin: 5px 0px;
+    width: 100px;
+    height: 30px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+    font-weight: bold;
+}
+
+section#info {
+    margin-top: calc(var(--margin) * 3);
+    padding: calc(var(--padding) / 2);
+    border: 5px solid #f00;
+    flex: 1;
+}
+
+section#info p {
+    color: var(--white);
+    font-size: 1.2em;
+    text-align: justify;
+}
+
+@media only screen and (max-width: 768px) {
+    section#coderunner {
+        display: block;
+    }
+    section#info {
+        margin-top: calc(var(--margin) * 5);
+    }
+    section#info p {
+        font-size: 0.8em;
+    }
+    div#output_frame label, form#code_form label {
+        font-size: 1em;
+    }
+}
