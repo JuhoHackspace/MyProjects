@@ -36,13 +36,13 @@ div#code_output {
     overflow: auto;
 }
 
-input[type="submit"] {
+form#code_form button {
     margin: 5px 0px;
     width: 100px;
     height: 30px;
 }
 
-input[type="submit"]:hover {
+form#code_form button:hover {
     background-color: #45a049;
     font-weight: bold;
 }

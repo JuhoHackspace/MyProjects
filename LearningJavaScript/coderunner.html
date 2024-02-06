@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./css/common_styles.css" rel="stylesheet">
     
-    <script src="./scripts/coderunner_scripts.js" defer></script>
-
-    <!--Scripts and styles for Syntax highlighting and row numbering in code runner-->
+     <!--Styles for Syntax highlighting and row numbering in code runner-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+   
 
     <link href="./css/coderunner_styles.css" rel="stylesheet">
 
@@ -30,10 +27,10 @@
         </nav>
         <div id="main_content">
             <section id="coderunner">
-                <form id="code_form" action="http://localhost:3000/runcode" method="post">
+                <form id="code_form">
                     <label for="codebox">Type JavaScript code you wish to run</label>
                     <textarea id="codebox" name="codebox"></textarea>
-                    <input type="submit" value="Run"/>
+                    <button type="submit" id="submit_code">Run</button>
                 </form>
                 <div id="output_frame">
                     <label for="code_output">Standard output of the code</label>
@@ -57,5 +54,8 @@
             </ul>
         </footer>
     </div>
+    <script src="./scripts/coderunner_scripts.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
 </body>
 </html>

@@ -1,8 +1,12 @@
-document.getElementById('code_form').addEventListener('submit', function(event) {
+const codeForm = document.getElementById('code_form');
+const codebox = document.getElementById('codebox');
+
+//Eventlistener and code submit function
+codeForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const codeboxContent = document.getElementById('codebox').value;
-
+    const codeboxContent = codebox.value;
+    
     fetch('https://runcode-k32h4hyj3a-uc.a.run.app', {
         method: 'POST',
         body: codeboxContent,
@@ -16,9 +20,8 @@ document.getElementById('code_form').addEventListener('submit', function(event) 
     });
 });
 
-const codebox = document.getElementById('codebox');
-
-codebox.addEventListener('keydown', function (event) {
+//Prevent default "Tab" key behaviour, and set it to add a tab to the codebox content
+codebox.addEventListener('keydown', (event) => {
     if (event.key === 'Tab') {
         event.preventDefault();
 
@@ -32,6 +35,7 @@ codebox.addEventListener('keydown', function (event) {
     }
 });
 
+//Activate syntax highlighting and rownumbering in the code editor.
 const editor = CodeMirror.fromTextArea(codebox, {
     mode: 'javascript',
     lineNumbers: true,

@@ -6,7 +6,6 @@
     <link href="./css/common_styles.css" rel="stylesheet">
     <link href="./css/learning_styles.css" rel="stylesheet">
     <link href="./css/quizes_styles.css" rel="stylesheet">
-    <script src="./scripts/quiz_script.js" defer></script>
     <title>Learning JavaScript</title>
 </head>
 <body>
@@ -32,14 +31,14 @@
                 <aside>
                     <h3>Quizes</h3>
                     <ul>
-                        <li><a href="#" onclick="showQuiz('quiz1')">Greeting</a><p id="completed_1"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz2')">Function sum</a><p id="completed_2"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz3')">Split string</a><p id="completed_3"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz4')">Reverse string</a><p id="completed_4"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz5')">Nested loop</a><p id="completed_5"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz6')">Recursion</a><p id="completed_6"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz7')">Average</a><p id="completed_7"></p></li>
-                        <li><a href="#" onclick="showQuiz('quiz8')">Fibonacci</a><p id="completed_8"></p></li>
+                        <li><a href="#" id="show_quiz1">Greeting</a><p id="completed_1"></p></li>
+                        <li><a href="#" id="show_quiz2">Function sum</a><p id="completed_2"></p></li>
+                        <li><a href="#" id="show_quiz3">Split string</a><p id="completed_3"></p></li>
+                        <li><a href="#" id="show_quiz4">Reverse string</a><p id="completed_4"></p></li>
+                        <li><a href="#" id="show_quiz5">Nested loop</a><p id="completed_5"></p></li>
+                        <li><a href="#" id="show_quiz6">Recursion</a><p id="completed_6"></p></li>
+                        <li><a href="#" id="show_quiz7">Average</a><p id="completed_7"></p></li>
+                        <li><a href="#" id="show_quiz8">Fibonacci</a><p id="completed_8"></p></li>
                     </ul>
                 </aside>
                 <section id="quiz_container">
@@ -56,7 +55,7 @@
                             
                             console.log(result);    
                         </pre>
-                        <button onclick="submitQuiz('quiz1','code_1','output_1')">Submit</button>
+                        <button type="button" id="submit_quiz1">Submit</button>
                     </div>
                     <div id="quiz2" class="quiz">
                         <p>Fill in the blanks to calculate the sum of two numbers</p>
@@ -67,7 +66,7 @@
                             }
                             console.log(myFunction(<span class="blank_s" contenteditable="true"></span>,<span class="blank_s" contenteditable="true"></span>));
                         </pre>
-                        <button onclick="submitQuiz('quiz2','code_2','output_2')">Submit</button>
+                        <button type="button" id="submit_quiz2">Submit</button>
                     </div>
                     <div id="quiz3" class="quiz">
                         <p>Fill in the blanks to return the correct string</p>
@@ -84,7 +83,7 @@
                             console.log(splitAndReturn(input));
 
                         </pre>
-                        <button onclick="submitQuiz('quiz3','code_3','output_3')">Submit</button>
+                        <button type="button" id="submit_quiz3">Submit</button>
                     </div>
                     <div id="quiz4" class="quiz">
                         <p>Fill in the blanks to reverse the string</p>
@@ -104,7 +103,7 @@
                             
                             console.log(result);
                         </pre>
-                        <button onclick="submitQuiz('quiz4','code_4','output_4')">Submit</button>
+                        <button type="button" id="submit_quiz4">Submit</button>
                     </div>
                     <div id="quiz5" class="quiz">
                         <p>Fill in the blanks to achieve the correct output</p>
@@ -120,7 +119,7 @@
                                 }
                             }
                         </pre>
-                        <button onclick="submitQuiz('quiz5','code_5','output_5')">Submit</button>
+                        <button type="button" id="submit_quiz5">Submit</button>>
                     </div>
                     <div id="quiz6" class="quiz">
                         <p>Fill in the blanks to calculate the sum of integers from 1 to 5</p>
@@ -135,7 +134,7 @@
                             }
                             console.log(<span class="blank_l" contenteditable="true"></span>(5));
                         </pre>
-                        <button onclick="submitQuiz('quiz6','code_6','output_6')">Submit</button>
+                        <button type="button" id="submit_quiz6">Submit</button>
                     </div>
                     <div id="quiz7" class="quiz">
                         <p>Fill in the blanks to calculate the average of an array of integers</p>
@@ -155,7 +154,7 @@
                             
                             console.log(result);
                         </pre>
-                        <button onclick="submitQuiz('quiz7','code_7','output_7')">Submit</button>
+                        <button type="button" id="submit_quiz7">Submit</button>
                     </div>
                     <div id="quiz8" class="quiz">
                         <p>Fill in the blanks to calculate Fibonacci sequence up to 9 terms</p>
@@ -178,7 +177,7 @@
                             
                             console.log(<span class="blank_l" contenteditable="true"></span>);
                         </pre>
-                        <button onclick="submitQuiz('quiz8','code_8','output_8')">Submit</button>
+                        <button type="button" id="submit_quiz8">Submit</button>
                     </div>  
                     <div id="results_frame">
                         <label for="results">Output and result:</label>
@@ -197,5 +196,6 @@
             </ul>
         </footer>
     </div>
+    <script src="./scripts/quiz_script.js" defer></script>
 </body>
 </html>
