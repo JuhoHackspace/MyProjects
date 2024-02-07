@@ -15,7 +15,7 @@ To acces the Firebase application, go to URL [https://learningjavascript-1288a.w
 The purpose of this repository is to store the project files for reviewing purposes. Static web-site files can be found from this repository and the Node.js Express version of the server-side files from [JsRunner](https://github.com/JuhoHackspace/JsRunner.git) repository. 
 
 ### Instructions for running the application locally
-
+gi
 The server required to use the web-sites quizes and coderunner, is running publicly as a Google Firebase Function. The HTTP endpoints in the web-sites script files currently
 match the Firebase Function endpoint. No changes are required to run the static content locally.
 
@@ -39,4 +39,4 @@ match the Firebase Function endpoint. No changes are required to run the static 
 - In the static web-site script files coderunner_script.js and quiz_script.js, change the fetch() methods HTTP endpoint to match "http://localhost:3000/runcode"
 - To host the web-site, the easiest way is to use VSCode and the LiveServer extension. Install it, or choose another hosting method.
 - Make sure the server is running.
-- Once you have completed these teps you can launch and view the site, view the content and try out the quizes and the coderunner.
+- Once you have completed these teps you can launch and view the site, and try out the quizes and the coderunner.
