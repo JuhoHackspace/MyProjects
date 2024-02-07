@@ -61,6 +61,12 @@ section#info p {
 }
 
 @media only screen and (max-width: 768px) {
+    form#code_form {
+        margin-right: 0;
+    }
+    div#output_frame {
+        margin-left: 0;
+    }
     section#coderunner {
         display: block;
     }

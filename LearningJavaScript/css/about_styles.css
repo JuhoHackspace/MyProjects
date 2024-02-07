@@ -22,6 +22,7 @@ article#about_me h3 {
 
 article#about_me p {
     color: var(--white);
+    font-size: 1em;
     text-align: justify;
 }
 

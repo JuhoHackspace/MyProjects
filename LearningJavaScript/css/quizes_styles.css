@@ -168,6 +168,9 @@ aside h3 {
         padding-bottom: calc(var(--padding)/2);
     }
     aside ul {
-        font-size: 3vw;
+        font-size: 4vw;
+    }
+    aside h3 {
+        font-size: 5vw;
     }
 }

@@ -25,9 +25,9 @@ section#server_info {
         border: 3px solid var(--light-grey);
     }
     section#website_info a, section#server_info a{
-        font-size: 3vw;
+        font-size: 4vw;
     }
     section#website_info p, section#server_info p {
-        font-size: 2vw;
+        font-size: 3vw;
     }
 }

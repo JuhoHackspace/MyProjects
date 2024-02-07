@@ -66,11 +66,18 @@ header#banner h1 {
 }
 
 .menu li a {
-    display: inline-block;
     font-size: 2em;
-    padding: calc(var(--padding) / 20);
-    margin: calc(var(--margin) / 10) calc(var(--margin) * 2);
+    display: inline-block;
     color: var(--white);
+}
+
+#top_menu li a {
+    padding: calc(var(--padding) / 20);  
+}
+
+#top_menu li:nth-child(2) {
+    margin-left: 10vw;
+    margin-right: 10vw;
 }
 
 div#main_content {
@@ -88,8 +95,19 @@ footer {
     position: fixed;
 }
 
+#bottom_menu li a {
+    margin: 0 5vw;
+}
+
 a:hover {
     font-weight: bold;
+}
+
+@media only screen and (max-width: 1200px) {
+    header#banner {
+        min-height: 150px;
+        max-height: 150px;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -99,9 +117,9 @@ a:hover {
     }
     header#banner {
         min-height: 100px;
-        max-height: 150px;
+        max-height: 100px;
     }
     .menu li a {
-        font-size: 3vw;
+        font-size: 4vw;
     }
 }
