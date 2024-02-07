@@ -4,10 +4,10 @@
 
 The purpose of this assignment was to build a web-application with a responsive user interface, using good programming practices.
 
-This web-application focuses on JavaScript programming. In the site, users can learn programming by completing programming quizes, and by using a browser based code runner for
+This web-application focuses on JavaScript programming. In the site, users can learn programming by completing programming quizes, and by using a browser based coderunner for
 JavaScript code. The site also links together few similar external sites, that provide information, tutorials and quizes in many programming languages.
 
-The main features of this web application are the code runner and the quizes. Both use the same method for the code execution. The code is sent to the server, where it is executed, and the reponse is sent back to the frontend.
+The main features of this web application are the coderunner and the quizes. Both use the same method for the code execution. The code is sent to the server, where it is executed, and the reponse is sent back to the frontend.
 
 This web-application consist of static web-site files and server-side files. Originally the server was built with Node.js Express framework. In the course "Cloud services" there was a Google Firebase assignment, and I decided to merge these two assignments and host the entire application on Google Firebase. The backend files were modified to work as a Firebase function, and the static content was deployed on Firebase Hosting.
 To acces the Firebase application, go to URL [https://learningjavascript-1288a.web.app/](https://learningjavascript-1288a.web.app/).
