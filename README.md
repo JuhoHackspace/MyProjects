@@ -5,7 +5,7 @@
 The purpose of this assignment was to build a web-application with a responsive user interface, using good programming practices.
 
 This web-application focuses on JavaScript programming. In the site, users can learn programming by completing programming quizes, and by using a browser based coderunner for
-JavaScript code. The site also links together few similar external sites, that provide information, tutorials and quizes in many programming languages.
+JavaScript code. The site also links together few similar external sites that provide information, tutorials and quizes in many programming languages.
 
 The main features of this web application are the coderunner and the quizes. Both use the same method for the code execution. The code is sent to the server, where it is executed, and the reponse is sent back to the frontend.
 
@@ -15,11 +15,11 @@ To acces the Firebase application, go to URL [https://learningjavascript-1288a.w
 The purpose of this repository is to store the project files for reviewing purposes. Static web-site files can be found from this repository and the Node.js Express version of the server-side files from [JsRunner](https://github.com/JuhoHackspace/JsRunner.git) repository. 
 
 ### Instructions for running the application locally
-gi
+
 The server required to use the web-sites quizes and coderunner, is running publicly as a Google Firebase Function. The HTTP endpoints in the web-sites script files currently
 match the Firebase Function endpoint. No changes are required to run the static content locally.
 
-**Follow these instruction, if you wish to try review the site files, or host only the static content locally**
+**Follow these instruction, if you wish review the site files, or host only the static content locally**
 - Clone the repository.
 - Review the files.
 - To host the web-site, the easiest way is to use VSCode and the LiveServer extension. Install it, or choose another hosting method.
