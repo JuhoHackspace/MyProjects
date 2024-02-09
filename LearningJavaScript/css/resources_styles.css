@@ -1,12 +1,12 @@
 section#website_info a, section#server_info a{
     color: #a72e2e;
-    font-size: 2em;
+    font-size: var(--heading_font);
     text-align: left;
 }
 
 section#website_info p, section#server_info p{
     margin-top: calc(var(--margin)*2);
-    font-size: 1.5em;
+    font-size: var(--content_font);
 }
 
 section#website_info, section#server_info {
@@ -25,7 +25,7 @@ section#server_info {
         border: 3px solid var(--light-grey);
     }
     section#website_info a, section#server_info a{
-        font-size: 4vw;
+        font-size: 4.5vw;
     }
     section#website_info p, section#server_info p {
         font-size: 3vw;

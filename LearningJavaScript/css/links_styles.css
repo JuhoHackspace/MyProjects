@@ -28,11 +28,11 @@ section#links {
 
 .box p {
     padding: var(--padding);
-    font-size: 1em;
+    font-size: var(--content_font);
 }
 
 .box a {
-    font-size: 1.5em;
+    font-size: var(--heading_font);
 }
 
 @media only screen and (max-width: 768px) {
@@ -41,6 +41,13 @@ section#links {
     }
     .box {
         flex: 100%;
-        border-right: 5px solid #464646;
+        border-right: 5px solid var(--dark-grey);
+    }
+    .box p {
+        font-size: 3vw;
+    }
+    
+    .box a {
+        font-size: 4.5vw;
     }
 }

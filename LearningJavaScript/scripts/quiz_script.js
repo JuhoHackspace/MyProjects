@@ -106,6 +106,8 @@ function submitQuiz(quizID,codeContent,answer) {
     //Retrieve the quiz code and the correct answer
     var code = document.getElementById(codeContent).textContent;
     var correctAnswer = document.getElementById(answer).textContent;
+    var result = document.getElementById("quiz_result");
+    var output = document.getElementById("quiz_output");
 
     fetch('https://runcode-k32h4hyj3a-uc.a.run.app', {
         method: 'POST',
@@ -114,19 +116,19 @@ function submitQuiz(quizID,codeContent,answer) {
     .then(response => response.text())
     .then(data => {
         console.log('Server Response:', data);
-        document.getElementById("quiz_output").textContent = data;
+        output.innerHTML = data;
         
         if(data === correctAnswer) {
-            document.getElementById("quiz_result").innerHTML = "Correct!";
-            document.getElementById("quiz_result").style.backgroundColor = '#0f0';
+            result.innerHTML = "Correct!";
+            result.style.backgroundColor = '#0f0';
             storeCompletedQuiz(quizID);
             retrieveQuizes(); //Immediately retrieve and display the completion status
         }else {
-            document.getElementById("quiz_result").innerHTML = "Oops! Try again."
+            result.innerHTML = "Oops! Try again."
+            result.style.backgroundColor = '#f00';
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        document.getElementById("quiz_output").textContent = "Error: Server offline";
+        output.innerHTML = "Error: Server offline";
     });
 }

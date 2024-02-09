@@ -17,12 +17,12 @@ article#about_me h3 {
     color: var(--white);
     text-align: center;
     margin: var(--margin);
-    font-size: 1.5em;
+    font-size: var(--heading_font);
 }
 
 article#about_me p {
     color: var(--white);
-    font-size: 1em;
+    font-size: var(--content_font);
     text-align: justify;
 }
 
@@ -43,6 +43,12 @@ div#image_container img {
     div#image_container,
     article#about_me {
         max-width: 100%;
+    }
+    article#about_me p {
+        font-size: 3vw;
+    }
+    article#about_me h3 {
+        font-size: 4.5vw;
     }
 }
 

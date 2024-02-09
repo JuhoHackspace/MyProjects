@@ -1,6 +1,6 @@
 const codeForm = document.getElementById('code_form');
 const codebox = document.getElementById('codebox');
-
+codebox.focus();
 //Eventlistener and code submit function
 codeForm.addEventListener('submit', (event) => {
     event.preventDefault();

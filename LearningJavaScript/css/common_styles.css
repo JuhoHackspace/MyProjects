@@ -7,10 +7,14 @@
     --white: #fff;
     --padding: 2em;
     --margin: 1em;
+    --content_font: 1em;
+    --heading_font: 2em;
+    --hover_color: #45a049;
 }
 * {
     padding: 0;
     margin: 0;
+    line-height: 1.5;
     text-decoration: none;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
@@ -42,7 +46,7 @@ header#banner {
 }
 
 header#banner h1 {
-    font-size: 5vw;
+    font-size: calc(var(--heading_font) * 2);
     text-shadow: -1px -1px 1px black, 1px -1px 1px black, -1px 1px 1px black, 1px 1px 1px black;
     color: var(--broken-white);
 }
@@ -66,7 +70,7 @@ header#banner h1 {
 }
 
 .menu li a {
-    font-size: 2em;
+    font-size: var(--heading_font);
     display: inline-block;
     color: var(--white);
 }
@@ -105,8 +109,11 @@ a:hover {
 
 @media only screen and (max-width: 1200px) {
     header#banner {
-        min-height: 150px;
-        max-height: 150px;
+        min-height: 175px;
+        max-height: 175px;
+    }
+    header#banner h1 {
+        font-size: 5vw;
     }
 }
 
@@ -116,10 +123,20 @@ a:hover {
         border-right: 5px solid #464646;
     }
     header#banner {
-        min-height: 100px;
-        max-height: 100px;
+        min-height: 150px;
+        max-height: 150px;
+    }
+    header#banner h1 {
+        font-size: 7vw;
     }
     .menu li a {
-        font-size: 4vw;
+        font-size: 4.5vw;
     }
+}
+@media only screen and (max-width: 460px) {
+    header#banner {
+        min-height: 125px;
+        max-height: 125px;
+    }
+
 }
