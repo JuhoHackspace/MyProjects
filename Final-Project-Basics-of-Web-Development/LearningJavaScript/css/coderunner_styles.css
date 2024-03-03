@@ -1,0 +1,82 @@
+section#coderunner {
+    display: inherit;
+    flex-direction: row;
+}
+
+form#code_form {
+    flex: 50%;
+    margin-right: 5px
+}
+
+form#code_form label {
+    color: var(--white);
+    font-size: calc(var(--content_font) * 1.25);
+}
+
+textarea#codebox {
+    width: 100%;
+    resize: none;
+}
+
+div#output_frame {
+    flex: 50%;
+    height: 300px;
+    margin-left: 5px;   
+}
+
+div#output_frame label {
+    color: var(--white);
+    font-size: calc(var(--content_font) * 1.25);
+}
+
+div#code_output {
+    height: 100%;
+    background-color: var(--white);
+    white-space: pre-line;
+    overflow: auto;
+}
+
+form#code_form button {
+    margin: 5px 0px;
+    width: 100px;
+    height: 30px;
+}
+
+form#code_form button:hover {
+    background-color: var(--hover_color);
+    font-weight: bold;
+}
+
+section#info {
+    margin-top: calc(var(--margin) * 3);
+    padding: calc(var(--padding) / 2);
+    border: 5px solid #f00;
+    flex: 1;
+}
+
+section#info p {
+    color: var(--white);
+    font-size: var(--content_font);
+    text-align: justify;
+}
+
+@media only screen and (max-width: 768px) {
+    form#code_form {
+        margin-right: 0;
+    }
+    div#output_frame {
+        margin-left: 0;
+    }
+    section#coderunner {
+        display: block;
+    }
+    section#info {
+        margin-top: calc(var(--margin) * 5);
+    }    
+    div#output_frame label, form#code_form label {
+        font-size: 3.75vw;
+    }
+    section#info p {
+        font-size: 3vw;
+    }
+}

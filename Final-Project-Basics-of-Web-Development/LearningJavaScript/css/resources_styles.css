@@ -1,0 +1,33 @@
+section#website_info a, section#server_info a{
+    color: #a72e2e;
+    font-size: var(--heading_font);
+    text-align: left;
+}
+
+section#website_info p, section#server_info p{
+    margin-top: calc(var(--margin)*2);
+    font-size: var(--content_font);
+}
+
+section#website_info, section#server_info {
+    color: var(--white);
+    padding: var(--padding); 
+    border: 5px solid var(--light-grey);
+}
+
+section#server_info {
+    margin-top: var(--margin);
+}
+
+@media only screen and (max-width: 768px) {
+    section#website_info, section#server_info {
+        width: 100%;
+        border: 3px solid var(--light-grey);
+    }
+    section#website_info a, section#server_info a{
+        font-size: 4.5vw;
+    }
+    section#website_info p, section#server_info p {
+        font-size: 3vw;
+    }
+}

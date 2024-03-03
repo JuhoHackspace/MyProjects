@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./css/common_styles.css" rel="stylesheet">
+    <link href="./css/learning_styles.css" rel="stylesheet">
+    <link href="./css/quizes_styles.css" rel="stylesheet">
+    <title>Learning JavaScript</title>
+</head>
+<body>
+    <div id="container">
+        <header id="banner">
+            <h1>Learning JavaScript</h1>
+        </header>
+        <nav class="menu" id="top_menu">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a id="current" href="./learning.html">Learning</a></li>
+                <li><a href="./coderunner.html">Coderunner</a></li>
+            </ul>
+        </nav>
+        <nav class="menu" id="content_menu">
+            <ul>
+                <li><a href="./learning.html">Links</a></li>
+                <li><a id="current" href="./quizes.html">Quizes</a></li>
+            </ul>
+        </nav>
+        <div id="main_content">
+            <section id="quiz_content">
+                <aside>
+                    <h3>Quizes</h3>
+                    <ul>
+                        <li><a href="#" id="show_quiz1">Greeting</a><p id="completed_1"></p></li>
+                        <li><a href="#" id="show_quiz2">Function sum</a><p id="completed_2"></p></li>
+                        <li><a href="#" id="show_quiz3">Split string</a><p id="completed_3"></p></li>
+                        <li><a href="#" id="show_quiz4">Reverse string</a><p id="completed_4"></p></li>
+                        <li><a href="#" id="show_quiz5">Nested loop</a><p id="completed_5"></p></li>
+                        <li><a href="#" id="show_quiz6">Recursion</a><p id="completed_6"></p></li>
+                        <li><a href="#" id="show_quiz7">Average</a><p id="completed_7"></p></li>
+                        <li><a href="#" id="show_quiz8">Fibonacci</a><p id="completed_8"></p></li>
+                    </ul>
+                </aside>
+                <section id="quiz_container">
+                    <div id="quiz1" class="quiz active">
+                        <p>Fill in the blanks to print the greeting</p>
+                        <p>Desired output:</p><p id="output_1">Hello, user!</p>
+                        <pre class="code" id="code_1">
+                            function greet(name) {
+                                return "Hello, " + <span class="blank_l" contenteditable="true"></span> + "!";
+                            }
+                            
+                            var userName = "<span class="blank_l" contenteditable="true"></span>";
+                            var result = greet(userName);
+                            
+                            console.log(result);    
+                        </pre>
+                        <button type="button" id="submit_quiz1">Submit</button>
+                    </div>
+                    <div id="quiz2" class="quiz">
+                        <p>Fill in the blanks to calculate the sum of two numbers</p>
+                        <p>Desired output:</p><p id="output_2">10</p>
+                        <pre class="code" id="code_2">
+                            <span class="blank_l" contenteditable="true"></span> myFunction(num1, num2) {
+                                <span class="blank_l" contenteditable="true"></span> num1 + num2;
+                            }
+                            console.log(myFunction(<span class="blank_s" contenteditable="true"></span>,<span class="blank_s" contenteditable="true"></span>));
+                        </pre>
+                        <button type="button" id="submit_quiz2">Submit</button>
+                    </div>
+                    <div id="quiz3" class="quiz">
+                        <p>Fill in the blanks to return the correct string</p>
+                        <p>Desired output:</p><p id="output_3">I am learning</p>
+                        <pre class="code" id="code_3">
+                            function splitAndReturn(someString) {
+                                var words = someString.<span class="blank_l" contenteditable="true"></span>(" ");
+                                var newString = [words[<span class="blank_s" contenteditable="true"></span>],words[<span class="blank_s" contenteditable="true"></span>],words[<span class="blank_s" contenteditable="true"></span>]].join(" ");
+                                return newString;
+                            }
+
+                            var input = "I too am easily learning";
+
+                            console.log(splitAndReturn(input));
+
+                        </pre>
+                        <button type="button" id="submit_quiz3">Submit</button>
+                    </div>
+                    <div id="quiz4" class="quiz">
+                        <p>Fill in the blanks to reverse the string</p>
+                        <p>Desired output:</p><p id="output_4">The reversed string is: em esreveR</p>
+                        <pre class="code" id="code_4">
+                            function reverseString(str) {
+                                var reversed = <span class="blank_s" contenteditable="true"></span>;
+                                var len = str.length;
+                                for (var i = <span class="blank_l" contenteditable="true"></span>; i >= 0; i--) {
+                                    reversed <span class="blank_s" contenteditable="true"></span> str.charAt(<span class="blank_s" contenteditable="true"></span>);
+                                }
+                                return "The reversed string is: " + reversed;
+                            }
+                            
+                            var input = "Reverse me";
+                            var result = reverseString(<span class="blank_l" contenteditable="true"></span>);
+                            
+                            console.log(result);
+                        </pre>
+                        <button type="button" id="submit_quiz4">Submit</button>
+                    </div>
+                    <div id="quiz5" class="quiz">
+                        <p>Fill in the blanks to achieve the correct output</p>
+                        <p>Desired output:</p><p id="output_5">00,01,02,10,11,12,20,21,22</p>
+                        <pre class="code" id="code_5">
+                            for(let i = <span class="blank_s" contenteditable="true"></span>; i < <span class="blank_s" contenteditable="true"></span>; i++) {
+                                for(let j = <span class="blank_s" contenteditable="true"></span>; j < <span class="blank_s" contenteditable="true"></span>; j++) {
+                                    if(j === <span class="blank_s" contenteditable="true"></span> && i === <span class="blank_s" contenteditable="true"></span>) {
+                                        console.log(`${i}${j}`);
+                                    }<span class="blank_l" contenteditable="true"></span> {
+                                        console.log(`${i}${j}`+',');
+                                    }
+                                }
+                            }
+                        </pre>
+                        <button type="button" id="submit_quiz5">Submit</button>>
+                    </div>
+                    <div id="quiz6" class="quiz">
+                        <p>Fill in the blanks to calculate the sum of integers from 1 to 5</p>
+                        <p>Desired output:</p><p id="output_6">15</p>
+                        <pre class="code" id="code_6">
+                            function recursive(number) {
+                                if(number === <span class="blank_s" contenteditable="true"></span>) {
+                                    return 1;
+                                } else {
+                                    return number + recursive(<span class="blank_l" contenteditable="true"></span>-1);
+                                }
+                            }
+                            console.log(<span class="blank_l" contenteditable="true"></span>(5));
+                        </pre>
+                        <button type="button" id="submit_quiz6">Submit</button>
+                    </div>
+                    <div id="quiz7" class="quiz">
+                        <p>Fill in the blanks to calculate the average of an array of integers</p>
+                        <p>Desired output:</p><p id="output_7">The average is 4</p>
+                        <pre class="code" id="code_7">
+                            function calculateAverage(numbers) {
+                                var sum = <span class="blank_s" contenteditable="true"></span>;
+                                for (var i = 0; i < numbers.<span class="blank_l" contenteditable="true"></span>; i++) {
+                                    sum += numbers[<span class="blank_s" contenteditable="true"></span>];
+                                }
+                                var average = <span class="blank_l" contenteditable="true"></span> / numbers.length;
+                                return "The average is " + average;
+                            }
+                            
+                            var numberList = [3, 5, 4];
+                            var result = calculateAverage(<span class="blank_l" contenteditable="true"></span>);
+                            
+                            console.log(result);
+                        </pre>
+                        <button type="button" id="submit_quiz7">Submit</button>
+                    </div>
+                    <div id="quiz8" class="quiz">
+                        <p>Fill in the blanks to calculate Fibonacci sequence up to 9 terms</p>
+                        <p>Desired output:</p><p id="output_8">The Fibonacci sequence up to 9 terms is: 0, 1, 1, 2, 3, 5, 8, 13, 21</p>
+                        <pre class="code" id="code_8">
+                            <span class="blank_l" contenteditable="true"></span> generateFibonacci(n) {
+                                var sequence = [];
+                                for (var i = 0; i < <span class="blank_s" contenteditable="true"></span>; i++) {
+                                    if (i <= <span class="blank_s" contenteditable="true"></span>) {
+                                        sequence.push(i);
+                                    } else {
+                                        sequence.push(sequence[i - 1] + sequence[i - <span class="blank_s" contenteditable="true"></span>]);
+                                    }
+                                }
+                                return "The Fibonacci sequence up to " + n + " terms is: " + sequence.join(", ");
+                            }
+                            
+                            var terms = 9;
+                            var Result = generateFibonacci(terms);
+                            
+                            console.log(<span class="blank_l" contenteditable="true"></span>);
+                        </pre>
+                        <button type="button" id="submit_quiz8">Submit</button>
+                    </div>  
+                    <div id="results_frame">
+                        <label for="results">Output and result:</label>
+                        <div id="results">                
+                            <div id="quiz_output"></div>              
+                            <div id="quiz_result"></div>
+                        </div>
+                    </div>        
+                </section>
+            </section>      
+        </div>
+        <footer class="menu" id="bottom_menu">
+            <ul>
+                <li><a href="./resources.html">Resources</a></li>
+                <li><a href="./about.html">About</a></li>
+            </ul>
+        </footer>
+    </div>
+    <script src="./scripts/quiz_script.js" defer></script>
+</body>
+</html>
