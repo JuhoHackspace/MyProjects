@@ -1,0 +1,60 @@
+.infoBackdrop {
+    display: flex; /* Use flexbox for the content */
+    flex-direction: column; /* Stack the content vertically */
+    width: 80%;
+    height: 80%;
+    max-width: 800px; /* Maximum width for larger screens */
+    max-height: 800px; /* Maximum height for larger screens */
+    padding: var(--general-padding); /* Add padding around the content */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    color: var(--white-colour);
+    font-size: var(--normal-font-size);
+}
+
+.upperInfo {
+    display: flex; /* Use flexbox for the content */
+    flex-direction: row;
+    width: 100%;
+    height: max-content;
+}
+
+.image_wrapper {
+    flex: 0 0 35%;
+    height: 100%;
+}
+
+.rightInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: var(--general-padding);
+
+}
+
+.title_ {
+    font-size: var(--header-font-size);
+    margin-bottom: calc(var(--general-margin)/2);
+}
+
+.lowerInfo {
+    display: flex;
+    flex-direction: column;
+    margin-top: calc(var(--general-margin)/2);
+    margin-left: calc(var(--general-margin)/2);
+}
+
+.published, .genres, .languages {
+    margin-top: calc(var(--general-margin)/4);
+}
+.backdropImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--normal-border-radius);
+}
+
+@media (max-width: 800px) {
+    .infoBackdrop {
+        font-size: smaller;
+    }
+}

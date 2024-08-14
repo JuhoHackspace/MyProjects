@@ -1,0 +1,54 @@
+.groupCreated {
+    background-color: #006800;
+    color: white;
+    font-size: larger;
+    border-radius: 8px;
+    width: max-content;
+    margin-bottom: var(--general-margin);
+    padding: calc(var(--general-padding));
+}
+.groupCreatedError {
+    background-color: #f40000;
+    color: white;
+    font-size: larger;
+    border-radius: 8px;
+    width: max-content;
+    margin-bottom: var(--general-margin);
+    padding: calc(var(--general-padding));
+}
+
+.container h3 {
+    margin-bottom: calc(var(--general-margin)/2);
+}
+.container h4 {
+    margin-bottom: calc(var(--general-margin)/2);
+    margin-top: calc(var(--general-margin)/2);
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: max-content;
+}
+
+.buttonStyle {
+    margin: 0 1em;
+}
+
+.theHr {
+    margin: 2em 0;
+
+}
+
+@media (max-width: 800px) {
+    .buttonContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .buttonStyle {
+        margin: 0.5em 0;
+    }
+}

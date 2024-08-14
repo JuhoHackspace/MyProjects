@@ -1,0 +1,45 @@
+:root {
+  --navibar-color: #444;
+  --light-colour: #dfdfdf;
+  --white-colour: #eeeeee;
+  --dark-colour: #222;
+  --accent-colour: #f40000;
+  --general-margin: 1rem;
+  --general-padding: 1rem;
+  --header-font-size: 2em;
+  --focus-colour: #eef;
+  --normal-font-size: larger;
+  --normal-border-radius: 1em;
+  --background-color: #fff;
+  --card-background-color: #ddd;
+  --notice-background-color: #dff;
+  --button-colour: #eee;
+  --button-text-colour: #222;
+  --button-border-colour: #222;
+  --dark-gray-colour:#404040;
+  --medium-gray-colour:#808080;
+  --light-gray-colour: #e0e0e0;
+  --general-margin: 2em;
+  --general-padding: 1em;
+
+
+}
+
+/*nollaa kaikki selaimen oletusarvot
+* {
+  margin: 0;
+  padding: 0;
+  color: var(--light-colour);
+  font-famiky: 'Arial', sans-serif;
+}
+*/
+/*
+*,*::before,*::after {
+  box-sizing: border-box;
+}
+*/
+
+body {
+  height: 100vh;
+  width: 100vw;
+}

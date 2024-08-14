@@ -1,0 +1,21 @@
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.4.1",
+    "chai-http": "^4.4.0",
+    "dotenv": "^16.4.5",
+    "mocha": "^10.2.0"
+  },
+  "devDependencies": {
+    "karma-chai": "^0.1.0"
+  }
+}

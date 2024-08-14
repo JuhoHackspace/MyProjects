@@ -1,0 +1,22 @@
+.select {
+    width: 30%;
+    padding: calc(var(--general-padding)/4);
+    margin: calc(var(--general-margin)/4) 0;
+    border: 2px solid #aaa;
+    border-radius: calc(var(--normal-border-radius)/2);
+    font-size: medium;;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.label {
+    font-size: medium;
+}
+
+ @media screen and (max-width: 800px) {
+    .select {
+        width: 50%;
+        font-size: small;
+    }
+    
+ }

@@ -1,0 +1,53 @@
+
+
+.container {
+    font-size: medium;
+}
+
+.container a {
+    margin: 0 calc(var(--general-margin)/4);
+    padding: calc(var(--general-padding)/4) calc(var(--general-padding)/2);
+    background-color: var(--card-background-color);
+    border-radius: 5px;
+    font-family: monospace, sans-serif;
+}
+
+.navButton {
+    margin: 0 calc(var(--general-margin)/4);
+    padding: calc(var(--general-padding)/4) calc(var(--general-padding)/2);
+    background-color: var(--card-background-color);
+    font-family: monospace, sans-serif;
+    border-radius: 5px;
+    color: rebeccapurple;
+}
+
+.navButton:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.pageNumbers {
+    margin: calc(var(--general-margin)/2);
+    color: #006800;
+    border-radius: 5px;
+}
+
+.selectedPageNumber {
+    color: #006800;
+    background-color: #ff97ff;
+    margin: 0 calc(var(--general-margin)/4);
+    padding: calc(var(--general-padding)/4) calc(var(--general-padding)/2);
+    border-radius: 5px;
+}
+
+@media (max-width: 900px) {
+    .hideOnSmallScreen {
+        display: none;
+    }
+}
+
+@media (min-width: 901px) {
+    .hideOnLargeScreen {
+        display: none;
+    }
+}

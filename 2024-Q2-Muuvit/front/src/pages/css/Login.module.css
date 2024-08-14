@@ -1,0 +1,46 @@
+
+.login {
+    width: 100%;
+    height: 60vh;
+    background-color: var(--white-colour);
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.heading {
+    margin-top: calc(var(--general-margin)/2);
+    margin-bottom: calc(var(--general-margin)/2);
+}
+
+.form {
+    margin-top: calc(var(--general-margin)/2);
+    color: var(--dark-colour);
+    display: flex;
+    text-align: center;
+    align-items: center;
+    vertical-align: center;
+}
+
+.login_text {
+    width:100px;
+    display: flex;
+}
+
+.login_status {
+    margin-top: var(--general-margin);
+    width: 200px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+    margin: var(--general-margin) 0;
+}
+
+@media screen and (max-width: 600px) {
+    .buttons {
+        width: 100%;
+    }
+}

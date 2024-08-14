@@ -1,0 +1,72 @@
+footer {
+    background-color: var(--navibar-color);
+    bottom: 0;
+    position: fixed;
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#footer {
+    display: block;
+}
+
+footer div#socialMedia {
+    display: flex;
+    justify-content: center;
+
+}
+
+#github, #tmdb {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin-right: 20px;
+    height: 50px;
+}
+
+#tmdb {
+    margin-right: 0;
+}
+
+#tmdb img {
+    width: 40px;
+    height: auto;
+    margin-right: 5px;
+}
+#github .gh-mark {
+    background-image: url('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png');
+    background-size: cover;
+    width: 25px;
+    height: auto;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+footer a, footer p {
+    color: var(--light-colour);
+}
+
+footer a img {
+    width: 40px;
+    height: auto;
+    margin-right: 5px;
+}
+
+#github a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+footer div, footer p {
+    display: block;
+    text-align: center;
+    font-size: x-large;
+}

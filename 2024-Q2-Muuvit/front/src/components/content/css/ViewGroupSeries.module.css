@@ -1,0 +1,26 @@
+.groupSeries {
+
+}
+
+.serieCard {
+    padding: 1em;
+    border-radius: var(--normal-border-radius);
+    background-color: var(--card-background-color);
+    margin-top: 1em;
+    box-shadow: 3px 3px 3px #000;
+}
+
+.serieList {
+    margin-top: calc(var(--general-margin));
+}
+
+.serieCard:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.serieCard span {
+    font-style: italic;
+    margin-bottom: calc(var(--general-margin)/4);
+    display: inline-block;
+}

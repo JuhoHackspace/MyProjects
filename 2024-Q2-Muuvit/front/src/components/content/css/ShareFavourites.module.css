@@ -1,0 +1,56 @@
+.linkBox {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 35%;
+    left: 50%;
+    min-width: 400px;
+    height: max-content;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: var(--general-padding);
+    background-color: var(--card-background-color);
+    border-radius: var(--normal-border-radius);
+    box-shadow: 2px 2px 2px var(--dark-gray-colour);
+}
+
+.buttons, .upper {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.buttons {
+    margin-top: var(--general-margin);
+}
+
+.heading, .createLink {
+    margin: 0;
+    padding: 0;
+}
+
+.line {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: var(--general-margin);
+}
+
+.input {
+    margin-bottom: calc(var(--general-margin)/2);
+    font-size: var(--normal-font-size);
+    padding: calc(var(--general-padding)/4);
+}
+
+.status {
+    font-size: var(--normal-font-size);
+    font-style: italic;
+}
+
+@media  screen and (max-width: 400px) {
+    .linkBox {
+        min-width: 90%;
+    }
+    
+}

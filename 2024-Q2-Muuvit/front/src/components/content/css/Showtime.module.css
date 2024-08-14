@@ -1,0 +1,23 @@
+.showtime {
+    width: 100%;
+    background-color: var(--card-background-color);
+    margin: calc(var(--general-margin)/4) auto;
+    padding: calc(var(--general-padding)/2);
+    border-radius: 1em;
+}
+
+.upper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info, .title {
+    padding: calc(var(--general-padding)/4) calc(var(--general-padding)/4);
+    font-size: large;
+}
+
+.title {
+    margin-right: auto;
+}

@@ -1,0 +1,52 @@
+.page {
+    margin-bottom: calc(var(--general-margin) * 2);
+}
+
+.sectioni {
+    display: flex;
+    flex-direction: column;
+    margin: calc(var(--general-margin)/2) calc(var(--general-margin)/3);
+    width: 100%;
+
+}
+
+.header {
+ 
+    margin-top: calc(var(--general-margin)/8);
+    margin-bottom: calc(var(--general-margin)/4);
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.userInfo p {
+   margin-left: calc(var(--general-margin)/6);
+   font-weight: bold;
+}
+
+.info, .userInfo {
+    font-size: var(--normal-font-size);
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: calc(var(--general-margin)/2) calc(var(--general-margin)/3);
+}
+
+.redButton {
+    background-color: #ff0000;
+
+}
+  .redButton:hover{
+      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color: #ffdddd;
+  }
+
+  .infoText{
+    margin-top: 10px ;
+    margin-left: 20px;
+    font-size: 1em ;
+  }

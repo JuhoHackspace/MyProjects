@@ -1,0 +1,83 @@
+.page {
+    margin-bottom: calc(var(--general-margin) * 4);
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding:20px;
+    margin-top: 2rem;
+    margin-left: 0px;
+    margin-right: 30px;
+
+}
+
+.title {
+    margin: 1.5em 0 0.3em 0;
+    font-size: xx-large;
+    font-family: Monospace, sans-serif;
+}
+.title span {
+    font-style: italic;
+}
+
+.description {
+    font-size: larger;
+    font-family: Monospace, sans-serif;
+    margin-left: 1em;
+}
+
+.deletemember {
+    margin: 1em;
+}
+
+.horizontalRuler {
+    margin: 1.5em 0 0.5em 0;
+}
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.memberStatus {
+    font-family: Monospace, sans-serif;
+    font-size: medium;
+    font-style: italic;
+}
+
+.infoText{
+    margin-top: 10px ;
+    margin-left: 20px;
+    font-size: 1em ;
+  }
+
+.movies {
+}
+
+.movies ul {
+}
+
+.moviesList {
+    margin-top: 1.5em;
+}
+
+.movieCard {
+    padding: 1em;
+    border-radius: var(--normal-border-radius);
+    background-color: var(--card-background-color);
+    margin-top: 1em;
+    box-shadow: 3px 3px 3px #000;
+}
+
+.movieCard:hover {
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+.movieCard span {
+    font-style: italic;
+    margin-bottom: 0.5em;
+    display: inline-block;
+}

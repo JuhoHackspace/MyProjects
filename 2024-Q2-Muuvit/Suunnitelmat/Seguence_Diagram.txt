@@ -1,0 +1,309 @@
+
+title Sekvenssikaavio
+
+participant Käyttötapaus
+participant User
+participant Frontend
+participant Backend
+participant Database
+participant Finnkino
+participant IMDB
+
+loop #green
+note over Käyttötapaus:01 - Search events
+note right of User:01.1
+User->Frontend:/search
+Frontend->Finnkino:(/xml/TheatreAreas/) get Area ID's
+Finnkino->Frontend:Api response XML(areas)
+Frontend->User:List of areas\nto a dropdown for user to choose from
+note right of User:01.2
+User->Frontend:/search Select parameters(timeframe, theathre)
+Frontend->Finnkino: /xml/Schedule/ + params
+Finnkino->Frontend: Api response XML(events)
+Frontend->User: Show events
+end
+
+loop #green Kaikilla ryhmän jäsenillä on mahdollisuus lisätä haettuja xxx, xxx ja äytösaikoja (G6) ryhmän sivulle.
+note over Käyttötapaus: 02 - Post event to group (extends 01) 
+note right of User:02.1
+User->Frontend: Start posting event to group
+Frontend->Backend: GET: groups with params(JWT)
+Backend->Database: SELECT group_name, group_id by user_id
+Database->Backend: List of group_names and group_id's
+Backend->Frontend: JSON list of group_names and group_id's
+Frontend->User: Show groups
+note right of User:02.2
+User->Frontend:/search (Authenticated user) Post event to selected group
+Frontend->Backend: post event with params(group id, event id)
+Backend->Database: insert into events_
+Database->Backend: affected rows(1 == ok)
+Backend->Frontend: Post event status(ok, fail)
+Frontend->User: Inform user
+end
+
+loop #green
+note over Käyttötapaus: 03 - Search movies
+User->Frontend: /search
+note right of Frontend: Mahdolliset parametrit:\n- query string\n- include adult boolean\n- language string\n- genre string\n- year int 
+Frontend->Backend:GET: /tmdb-proxy/3/search/movies with params
+Backend->IMDB: GET: https://api.themoviedb.org/3/search/movie + params(api_key + params)
+IMDB->Backend: JSON List of movies
+Backend->Frontend:JSON List of movies
+Frontend->User: Show movies
+end
+
+loop #green Kaikilla ryhmän jäsenillä on mahdollisuus lisätä haettuja elokuvia ryhmän sivulle.
+note over Käyttötapaus: 03.a - Post movie to group (extends 03) 
+note right of User: 03.a.1
+User->Frontend: Start posting movie to group
+Frontend->Backend: GET: groups with params(JWT)
+Backend->Database: SELECT group_name, group_id by user_id
+Database->Backend: List of group_names and group_id's
+Backend->Frontend: JSON list of group_names and group_id's
+Frontend->User: Show groups
+note right of User:03.a.2
+User->Frontend:/search (Authenticated user) Post movie to selected group
+Frontend->Backend: post event with params(group id, movie id)
+Backend->Database: insert into movies
+Database->Backend: affected rows(1 == ok)
+Backend->Frontend: Post event status(ok, fail)
+Frontend->User: Inform user
+end
+
+loop #green started 18.3 - tauno Sovelluksen tulee mahdollistaa käyttäjän luominen. Käyttäjä luodaan
+antamalla käyttäjätunnus ja salasana, jotka mahdollistavat
+kirjautumisen sovellukseen. Käyttäjätunnus on uniikki ja sitä
+käytetään myös nimimerkkinä sovelluksessa.
+note over Käyttötapaus: 04 - Create account
+User->Frontend: /username & password
+Frontend->Backend:POST: /username & password
+Backend->Database: INSERT into Users username & hashed password
+Database->Backend: Affected rows(1==ok, 0==fail)
+Backend->Frontend: /succes/error
+Frontend->User: /succes/error
+end
+
+loop #green started 18.3 - Käyttäjän tulee voida poistaa omat tunnuksensa. Samalla poistetaan
+myös kaikki käyttäjän kustomoitu data.
+note over Käyttötapaus: 05 -Delete account
+User->Frontend: /poista käyttäjä
+note left of Database: Procedure? DELETE cascade: reviews, favourites ?
+Frontend->Backend: DELETE: with params(JWT)
+Backend->Database: DELETE from Users_ by user_id
+Database->Backend: /succes/error
+Backend->Frontend: /succes/error
+Frontend->User: /succes/error
+end
+
+loop #green
+note over Käyttötapaus:06 - Login
+User->Frontend: credentials
+Frontend->Backend: POST: login as X with params(user_name & password)
+Backend->Database: SELECT password by user_name;
+Database->Backend: hashed password or not found
+Backend->Frontend: session id/authentication response(JWT) or invalid credentials
+Frontend->User: success or failure
+end
+
+loop #green
+
+note over Käyttötapaus: 06.a - Logout
+User->Frontend: /logout
+note left of Frontend: Drop JWT
+Frontend->User: Inform user
+
+end
+
+loop #pink nonrequired feature
+note over Käyttötapaus: 07 - Edit profile
+User->Frontend: /profile/edit
+Frontend->Backend: Edit Profile Params:\n(userId, userName, password_hash)
+Backend ->Database:UPDATE userName, password_hash
+Database ->Backend: Response status
+Backend ->Frontend: Response status
+Frontend->User: Show information: Success/failure
+end
+
+loop #green
+note over Käyttötapaus: 08 - Add to favourites (movie) extends search movies
+note right of User: movie_tmdb_id has been acquiredfrom searching \nTMDD prior to adding a favourite.
+User->Frontend: /add to favourites
+Frontend->Backend: POST: movie_tmdb_id, JWT token (sub claim on user id)
+Backend->Database: INSERT into Favourites_ by movie_id & user_id
+Database->Backend: Affected rows(1==ok, 0==fail)
+Backend->Frontend: 201 | error code
+Frontend->User: success/failure
+end
+
+loop #green Kirjautunut käyttäjä voi jakaa oman suosikkilistansa URI-osoitteena muiden nähtäväksi. G15 Sovelluksen vapaavalintainen lisäominaisuus.
+note over Käyttötapaus: 09 - Share favouritelist
+User->Frontend: /share
+Frontend -> Backend:GET /share/get-slur  params(JWT sub)
+Backend -> Database: UPDATE Favorites table to have generated slur for user
+Database -> Backend: success or not
+Backend -> Frontend: slur || error code
+Frontend -> User: copy url with slur to clipboard and show notice
+end
+
+
+loop #green 
+note over Käyttötapaus: 10 - Create Group
+note over Käyttötapaus: Kirjautunut käyttäjä voi luoda uuden ryhmän valitsemallaan nimellä.\n Ryhmällä on oma näkymä, jonka saa näkyviin vain ryhmän jäsen.\n Lista luoduista ryhmistä (ryhmien nimet ja kuvaukset) tulee näkyä\n kirjautumatta sovelluksessa. Omistaja voi myös poistaa ryhmän.
+ 
+User->Frontend:ryhmänNimi, ryhmän kuvaus
+
+Frontend -> Backend: POST groupName, groupdescription
+
+Backend ->Database:Create group, groupname, group description
+
+Database -> Backend: succes or not
+
+Backend -> Frontend: 201 || 401 
+
+Frontend -> User: succes or not 
+
+end
+
+loop #green
+note over Käyttötapaus:11 - See groups as list
+note over Käyttötapaus: <color:#orange>Has a follow-up use-case: Join group</color>
+User->Frontend: /community/groups
+Frontend->Backend: GET a list of groups. Optional params:\n   max items per page (defaults to 0, infinite)\n   nth page (defaults to 1)
+Backend->Database: SELECT
+Database->Backend: List of groups ({groupId: .., groupName: .., groupDescription: .., userId: ..})
+Backend->Frontend: List of groups, pagenum and num pages
+Frontend->User: User is being shown a list of groups.
+end
+
+loop #green
+note over Käyttötapaus: 12 - View group movies
+User->Frontend: community/groups/:group_id/movies
+Frontend->Backend: GET group movies with params(group_id)
+
+Backend->Database: SELECT group movies by group_id
+Database->Backend: List of group movie id's
+Backend->IMDB: api.themoviedb.org/3/discover/movie + params(List of movie id's)
+IMDB->Backend: JSON list of movies
+Backend->Frontend: JSON List of movies
+Frontend->User: Show group movies
+end
+
+loop #green
+note over Käyttötapaus: 13 - Join group extends see groups as list
+User->Frontend:Reguest to join a group
+Frontend->Backend: POST join request params (userId/jwt, groupId)
+Backend ->Database: Insert status=pending, userid, groupid
+Database ->Backend: rows = 1 OK or 0 = error
+Backend ->Frontend: success 201 /failure 500
+Frontend ->User: status - pending
+Frontend->Backend
+end
+
+loop #green 
+note over Käyttötapaus: 14 - Resolve Open Requests
+note over Käyttötapaus: every 5 minutes/Web socket
+note right of User:14.1
+Frontend->Backend: GET: show open requests
+Backend->Database:Select userID, pending requests
+Database->Backend:rows, requests
+Backend->Frontend:open requests
+Frontend->User: You have open requests
+note right of User:14.2
+User->Frontend: Accept/Discard
+Frontend ->Backend: POST Accept/Discard (userId, groupId, status)
+Backend ->Database: UPDATE (userId, groupId, status)
+Database ->Backend :succees/fail
+Backend ->Frontend: 200/500
+Frontend ->User: resolved
+end
+
+loop #pink
+note over Käyttötapaus: 15 - Leave Group
+User->Frontend: /profile/groups/groupX
+Frontend->Backend: DELETE: with params(group_name, user_id)
+Backend->Database: DELETE from groups by user_id & group_id
+Database->Backend: Affected rows(1 == ok, 0 == fail)
+Backend->Frontend: 201/fail
+Frontend->User: Inform user
+
+end
+
+loop #green
+note over Käyttötapaus: 16 - Delete group
+User->Frontend: /profile/groups/groupX
+Frontend--#red:4>User:Are you sure?
+User--#green:4>Frontend: Yes, delete
+
+Frontend->Backend:DELETE groupId
+Backend->Database:DELETE groupId
+Database->Backend:Response status
+Backend->Frontend:Response status
+Frontend->User:Response status
+
+end
+
+loop #green
+note over Käyttötapaus: 17 - Delete user from group
+User->Frontend: community/groups/group_name/user_name
+note left of Backend: Check if the id being deleted equals JWT subject or JWT subject is group owner.
+Frontend->Backend: DELETE: with params(user_id, group_id)
+Backend->Database: DELETE FROM Groups by user_id
+Database->Backend: Affected rows(1==ok, 0==fail)
+Backend->Frontend: 201/fail
+Frontend->User: Inform user
+
+end
+
+loop #green
+note over Käyttötapaus: 18 - Post reviews
+note over Käyttötapaus: Movie search follow up case
+User->Frontend: /community/reviews/newreview
+Frontend->Backend: POST: with params(user_id,movie_id, stars, review_text) 
+Backend->Database: INSERT INTO reviews with params
+Database->Backend: Affected rows(1==ok, 0==fail)
+Backend->Frontend: 201/fail
+Frontend->User: Show new review
+
+end
+
+loop #green
+note over Käyttötapaus: 19 - Read reviews
+User->Frontend: /community/reviews
+note left of Backend: All reviews(no params) or user reviews(params: user_id)
+Frontend->Backend: GET with params(user_id?)
+Backend->Database: SELECT reviews or SELECT reviews by user_id
+Database->Backend: Rows
+Backend->Frontend: 200/fail
+Frontend->User: Show reviews(if found)
+end
+
+loop #pink
+note over Käyttötapaus: 20 - Edit review
+User->Frontend: /profile/reviews/reviewX
+Frontend->Backend: PUT: with params(user_id,movie_id, stars, review_text) 
+Backend->Database: UPDATE TABLE reviews with params
+Database->Backend: Affected rows(1==ok, 0==fail)
+Backend->Frontend: 200/fail
+Frontend->User: Show updated review
+end
+
+loop #pink
+note over Käyttötapaus: 21 - Delete reviews
+User->Frontend: /profile/reviews/reviewX
+Frontend->Backend: DELETE: with params(user_id, review_id)
+Backend->Database: DELETE from reviews by review_id & user_id
+Database->Backend: Affected rows(1 == ok, 0 == fail)
+Backend->Frontend: 202/fail
+Frontend->User: Inform user
+end
+
+
+loop #pink
+note over Käyttötapaus: 22 - Ban or unban user
+User->Frontend: admin/users/userX
+Frontend->Backend: PUT: with params(user_id)
+Backend->Database: UPDATE table users by user_id(status == banned & user?)
+Database->Backend: Affected rows(1 == ok, 0 == fail)
+Backend->Frontend: 200/fail
+Frontend->User: Inform admin
+end

@@ -1,0 +1,44 @@
+#colorbar {
+   background-color: var(--navibar-color);
+   height: 60px;
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+@media (max-width: 650px) {
+    .navi {
+        flex-direction: column;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    .navi li {
+        list-style: circle;
+    }
+    #colorbar {
+        height: 100%;
+        text-align: center;
+    }
+}
+
+#navi_bar {
+    max-width: 1200px;
+    width: 100%;
+}
+
+.navi {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.navi li {
+    display: inline-block;
+    color: var(--light-colour);
+    font-size: 1.2em;
+}
+
+.navi li a {
+    color: var(--light-colour)
+}

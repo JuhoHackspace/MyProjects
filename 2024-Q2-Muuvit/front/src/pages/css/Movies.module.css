@@ -1,0 +1,54 @@
+
+.searchResults {
+    display: flex;
+    flex-wrap: wrap;
+    margin: var(--general-margin) auto;
+    width: 100%;
+}
+
+.searchEntry {
+    width: 100%;
+    background-color: var(--card-background-color);
+    margin: var(--general-margin) 0;
+    padding: calc(var(--general-margin)/2) var(--general-padding) calc(var(--general-padding)/2) calc(var(--general-padding)/2);
+    border-radius: var(--normal-border-radius);
+}
+
+.searchImage {
+    float: left;
+    width: 20%;
+    border-radius: var(--normal-border-radius);
+    margin-right: var(--general-margin);
+}
+
+.searchTitle {
+    margin-bottom: var(--general-margin);
+    margin-top: calc(var(--general-margin)/2);
+    font-size: var(--header-font-size);
+}
+
+.searchDescription {
+    margin-left: var(--general-margin);
+    font-size: var(--normal-font-size);
+}
+
+.searchRating {
+    text-align: right;
+    font-size: var(--normal-font-size);
+}
+
+.searchPublished {
+    margin-top: calc(var(--general-margin)*2);
+    margin-bottom: calc(var(--general-margin)/2);
+    text-align: right;
+    font-size: var(--normal-font-size);
+}
+
+@media (max-width: 900px) {
+    .searchImage {
+        width: 40%;
+    }
+    .searchTitle {
+        font-size: calc(var(--header-font-size) - 0.5em);
+    }
+}

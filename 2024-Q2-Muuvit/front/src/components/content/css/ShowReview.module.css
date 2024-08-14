@@ -1,0 +1,29 @@
+.reviewContainer {
+    padding: var(--general-padding);
+    margin: var(--general-margin);
+    background-color: var(--card-background-color);
+    border-radius: var(--normal-border-radius);
+    box-shadow: var(--dark-gray-colour) 3px 3px 5px;
+    font-size: larger;
+    font-family: Monospace, sans-serif;
+    text-align: justify;
+}
+.reviewField, .titleField {
+    margin: calc(var(--general-margin)/4) 0 0 0;
+}
+
+.titleField:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+.lastReviewField {
+    margin-bottom: calc(var(--general-margin)/4);
+}
+
+@media screen and (max-width: 600px) {
+    .reviewContainer {
+        font-size: medium;
+        margin: 0;
+        margin-top: calc(var(--general-margin)/2);
+    }
+}

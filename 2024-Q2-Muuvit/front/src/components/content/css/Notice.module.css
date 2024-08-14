@@ -1,0 +1,32 @@
+.noticeContainer {
+    background-color: #ff97ff;
+    color: #006800;
+    width: max-content;
+    padding: var(--general-padding);
+    border-radius: 1em;
+    border: 2px solid var(--dark-gray-colour);
+}
+.noticeHeader {
+    text-align: center;
+    font-size: calc(var(--header-font-size) - 0.5em);
+}
+.noticeParagraph {
+    margin-top: calc(var(--general-margin) / 4);
+    font-size: larger;
+    font-family: sans-serif;
+}
+
+@media screen and (max-width: 600px) {
+    .noticeHeader {
+        font-size: calc(var(--header-font-size) - 1em);
+    }
+    .noticeParagraph {
+        font-size: small;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .noticeContainer {
+        width: 100%;
+    }
+}
