@@ -17,7 +17,7 @@ More school projects and assignments will be added as I progress in my studies. 
 
 ## Programming Languages
 > C++
-> Arduino (C++=)
+  > Arduino (C++)
 
 > SQL
 
