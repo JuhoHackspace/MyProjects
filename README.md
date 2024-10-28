@@ -1,0 +1,2 @@
+# HuiputinPaivakirja
+Ryhmän 3 Mobiiliohjelmoinnin sovellusprojekti HuiputinPäiväkirja
