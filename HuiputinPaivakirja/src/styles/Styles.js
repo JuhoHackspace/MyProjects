@@ -2,8 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     screenBaseContainer: {
-        flex: 1,
-        backgroundColor: '#fff'
+        flex: 1
     },
     headerContainer: {
         alignSelf: 'center',

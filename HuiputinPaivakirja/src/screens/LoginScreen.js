@@ -7,7 +7,7 @@ export default function LoginScreen() {
   const { colors } = useTheme()
 
   return (
-    <View style={styles.screenBaseContainer}>
+    <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Login</Text>
       </View>

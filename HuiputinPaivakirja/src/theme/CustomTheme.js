@@ -6,7 +6,7 @@ const customTheme = {
     ...DefaultTheme.colors,
     primary: 'black', // Custom primary color
     accent: '#c30f1b',  // Custom accent color
-    background: 'light-gray', // Custom background color
+    background: '#d3d3d3', // Custom background color
     text: '#000000', // Custom text color
   },
 };
