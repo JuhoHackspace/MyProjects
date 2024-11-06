@@ -5,7 +5,7 @@ import LoginScreen from './screens/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
-export default function Application() {
+export default function ApplicationRoutes() {
   return (
     <NavigationContainer>
         <Stack.Navigator

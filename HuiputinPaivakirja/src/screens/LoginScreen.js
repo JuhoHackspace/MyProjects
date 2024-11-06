@@ -3,7 +3,7 @@ import React from 'react'
 import styles from '../styles/Styles'
 import { Button, useTheme } from 'react-native-paper'
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
   const { colors } = useTheme()
 
   return (
