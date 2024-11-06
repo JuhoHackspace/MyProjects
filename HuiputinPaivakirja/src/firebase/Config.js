@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc, doc, getDocs } from 'firebase/firestore'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -11,6 +12,12 @@ const firebaseConfig = {
     messagingSenderId: process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID,
     appId: process.env.EXPO_PUBLIC_APP_ID,
     measurementId: process.env.EXPO_PUBLIC_MEASUREMENT_ID
+}
+
+// Verify that necessary config values are present to avoid initialization errors.
+if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+    console.error("Firebase configuration is missing. Please check environment variables.");
+    throw new Error("Incomplete Firebase configuration.");
 }
 
 const app = initializeApp(firebaseConfig);
