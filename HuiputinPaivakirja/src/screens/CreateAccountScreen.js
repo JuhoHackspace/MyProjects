@@ -3,27 +3,33 @@ import React, { useState } from 'react';
 import styles from '../styles/Styles';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import { auth } from '../firebase/Config';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-export default function LoginScreen({ navigation }) {
+export default function CreateAccountScreen({ navigation }) {
   const { colors } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  console.log(auth);
 
-  const login = () => {
-    signInWithEmailAndPassword(auth, email.trim(), password)
+  const createAccount = () => {
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+    createUserWithEmailAndPassword(auth, email.trim(), password)
       .then(() => {
-        navigation.navigate('Home');
+        navigation.navigate('HomeScreen');
       })
       .catch((error) => {
-        alert('Login failed: ' + error.message);
+        alert('Account creation failed: ' + error.message);
       });
   };
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Login</Text>
+        <Text style={styles.header}>Create Account</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -39,23 +45,22 @@ export default function LoginScreen({ navigation }) {
           secureTextEntry
           style={styles.input}
         />
+        <TextInput
+          label="Confirm Password"
+          value={confirmPassword}
+          onChangeText={text => setConfirmPassword(text)}
+          secureTextEntry
+          style={styles.input}
+        />
       </View>
       <View style={styles.buttonContainerVertical}>
         <Button
           style={styles.button}
           mode="contained"
-          onPress={login}
+          onPress={createAccount}
           buttonColor={colors.accent}
         >
-          Login
-        </Button>
-        <Button
-          style={styles.button}
-          mode="contained"
-          onPress={() => navigation.navigate('CreateAccount')}
-          buttonColor={colors.accent}
-        >
-          Register
+          Create Account
         </Button>
       </View>
     </View>
