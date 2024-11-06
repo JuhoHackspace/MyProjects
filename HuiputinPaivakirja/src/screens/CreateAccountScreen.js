@@ -19,7 +19,7 @@ export default function CreateAccountScreen({ navigation }) {
     }
     createUserWithEmailAndPassword(auth, email.trim(), password)
       .then(() => {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('Home');
       })
       .catch((error) => {
         alert('Account creation failed: ' + error.message);
