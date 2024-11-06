@@ -17,6 +17,6 @@ export default function ApplicationRoutes() {
             options={{ headerShown: false }}  
           />
         </Stack.Navigator>
-      </NavigationContainer>
+    </NavigationContainer>
   )
 }
