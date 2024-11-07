@@ -3,21 +3,29 @@ import React, { useState } from 'react';
 import styles from '../styles/Styles';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import { auth } from '../firebase/Config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 export default function CreateAccountScreen({ navigation }) {
   const { colors } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  console.log(auth);
+  const [username, setUsername] = useState('');
 
   const createAccount = () => {
     if (password !== confirmPassword) {
       alert('Passwords do not match.');
       return;
     }
+    // Create a new user account with the email and password provided using Firebase authentication.
+    // then update the user's profile with the username provided.
     createUserWithEmailAndPassword(auth, email.trim(), password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        return updateProfile(user, {
+          displayName: username,
+        });
+      })
       .then(() => {
         navigation.navigate('Home');
       })
@@ -32,6 +40,12 @@ export default function CreateAccountScreen({ navigation }) {
         <Text style={styles.header}>Create Account</Text>
       </View>
       <View style={styles.inputContainer}>
+      <TextInput
+          label="Username"
+          value={username}
+          onChangeText={text => setUsername(text)}
+          style={styles.input}
+        />
         <TextInput
           label="Email"
           value={email}
