@@ -35,7 +35,13 @@ export const styles = StyleSheet.create({
     input: {
         marginBottom: 10,
         backgroundColor: 'white'
-    }
+    },
+    greetingContainer: {
+        marginTop: 20,
+        paddingHorizontal: 20,
+        alignItems: 'center',        
+        justifyContent: 'center',   
+      }
 })
 
 export default styles
