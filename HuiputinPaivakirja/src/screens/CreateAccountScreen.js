@@ -74,7 +74,7 @@ export default function CreateAccountScreen({ navigation }) {
           onPress={createAccount}
           buttonColor={colors.accent}
         >
-          Create Account
+          Submit
         </Button>
       </View>
     </View>

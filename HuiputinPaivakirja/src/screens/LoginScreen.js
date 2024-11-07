@@ -55,7 +55,7 @@ export default function LoginScreen({ navigation }) {
           onPress={() => navigation.navigate('CreateAccount')}
           buttonColor={colors.accent}
         >
-          Register
+          Create Account
         </Button>
       </View>
     </View>
