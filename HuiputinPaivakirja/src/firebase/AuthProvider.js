@@ -15,8 +15,20 @@ export const AuthProvider = ({ children }) => {
         // The onAuthStateChanged function listens for changes in the user's authentication state.
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             console.log('Auth state changed:', currentUser);
-            setUser(currentUser);
-            setLoading(false);
+            if (currentUser) {
+                // Wait for the displayName to be set
+                const checkDisplayName = async () => {
+                    while (!currentUser.displayName) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    setUser(currentUser);
+                    setLoading(false);
+                };
+                checkDisplayName();
+            } else {
+                setUser(null);
+                setLoading(false);
+            }
         });
 
         return () => {

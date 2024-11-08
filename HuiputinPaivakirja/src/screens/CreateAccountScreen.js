@@ -12,7 +12,7 @@ export default function CreateAccountScreen({ navigation }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
 
-  /*const createAccount = () => {
+  const createAccount = () => {
     if (password !== confirmPassword) {
       alert('Passwords do not match.');
       return;
@@ -29,22 +29,6 @@ export default function CreateAccountScreen({ navigation }) {
       .catch((error) => {
         alert('Account creation failed: ' + error.message);
       });
-  };*/
-
-  const createAccount = async () => {
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-      const user = userCredential.user;
-      await updateProfile(user, { displayName: username });
-      navigation.navigate('Home');
-    } catch (error) {
-      alert('Account creation failed: ' + error.message);
-    }
   };
 
   return (
