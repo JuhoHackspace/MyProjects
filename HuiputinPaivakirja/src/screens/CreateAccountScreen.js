@@ -2,8 +2,7 @@ import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import styles from '../styles/Styles';
 import { Button, TextInput, useTheme } from 'react-native-paper';
-import { auth } from '../firebase/Config';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { useAuth } from '../firebase/AuthProvider';
 
 export default function CreateAccountScreen({ navigation }) {
   const { colors } = useTheme();
@@ -11,25 +10,7 @@ export default function CreateAccountScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
-
-  const createAccount = () => {
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
-    // Create a new user account with the email and password provided using Firebase authentication.
-    // then update the user's profile with the username provided.
-    createUserWithEmailAndPassword(auth, email.trim(), password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        return updateProfile(user, {
-          displayName: username,
-        });
-      })
-      .catch((error) => {
-        alert('Account creation failed: ' + error.message);
-      });
-  };
+  const { createAccount } = useAuth();
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
@@ -68,7 +49,7 @@ export default function CreateAccountScreen({ navigation }) {
         <Button
           style={styles.button}
           mode="contained"
-          onPress={createAccount}
+          onPress={() => createAccount(username, email, password, confirmPassword)}
           buttonColor={colors.accent}
         >
           Submit
