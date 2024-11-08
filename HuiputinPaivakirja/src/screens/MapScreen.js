@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Button, StyleSheet } from 'react-native';
 import Map from '../components/Map';
 import { useNavigation } from '@react-navigation/native';
+import styles from '../styles/Styles';
 
 const MapScreen = () => {
   const navigation = useNavigation();
@@ -41,6 +42,9 @@ const MapScreen = () => {
           <Button title="Cancel" onPress={handleCancelMarker} />
         </View>
       )}
+      <View style={styles.buttonContainer}>
+        <Button title="Back to Home" onPress={() => navigation.navigate('Home')} />
+      </View>
     </View>
   );
 };
@@ -56,6 +60,11 @@ const styles = StyleSheet.create({
     right: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
   },
 });
 
