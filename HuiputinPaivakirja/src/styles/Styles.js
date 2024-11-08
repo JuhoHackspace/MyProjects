@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16
-
     },
     buttonContainerHorizontal: {
         flexDirection: 'row',
@@ -28,8 +27,21 @@ export const styles = StyleSheet.create({
     },
     button: {
         margin: 5
-    }
-    
+    },
+    inputContainer: {
+        marginBottom: 20,
+        paddingHorizontal: 16
+    },
+    input: {
+        marginBottom: 10,
+        backgroundColor: 'white'
+    },
+    greetingContainer: {
+        marginTop: 20,
+        paddingHorizontal: 20,
+        alignItems: 'center',        
+        justifyContent: 'center',   
+      }
 })
 
 export default styles
