@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { auth } from './Config';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 // Here we create context that manages the user's authentication state.
 const AuthContext = createContext(null);
@@ -11,17 +11,69 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log('AuthProvider mounted');
         // The onAuthStateChanged function listens for changes in the user's authentication state.
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            setLoading(false);
+            console.log('Auth state changed:', currentUser);
+            if (currentUser) {
+                // Wait for the displayName to be set
+                const checkDisplayName = async () => {
+                    while (!currentUser.displayName) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    setUser(currentUser);
+                    setLoading(false);
+                };
+                checkDisplayName();
+            } else {
+                setUser(null);
+                setLoading(false);
+            }
         });
 
-        return unsubscribe;
+        return () => {
+            console.log('AuthProvider unmounted');
+            unsubscribe();
+        };
     }, []);
 
+    const logout = () => {
+        signOut(auth).then(() => {
+            setUser(null);
+        }).catch((error) => {
+            console.error('Sign out failed: ', error.message);
+        });
+    }
+
+    const login = (email, password) => {
+        signInWithEmailAndPassword(auth, email.trim(), password)
+          .catch((error) => {
+            alert('Login failed: ' + error.message);
+          });
+      };
+
+    const createAccount = (username, email, password, confirmPassword) => {
+        if (password !== confirmPassword) {
+          alert('Passwords do not match.');
+          return;
+        }
+        // Create a new user account with the email and password provided using Firebase authentication.
+        // then update the user's profile with the username provided.
+        createUserWithEmailAndPassword(auth, email.trim(), password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            return updateProfile(user, {
+              displayName: username,
+            });
+          })
+          .catch((error) => {
+            alert('Account creation failed: ' + error.message);
+          });
+    };
+
+    
     return (
-        <AuthContext.Provider value={{ user, loading }}>
+        <AuthContext.Provider value={{ user, loading, createAccount, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

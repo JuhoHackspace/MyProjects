@@ -2,23 +2,13 @@ import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import styles from '../styles/Styles';
 import { Button, TextInput, useTheme } from 'react-native-paper';
-import { auth } from '../firebase/Config';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../firebase/AuthProvider';
 
 export default function LoginScreen({ navigation }) {
   const { colors } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const login = () => {
-    signInWithEmailAndPassword(auth, email.trim(), password)
-      .then(() => {
-        navigation.navigate('Home');
-      })
-      .catch((error) => {
-        alert('Login failed: ' + error.message);
-      });
-  };
+  const { login } = useAuth();
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
@@ -44,7 +34,7 @@ export default function LoginScreen({ navigation }) {
         <Button
           style={styles.button}
           mode="contained"
-          onPress={login}
+          onPress={() => login(email, password)}
           buttonColor={colors.accent}
         >
           Login
