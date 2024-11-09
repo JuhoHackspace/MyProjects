@@ -1,25 +1,49 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/Styles';
-import { useTheme } from 'react-native-paper';
+import { Button, useTheme } from 'react-native-paper';
 import { getUserDisplayName } from '../firebase/FirebaseMethods';
-
+import { useAuth } from '../firebase/AuthProvider';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
+  const { user, logout, loading } = useAuth();
+  // Retrieve username using helper function from FirebaseMethods.js
+  //const username = getUserDisplayName();
+  const [username, setUsername] = useState(null);
 
-    // Retrieve username using helper function from FirebaseMethods.js
-    const username = getUserDisplayName();
+  useEffect(() => {
+    setUsername(user?.displayName);
+  }, [user?.displayName]);
 
+  if (loading) {
+    console.log('Loading...');
+    return (
+      <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+  console.log("HomeScreen with user: ", user);
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Home</Text>
+      <View style={styles.buttonTopRight}>
+        <Button
+          style={styles.button}
+          mode="contained"
+          onPress={logout}
+          buttonColor={colors.accent}
+        >
+          Logout
+        </Button>
       </View>
       <View style={styles.greetingContainer}>
-        <Text style={styles.greetingText}>
-          Hello {username}! Ready to climb?
-        </Text>
+        {username ? (
+          <Text style={[styles.greetingText, { color: colors.text }]}>
+            Hello {username}! Ready to climb?
+          </Text>
+        ) : null
+        }
       </View>
     </View>
   );

@@ -26,7 +26,13 @@ export const styles = StyleSheet.create({
         padding: 16
     },
     button: {
-        margin: 5
+        margin: 5,
+    },
+    buttonTopRight: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 30,
+        marginRight: 10
     },
     inputContainer: {
         marginBottom: 20,

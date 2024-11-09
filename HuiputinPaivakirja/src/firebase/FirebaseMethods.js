@@ -22,6 +22,7 @@ export const getUserDisplayName = () => {
         return auth.currentUser?.displayName || 'User';
 };
 
+
 // This file will contain all the methods that interact with the Firebase services.
 // The methods will be exported and used in the application.
 
