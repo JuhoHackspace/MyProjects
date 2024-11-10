@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Map = ({ onLongPress, newMarker }) => {
   const [zoom, setZoom] = React.useState(1);
@@ -26,12 +27,13 @@ const Map = ({ onLongPress, newMarker }) => {
   };
 
   return (
+    <GestureHandlerRootView style={{flex: 1}}>
     <PanGestureHandler onGestureEvent={handlePan}>
       <PinchGestureHandler onGestureEvent={handlePinch}>
         <View style={styles.container}>
           <TouchableOpacity onLongPress={onLongPress} style={styles.mapTouch}>
             <Image
-              source={require('../assets/BoulderMap.png')}
+              source={require('../../assets/BoulderMap.png')}
               style={[
                 styles.mapImage,
                 {
@@ -57,6 +59,7 @@ const Map = ({ onLongPress, newMarker }) => {
         </View>
       </PinchGestureHandler>
     </PanGestureHandler>
+    </GestureHandlerRootView>
   );
 };
 

@@ -18,7 +18,7 @@ const ThemeProvider = ({ children }) => {
   return (
     <PaperProvider theme={customTheme}>
       <ImageBackground
-        source={require('../assets/vuori_valkoinen.png')}
+        source={require('../../assets/vuori_valkoinen.png')}
         style={styles.backgroundImage}
         resizeMode="contain"
       >
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: customTheme.colors.background, // Keep the theme's background color
+    backgroundColor: customTheme.colors.background, 
   },
 });
 

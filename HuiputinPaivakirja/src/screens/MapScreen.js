@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import Map from '../components/Map';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../styles/Styles';
 
-const MapScreen = () => {
-  const navigation = useNavigation();
+const MapScreen = ({navigation}) => {
+  
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
 

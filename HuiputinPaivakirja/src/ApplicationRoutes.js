@@ -35,7 +35,6 @@ function AppNavigator() {
         </>
       ) : (
         <>
-                // If the user is authenticated we can jump straight to the Home screen.
           <Stack.Screen
             name="Home"
             component={HomeScreen}
