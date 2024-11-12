@@ -26,9 +26,16 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
     },
-    buttonTopRight: {
+    containerBottom: {
         position: 'absolute',
-        top: 10,
+        bottom: 0,
+        left: 20,
+        right: 20,
+    },
+    buttonTopRight: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        top: 20,
         right: 10,
     },
     toMapButtonContainer: {
@@ -38,6 +45,11 @@ export const styles = StyleSheet.create({
         marginTop: 50,
     },
     button: {
+        margin: 10,
+        width: 100,
+    },
+    buttonLong: {
+        width: 150,
         margin: 10,
     },
     inputContainer: {
@@ -56,6 +68,30 @@ export const styles = StyleSheet.create({
     },
     greetingText: {
         fontSize: 18,
+    },
+    notification: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        padding: 10,
+        zIndex: 1,
+      },
+    notificationText: {
+        color: 'white',
+        textAlign: 'center',
+    },
+    mapImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
+    },
+    svgOverlay: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
     },
 });
 

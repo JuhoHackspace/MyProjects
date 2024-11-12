@@ -1,85 +1,67 @@
-import React from 'react';
-import { Image, View, StyleSheet, TouchableOpacity } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
-import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useRef, useState, useEffect } from 'react';
+import { Image, View, StyleSheet, Animated, Pressable, TouchableWithoutFeedback, Text } from 'react-native';
+import Svg, { Circle, G } from 'react-native-svg';
+import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
+import styles from '../styles/Styles'
 
-const Map = ({ onLongPress, newMarker }) => {
-  const [zoom, setZoom] = React.useState(1);
-  const scaleRef = React.useRef(1);
-  const [offset, setOffset] = React.useState({ x: 0, y: 0 });
+const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification }) => {
+  
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const handlePinch = ({ nativeEvent }) => {
-    if (nativeEvent.state === State.ACTIVE) {
-      let newZoom = scaleRef.current * nativeEvent.scale;
-      setZoom(newZoom);
-    } else if (nativeEvent.state === State.END) {
-      scaleRef.current = zoom;
+  useEffect(() => {
+    if (showNotification) {
+      fadeAnim.setValue(0); // Reset the animation value
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+
+      const timer = setTimeout(() => {
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start(() => setShowNotification(false));
+      }, 3000);
+
+      return () => clearTimeout(timer);
     }
-  };
-
-  const handlePan = ({ nativeEvent }) => {
-    if (nativeEvent.state === State.ACTIVE) {
-      setOffset({ x: nativeEvent.translationX, y: nativeEvent.translationY });
-    } else if (nativeEvent.state === State.END) {
-      setOffset({ x: offset.x + nativeEvent.translationX, y: offset.y + nativeEvent.translationY });
-    }
-  };
+  }, [showNotification, fadeAnim, setShowNotification]);
 
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-    <PanGestureHandler onGestureEvent={handlePan}>
-      <PinchGestureHandler onGestureEvent={handlePinch}>
-        <View style={styles.container}>
-          <TouchableOpacity onLongPress={onLongPress} style={styles.mapTouch}>
-            <Image
-              source={require('../../assets/BoulderMap.png')}
-              style={[
-                styles.mapImage,
-                {
-                  transform: [
-                    { scale: zoom },
-                    { translateX: offset.x },
-                    { translateY: offset.y },
-                  ],
-                },
-              ]}
-            />
-            <Svg style={styles.svgOverlay}>
+    <View style={styles.screenBaseContainer}>
+      {showNotification && (
+        <Animated.View style={[styles.notification, { opacity: fadeAnim }]}>
+          <Text style={styles.notificationText}>Press long to add new route</Text>
+        </Animated.View>
+      )}
+      <ReactNativeZoomableView
+        maxZoom={4}
+        minZoom={0.5}
+        zoomStep={0.5}
+        initialZoom={1}
+        bindToBorders={true}
+        style={styles.container}
+        captureEvent={true}
+      >      
+          <Pressable onLongPress={handleLongPress} style={styles.mapImage}>
+            <View style={styles.mapImage}>
+              <Image
+                source={require('../../assets/BoulderMap.png')}
+                style={styles.mapImage}
+              />
               {newMarker && (
-                <Circle
-                  cx={newMarker.x}
-                  cy={newMarker.y}
-                  r={10}
-                  fill="blue"
-                />
+                <Svg style={styles.svgOverlay}>
+                  <Circle cx={newMarker.x} cy={newMarker.y} r={10} fill="red" />
+                </Svg>
               )}
-            </Svg>
-          </TouchableOpacity>
-        </View>
-      </PinchGestureHandler>
-    </PanGestureHandler>
-    </GestureHandlerRootView>
+            </View>
+          </Pressable>
+      </ReactNativeZoomableView>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  mapImage: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-  },
-  svgOverlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-  },
-  mapTouch: {
-    flex: 1,
-  },
-});
 
 export default Map;

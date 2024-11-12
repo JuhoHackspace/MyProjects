@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper'
 import Map from '../components/Map';
 import { useNavigation } from '@react-navigation/native';
+import styles from '../styles/Styles'
+import { useTheme } from 'react-native-paper';
 
 const MapScreen = ({navigation}) => {
   
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
+  const { colors } = useTheme()
+  const [showNotification, setShowNotification] = useState(false)
 
   const handleAddNewRoute = () => {
     setAddingMarker(true);
+    setShowNotification(true)
   };
 
   const handleMapLongPress = (event) => {
@@ -20,51 +26,48 @@ const MapScreen = ({navigation}) => {
   };
 
   const handleSetMarker = () => {
-    setAddingMarker(false);
     navigation.navigate('Camera'); // Open CameraScreen after setting the marker
   };
 
   const handleCancelMarker = () => {
     setAddingMarker(false);
     setNewMarker(null);
+    setShowNotification(false)
   };
 
   return (
-    <View style={styles.container}>
-      <Map onLongPress={handleMapLongPress} newMarker={newMarker} />
-      {!addingMarker && (
-        <Button title="Add New Route" onPress={handleAddNewRoute} />
-      )}
-      {newMarker && (
-        <View style={styles.markerControls}>
-          <Button title="Set" onPress={handleSetMarker} />
-          <Button title="Cancel" onPress={handleCancelMarker} />
+    <View style={styles.screenBaseContainer}>
+      <Map handleLongPress={handleMapLongPress} newMarker={newMarker} showNotification={showNotification} setShowNotification={setShowNotification}/>
+        <View style={styles.containerBottom}>
+          {newMarker && (
+            <View style={styles.buttonContainerHorizontal}>
+              <Button
+                style={styles.button}
+                mode="contained"
+                onPress={handleSetMarker}
+                buttonColor={colors.accent}
+              >Set</Button>
+              <Button
+                style={styles.button}
+                mode="contained"
+                onPress={handleCancelMarker}
+                buttonColor={colors.accent}
+              >Cancel</Button>
+            </View>
+          )}
+          {!addingMarker && (
+            <View style={styles.buttonContainerHorizontal}>
+              <Button
+                style={styles.buttonLong}
+                mode="contained"
+                onPress={handleAddNewRoute}
+                buttonColor={colors.accent}
+                >Add new route</Button>
+            </View>
+          )}
         </View>
-      )}
-      <View style={styles.buttonContainer}>
-        <Button title="Back to Home" onPress={() => navigation.navigate('Home')} />
-      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  markerControls: {
-    position: 'absolute',
-    bottom: 50,
-    left: 20,
-    right: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
-  },
-});
 
 export default MapScreen;

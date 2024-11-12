@@ -43,7 +43,7 @@ function AppNavigator() {
           <Stack.Screen
             name="Map"
             component={MapScreen}
-            options={{ headerShown: false }}
+            
           />
         </>
       )}
