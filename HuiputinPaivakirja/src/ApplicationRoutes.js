@@ -5,6 +5,8 @@ import LoginScreen from './screens/LoginScreen';
 import CreateAccountScreen from './screens/CreateAccountScreen';
 import HomeScreen from './screens/HomeScreen';
 import MapScreen from './screens/MapScreen';
+import CameraScreen from './screens/CameraScreen'
+
 import { AuthProvider, useAuth } from './firebase/AuthProvider';
 
 const Stack = createNativeStackNavigator();
@@ -43,7 +45,11 @@ function AppNavigator() {
           <Stack.Screen
             name="Map"
             component={MapScreen}
-            
+          />
+          <Stack.Screen
+            name="Camera"
+            component={CameraScreen}
+            options={{ headerShown: false }}
           />
         </>
       )}
