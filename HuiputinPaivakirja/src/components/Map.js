@@ -47,7 +47,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   const longPress = Gesture.LongPress()
     .onStart((e) => {
       try {
-        console.log('Long press ended event: ', e);
+        //console.log('Long press ended event: ', e);
         handleLongPress(e);
       }catch (error) {
         console.log('Error in long press event: ', error);
@@ -58,18 +58,18 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   const pinch = Gesture.Pinch()
     .onTouchesMove((e) => {
       if(e.numberOfTouches !==2 ) return;
-      console.log('Pinch move event: ', e);
+      //console.log('Pinch move event: ', e);
     })
     .onBegin((e) => {
-      console.log('Pinch begin event: ', e);
+      //console.log('Pinch begin event: ', e);
       initialScale.value = scale.value;
     })
     .onUpdate((e) => {
-      if(initialScale.value * e.scale < 0.8 ) return;
+      if(initialScale.value * e.scale < 0.8 || initialScale.value * e.scale > 5.0 ) return;
       try {
-        console.log('Pinch update event: ', e);
+        //console.log('Pinch update event: ', e);
         scale.value = initialScale.value * e.scale;
-        console.log('Scale value: ', scale.value);
+        //console.log('Scale value: ', scale.value);
       } catch (error) {
         console.log('Error in pinch event: ', error);
       }
@@ -79,25 +79,25 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
     .maxPointers(1)
     .onBegin((e) => {
       if(e.numberOfPointers > 1) return;
-      console.log('Pan begin event: ', e);
+      //console.log('Pan begin event: ', e);
       initialTranslateX.value = translateX.value;
       initialTranslateY.value = translateY.value;
     })
     .onUpdate((e) => {
       try {
         if(e.numberOfPointers > 1) return;
-        console.log('Pan update event: ', e);
+        //console.log('Pan update event: ', e);
         translateX.value = initialTranslateX.value + e.translationX / scale.value;
         translateY.value = initialTranslateY.value + e.translationY / scale.value;
-        console.log('TranslateX value: ', translateX.value);
-        console.log('TranslateY value: ', translateY.value);
+        //console.log('TranslateX value: ', translateX.value);
+        //console.log('TranslateY value: ', translateY.value);
       } catch (error) {
         console.log('Error in pan event: ', error);
       }
     }
   )
   .onEnd(() => {
-    console.log('Pan end event')
+    //console.log('Pan end event')
     if (scale.value < 1) {
       const scaledWidth = imageWidth * scale.value;
       const scaledHeight = imageHeight * scale.value;
@@ -134,14 +134,14 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   }));
 
   return (
-    <GestureHandlerRootView style={styles.screenBaseContainer}>
+    <GestureHandlerRootView style={[styles.screenBaseContainer, styles.mapContainer]}>
       {showNotification && (
         <RnAnimated.View style={[styles.notification, { opacity: fadeAnim }]}>
           <Text style={styles.notificationText}>Press long to add new route</Text>
         </RnAnimated.View>
       )}  
           <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
-            <Animated.View style={[styles.mapContainer, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
+            <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
               <Animated.Image
                 source={require('../../assets/BoulderMap.png')}
                 style={[styles.mapImage]}
