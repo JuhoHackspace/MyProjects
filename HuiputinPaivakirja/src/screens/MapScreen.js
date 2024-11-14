@@ -20,8 +20,12 @@ const MapScreen = ({navigation}) => {
 
   const handleMapLongPress = (event) => {
     if (addingMarker) {
-      const { locationX, locationY } = event.nativeEvent;
-      setNewMarker({ x: locationX, y: locationY });
+      try {
+        const {x, y} = event;
+        setNewMarker({ x: x, y: y });
+      } catch (error) {
+        console.log('Error in handleMapLongPress: ', error);
+      }
     }
   };
 

@@ -25,7 +25,8 @@
     "expo-camera": "~15.0.16",
     "expo-media-library": "~16.0.5",
     "react-native-view-shot": "3.8.0",
-    "react-native-svg": "15.2.0"
+    "react-native-svg": "15.2.0",
+    "react-native-reanimated": "~3.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
