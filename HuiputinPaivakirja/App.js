@@ -1,12 +1,12 @@
 import React from 'react';
 import { ThemeProvider } from './src/theme/CustomTheme'; // Import ThemeProvider
-import ApplicationRoutes from './src/ApplicationRoutes';
+import Navigation from './src/Navigation';
 
 export default function App() {
   return (
   
     <ThemeProvider>
-        <ApplicationRoutes />
+        <Navigation />
     </ThemeProvider>
   );
 }
