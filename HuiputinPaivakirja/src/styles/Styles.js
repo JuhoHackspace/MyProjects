@@ -82,10 +82,15 @@ export const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
     },
-    mapImage: {
+    mapContainer: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    mapImage: {
         width: '100%',
-        height: '100%',
+        height: 'auto',
+        aspectRatio: 1, // Adjust this to match your image's aspect ratio
         resizeMode: 'contain',
     },
     svgOverlay: {

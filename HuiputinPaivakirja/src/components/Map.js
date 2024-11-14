@@ -141,7 +141,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
         </RnAnimated.View>
       )}  
           <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
-            <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
+            <Animated.View style={[styles.mapContainer, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
               <Animated.Image
                 source={require('../../assets/BoulderMap.png')}
                 style={[styles.mapImage]}
