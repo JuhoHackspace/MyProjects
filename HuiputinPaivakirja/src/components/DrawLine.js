@@ -9,7 +9,7 @@ export default function DrawLine({hideButtons}) {
     const [paths, setPaths] = useState([])
     const [currentPath, setCurrentPath] = useState([])
 
-    const lineColors = ['red','green','blue','purple']
+    const lineColors = ['yellow','green','blue','pink','red','purple','black','white']
     const [lineColor, nextLineColor] = useState(0)
 
     const OnTouchEnd = () => {
@@ -78,7 +78,7 @@ export default function DrawLine({hideButtons}) {
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
             </View>
             <View style={styles.ColorPaletteContainer}>
-                <Button title="Color" icon="pencil" color={lineColors[lineColor]} onPress={changeLineColor}/>
+                <Button title="GradeColor" icon="pencil" color={lineColors[lineColor]} onPress={changeLineColor}/>
             </View>
             
             </View>

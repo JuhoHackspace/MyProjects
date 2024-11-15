@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     ColorPaletteContainer: {
       position: 'absolute',
-      right: 145,
+      right: 125,
       bottom: 60,
     },
   });
