@@ -59,9 +59,9 @@ export default function CameraScreen() {
   const savePicture = async (capturedImageUri) => {
     if (capturedImageUri) {
       try {
-        await MediaLibrary.saveToLibraryAsync(capturedImageUri);
+        await MediaLibrary.saveToLibraryAsync(capturedImageUri) //tallentaa puhelimen muistiin
       } catch (error) {
-        console.log('Error saving picture: ', error);
+        console.log('Error saving picture: ', error)
       } finally {
         setImage(null);
       }

@@ -10,9 +10,6 @@ export default function ImagePreview({ image, setImage, savePicture }) {
  
     const captureRefView = useRef(null)
     const [hideButtons, setHideButtons] = useState(true)
-    const [hideClearButton, setHideClearButton] = useState(false)
-
-
   
 
     const handleSavePic = async () => {
@@ -33,7 +30,9 @@ export default function ImagePreview({ image, setImage, savePicture }) {
     // Display the image in the background with the retake and save buttons on top
     <View ref={captureRefView} style={styles.SnappiContainer}>
     <ImageBackground source={{ uri: image }} style={styles.SnappiContainer}>
-      <DrawLine/>
+      <DrawLine
+      hideButtons={hideButtons}
+      />
       </ImageBackground>
 
       {hideButtons && ( //piilottaa buttonit kun otetaan kuva missä näkyy reitti

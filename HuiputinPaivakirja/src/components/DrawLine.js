@@ -5,7 +5,7 @@ import styles from "../styles/CameraAndImageStyles"
 import Button from './Button'
 
 
-export default function DrawLine() {
+export default function DrawLine({hideButtons}) {
     const [paths, setPaths] = useState([])
     const [currentPath, setCurrentPath] = useState([])
 
@@ -31,6 +31,11 @@ export default function DrawLine() {
     const handleClearButtonLongClick = () => {
         setPaths([])
         setCurrentPath([])
+    }
+
+    const changeLineColor = () => {
+
+
     }
 
 
@@ -63,11 +68,11 @@ export default function DrawLine() {
                     strokeLinecap={'round'}
                 />
             </Svg>
-            
+            {hideButtons && (  //piilottaa nyt myös tämän buttonin
             <View style={styles.clearButtonContainer}>
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
             </View>
-            
+            )}
         </View>
 
     )
