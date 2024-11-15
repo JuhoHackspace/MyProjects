@@ -9,7 +9,7 @@ export default function DrawLine({hideButtons}) {
     const [paths, setPaths] = useState([])
     const [currentPath, setCurrentPath] = useState([])
 
-    const lineColors = ['yellow','green','blue','pink','red','purple','black','white']
+    const gradeColors = ['yellow','green','blue','pink','red','purple','black','white']
     const [lineColor, nextLineColor] = useState(0)
 
     const OnTouchEnd = () => {
@@ -38,7 +38,7 @@ export default function DrawLine({hideButtons}) {
 
     const changeLineColor = () => {
 
-        nextLineColor((prevIndex) => (prevIndex + 1) % lineColors.length)
+        nextLineColor((prevIndex) => (prevIndex + 1) % gradeColors.length)
     }
 
 
@@ -53,7 +53,7 @@ export default function DrawLine({hideButtons}) {
                     <Path
                         key={`path-${index}`}
                         d={path.join('')}
-                        stroke={lineColors[lineColor]}
+                        stroke={gradeColors[lineColor]}
                         fill={'transparent'}
                         strokeWidth={3}
                         strokeLinejoin={'round'}
@@ -64,7 +64,7 @@ export default function DrawLine({hideButtons}) {
                 {/* Reaaliaikainen viiva toimii (ehkä)  */}
                 <Path
                     d={currentPath.join('')}
-                    stroke={lineColors[lineColor]}
+                    stroke={gradeColors[lineColor]}
                     fill={'transparent'}
                     strokeWidth={3}
                     strokeLinejoin={'round'}
@@ -78,7 +78,7 @@ export default function DrawLine({hideButtons}) {
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
             </View>
             <View style={styles.ColorPaletteContainer}>
-                <Button title="GradeColor" icon="pencil" color={lineColors[lineColor]} onPress={changeLineColor}/>
+                <Button title="GradeColor" icon="pencil" color={gradeColors[lineColor]} onPress={changeLineColor}/>
             </View>
             
             </View>
