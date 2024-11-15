@@ -9,6 +9,9 @@ export default function DrawLine({hideButtons}) {
     const [paths, setPaths] = useState([])
     const [currentPath, setCurrentPath] = useState([])
 
+    const lineColors = ['red','green','blue','purple']
+    const [lineColor, nextLineColor] = useState(0)
+
     const OnTouchEnd = () => {
         setPaths([...paths, currentPath]) // Lisää nykynen viiva listaan
         setCurrentPath([]) // Tyhjennetään nykynen viiva
@@ -35,7 +38,7 @@ export default function DrawLine({hideButtons}) {
 
     const changeLineColor = () => {
 
-
+        nextLineColor((prevIndex) => (prevIndex + 1) % lineColors.length)
     }
 
 
@@ -50,7 +53,7 @@ export default function DrawLine({hideButtons}) {
                     <Path
                         key={`path-${index}`}
                         d={path.join('')}
-                        stroke={'red'}
+                        stroke={lineColors[lineColor]}
                         fill={'transparent'}
                         strokeWidth={3}
                         strokeLinejoin={'round'}
@@ -61,7 +64,7 @@ export default function DrawLine({hideButtons}) {
                 {/* Reaaliaikainen viiva toimii (ehkä)  */}
                 <Path
                     d={currentPath.join('')}
-                    stroke={'red'}
+                    stroke={lineColors[lineColor]}
                     fill={'transparent'}
                     strokeWidth={3}
                     strokeLinejoin={'round'}
@@ -69,10 +72,20 @@ export default function DrawLine({hideButtons}) {
                 />
             </Svg>
             {hideButtons && (  //piilottaa nyt myös tämän buttonin
+            <View style={styles.buttonsContainer}>
+
             <View style={styles.clearButtonContainer}>
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
             </View>
+            <View style={styles.ColorPaletteContainer}>
+                <Button title="Color" icon="pencil" color={lineColors[lineColor]} onPress={changeLineColor} onLongPress={"null"} />
+            </View>
+            
+            </View>
+
             )}
+
+            
         </View>
 
     )
