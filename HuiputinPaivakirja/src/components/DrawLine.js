@@ -5,9 +5,12 @@ import styles from "../styles/CameraAndImageStyles"
 import Button from './Button'
 
 
-export default function DrawLine() {
+export default function DrawLine({hideButtons}) {
     const [paths, setPaths] = useState([])
     const [currentPath, setCurrentPath] = useState([])
+
+    const gradeColors = ['yellow','green','blue','pink','red','purple','black','white']
+    const [lineColor, nextLineColor] = useState(0)
 
     const OnTouchEnd = () => {
         setPaths([...paths, currentPath]) // Lisää nykynen viiva listaan
@@ -33,6 +36,11 @@ export default function DrawLine() {
         setCurrentPath([])
     }
 
+    const changeLineColor = () => {
+
+        nextLineColor((prevIndex) => (prevIndex + 1) % gradeColors.length)
+    }
+
 
     return (
         <View
@@ -45,7 +53,7 @@ export default function DrawLine() {
                     <Path
                         key={`path-${index}`}
                         d={path.join('')}
-                        stroke={'red'}
+                        stroke={gradeColors[lineColor]}
                         fill={'transparent'}
                         strokeWidth={3}
                         strokeLinejoin={'round'}
@@ -56,17 +64,27 @@ export default function DrawLine() {
                 {/* Reaaliaikainen viiva toimii (ehkä)  */}
                 <Path
                     d={currentPath.join('')}
-                    stroke={'red'}
+                    stroke={gradeColors[lineColor]}
                     fill={'transparent'}
                     strokeWidth={3}
                     strokeLinejoin={'round'}
                     strokeLinecap={'round'}
                 />
             </Svg>
-            
+            {hideButtons && (  //piilottaa nyt myös tämän buttonin
+            <View style={styles.buttonsContainer}>
+
             <View style={styles.clearButtonContainer}>
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
             </View>
+            <View style={styles.ColorPaletteContainer}>
+                <Button title="GradeColor" icon="pencil" color={gradeColors[lineColor]} onPress={changeLineColor}/>
+            </View>
+            
+            </View>
+
+            )}
+
             
         </View>
 
