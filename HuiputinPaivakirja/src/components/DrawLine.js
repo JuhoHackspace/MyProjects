@@ -78,7 +78,7 @@ export default function DrawLine({hideButtons}) {
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
             </View>
             <View style={styles.ColorPaletteContainer}>
-                <Button title="Color" icon="pencil" color={lineColors[lineColor]} onPress={changeLineColor} onLongPress={"null"} />
+                <Button title="Color" icon="pencil" color={lineColors[lineColor]} onPress={changeLineColor}/>
             </View>
             
             </View>
