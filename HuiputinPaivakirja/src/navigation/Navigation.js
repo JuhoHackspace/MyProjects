@@ -23,19 +23,21 @@ function AppNavigator() {
     );
   }
 
+  if (!user) {
+    // When user is not logged in, show AuthStackNavigator
+    return <AuthStackNavigator />;
+  }
+
+  // User logged in, show MainStackNavigator and Drawer
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      drawerPosition="right"
+      drawerPosition="right" // Vaihda "left" jos haluat sivuvalikon vasemmalle
       screenOptions={{
         headerShown: false,
       }}
     >
-      {!user ? (
-        <Drawer.Screen name="AuthStack" component={AuthStackNavigator} />
-      ) : (
-        <Drawer.Screen name="MainStack" component={MainStackNavigator} />
-      )}
+      <Drawer.Screen name="MainStack" component={MainStackNavigator} />
     </Drawer.Navigator>
   );
 }
