@@ -51,6 +51,11 @@ const styles = StyleSheet.create({
       height: '100%',
       width: '100%',
     },
+    ColorPaletteContainer: {
+      position: 'absolute',
+      right: 125,
+      bottom: 60,
+    },
   });
   
 export default styles;
