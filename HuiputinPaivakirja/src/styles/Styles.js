@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     greetingContainer: {
-        marginTop: 20,
+        marginTop: 100,
         paddingHorizontal: 20,
         alignItems: 'center',
         justifyContent: 'center',
