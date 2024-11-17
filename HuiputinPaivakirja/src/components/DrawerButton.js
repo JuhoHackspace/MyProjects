@@ -3,6 +3,8 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+// This component is a button that opens the drawer when pressed, implement to screens that need a drawer button
+
 function DrawerButton({ navigation }) {
     const insets = useSafeAreaInsets();
 

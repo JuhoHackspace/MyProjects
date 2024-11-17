@@ -5,6 +5,8 @@ import CreateAccountScreen from '../screens/CreateAccountScreen';
 
 const Stack = createNativeStackNavigator();
 
+// This stack navigator is used to navigate between the Login and CreateAccount screens.
+
 function AuthStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

@@ -9,12 +9,13 @@ import SettingsScreen from '../screens/SettingsScreen';
 
 const Stack = createNativeStackNavigator();
 
+// This stack navigator is used to navigate between the Home, Map, Camera, Profile, and Settings screens.
+
 function MainStackNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        header: (props) => <CustomHeader {...props} />, // Custom header that shows only the DrawerButton
       }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
