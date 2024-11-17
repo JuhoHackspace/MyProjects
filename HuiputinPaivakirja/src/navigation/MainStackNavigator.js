@@ -6,22 +6,20 @@ import CameraScreen from '../screens/CameraScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 function MainStackNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        header: (props) => <CustomHeader {...props} />, // Custom header that shows only the DrawerButton
+      }}
+    >
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Map" component={MapScreen} />
-      <Stack.Screen
-        name="Camera"
-        component={CameraScreen}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Camera" component={CameraScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>

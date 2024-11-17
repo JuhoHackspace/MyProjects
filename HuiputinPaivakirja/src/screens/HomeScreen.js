@@ -5,6 +5,7 @@ import { Button, useTheme } from 'react-native-paper';
 import { getUserDisplayName } from '../firebase/FirebaseMethods';
 import { useAuth } from '../firebase/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
+import WithDrawerButton from '../components/DrawerButton';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
