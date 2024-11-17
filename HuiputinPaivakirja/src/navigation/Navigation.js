@@ -32,9 +32,9 @@ function AppNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      drawerPosition="right" // Should work this time
       screenOptions={{
         headerShown: false,
+        drawerPosition: 'right', // Works as intended
       }}
     >
       <Drawer.Screen name="MainStack" component={MainStackNavigator} />
