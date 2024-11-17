@@ -5,6 +5,8 @@ import { Button, useTheme } from 'react-native-paper';
 import { getUserDisplayName } from '../firebase/FirebaseMethods';
 import { useAuth } from '../firebase/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
+import WithDrawerButton from '../components/DrawerButton';
+import DrawerButton from '../components/DrawerButton';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -28,16 +30,10 @@ export default function HomeScreen() {
   console.log("HomeScreen with user: ", user);
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
-      <View style={styles.buttonTopRight}>
-        <Button
-          style={styles.button}
-          mode="contained"
-          onPress={logout}
-          buttonColor={colors.accent}
-        >
-          Logout
-        </Button>
-      </View>
+      {/* Include the DrawerButton */}
+      <DrawerButton navigation={navigation} />
+
+      {/* Greeting */}
       <View style={styles.greetingContainer}>
         {username ? (
           <Text style={[styles.greetingText, { color: colors.text }]}>
@@ -45,6 +41,8 @@ export default function HomeScreen() {
           </Text>
         ) : null}
       </View>
+
+      {/* To Map */}
       <View style={styles.toMapButtonContainer}>
         <Button
           style={styles.button}
