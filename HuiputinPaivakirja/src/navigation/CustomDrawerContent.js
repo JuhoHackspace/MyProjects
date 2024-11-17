@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme, Drawer } from 'react-native-paper';
+import { useTheme, Drawer as PaperDrawer } from 'react-native-paper';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAuth } from '../firebase/AuthProvider';
@@ -11,36 +11,36 @@ function CustomDrawerContent(props) {
 
   return (
     <DrawerContentScrollView {...props}>
-      <Drawer.Section>
-        <Drawer.Item
+      <PaperDrawer.Section>
+        <PaperDrawer.Item
           label="Home"
           icon={({ color, size }) => (
             <MaterialCommunityIcons name="home-outline" color={color} size={size} />
           )}
           onPress={() => navigation.navigate('Home')}
         />
-        <Drawer.Item
+        <PaperDrawer.Item
           label="Profile"
           icon={({ color, size }) => (
             <MaterialCommunityIcons name="account-outline" color={color} size={size} />
           )}
           onPress={() => navigation.navigate('Profile')}
         />
-        <Drawer.Item
+        <PaperDrawer.Item
           label="Settings"
           icon={({ color, size }) => (
             <MaterialCommunityIcons name="cog-outline" color={color} size={size} />
           )}
           onPress={() => navigation.navigate('Settings')}
         />
-        <Drawer.Item
+        <PaperDrawer.Item
           label="Logout"
           icon={({ color, size }) => (
             <MaterialCommunityIcons name="logout" color={color} size={size} />
           )}
           onPress={logout}
         />
-      </Drawer.Section>
+      </PaperDrawer.Section>
     </DrawerContentScrollView>
   );
 }

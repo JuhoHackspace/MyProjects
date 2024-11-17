@@ -32,7 +32,7 @@ function AppNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
-      drawerPosition="right" // Vaihda "left" jos haluat sivuvalikon vasemmalle
+      drawerPosition="right" // Should work this time
       screenOptions={{
         headerShown: false,
       }}
