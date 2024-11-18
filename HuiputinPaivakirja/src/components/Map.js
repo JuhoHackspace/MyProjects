@@ -98,7 +98,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   )
   .onEnd(() => {
     //console.log('Pan end event')
-    if (scale.value < 1) {
+    if (scale.value <= 1) {
       const scaledWidth = imageWidth * scale.value;
       const scaledHeight = imageHeight * scale.value;
       const maxTranslateX = (scaledWidth - imageWidth) / 2;
@@ -143,16 +143,16 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
           <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
             <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
               <Animated.Image
-                source={require('../../assets/BoulderMap.png')}
-                style={[styles.mapImage]}
-                onLayout={(event) => {
+                source = {require('../../assets/BoulderMap_transformed.png')}
+                style = {[styles.mapImage]}
+                onLayout = {(event) => {
                   const { width, height } = event.nativeEvent.layout;
                   setImageWidth(width);
                   setImageHeight(height);
                 }}
               />
               {newMarker && (
-                <Svg style={styles.svgOverlay}>
+                <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
                   <Circle cx={newMarker.x} cy={newMarker.y} r={10} fill="red" />
                 </Svg>
               )}
