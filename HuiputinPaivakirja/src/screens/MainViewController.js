@@ -29,6 +29,8 @@ export default function MainViewController() {
     setLoading(true)
     setImage(imageUri)
     try {
+        // This hard coded route object represents the actual information that the user will input
+        // in the boulderScreen.
         const route = { name: 'Orangatang', grade: 'pink', holdColor: 'orange' }
         const id = await addRouteAndMarker(imageUri, route, marker)
         console.log("Adding route and marker with image: ", imageUri, " route: ", route, " marker: ", marker)
