@@ -100,7 +100,7 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
                 x: markerInfo.x,
                 y: markerInfo.y,
                 created: new Date().toISOString(),
-                holdColoe: routeInfo.holdColor,
+                holdColor: routeInfo.holdColor,
                 gradeColor: routeInfo.grade,
             });
         } catch (error) {

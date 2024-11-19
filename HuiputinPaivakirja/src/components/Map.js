@@ -126,13 +126,6 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
     }
   })
 
-  const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ scale: scale.value }],
-        transformOrigin: 'center',
-        translateX: translateX.value,
-        translateY: translateY.value,
-  }));
-
   return (
     <GestureHandlerRootView style={[styles.screenBaseContainer, styles.mapContainer]}>
       {showNotification && (
