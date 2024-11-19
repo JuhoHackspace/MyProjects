@@ -126,15 +126,8 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
     }
   })
 
-  const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ scale: scale.value }],
-        transformOrigin: 'center',
-        translateX: translateX.value,
-        translateY: translateY.value,
-  }));
-
   return (
-    <GestureHandlerRootView style={[styles.screenBaseContainer, styles.mapContainer]}>
+    <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
       {showNotification && (
         <RnAnimated.View style={[styles.notification, { opacity: fadeAnim }]}>
           <Text style={styles.notificationText}>Press long to add new route</Text>

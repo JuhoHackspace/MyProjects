@@ -7,12 +7,13 @@ import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
 
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
   const { colors } = useTheme()
   const [showNotification, setShowNotification] = useState(false)
+  const navigation = useNavigation();
 
   const handleAddNewRoute = () => {
     setAddingMarker(true);
@@ -31,7 +32,9 @@ const MapScreen = ({ navigation }) => {
   };
 
   const handleSetMarker = () => {
-    navigation.navigate('Camera'); // Open CameraScreen after setting the marker
+    setMarker(newMarker) // Open CameraScreen after setting the marker
+    setShowMap(false)
+    setShowCamera(true)
   };
 
   const handleCancelMarker = () => {

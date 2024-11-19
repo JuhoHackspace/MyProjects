@@ -5,7 +5,7 @@ import * as MediaLibrary from 'expo-media-library';
 import ImagePreview from '../components/ImagePreview';
 import Camera from '../components/Camera';
 
-export default function CameraScreen() {
+export default function CameraScreen({setRouteImage, handleHideCamera}) {
   const [permission, requestPermission] = useCameraPermissions(); // New hook from expo-camera. It returns the permission status and a function to request the permission
   const [image, setImage] = useState(null); // Image uri
   const [cameraType, setCameraType] = useState('back'); // Camera type (front or back)
@@ -64,6 +64,7 @@ export default function CameraScreen() {
         console.log('Error saving picture: ', error)
       } finally {
         setImage(null);
+        handleHideCamera(capturedImageUri);
       }
     }
   };

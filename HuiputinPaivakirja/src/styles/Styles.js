@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
     },
-    mapContainer: {
+    centeredbaseContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
