@@ -33,9 +33,9 @@ const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
 
-routes = collection(db, 'routes');
-users = collection(db, 'users');
-markers = collection(db, 'markers');
+const routes = collection(db, 'routes');
+const users = collection(db, 'users');
+const markers = collection(db, 'markers');
 
 // Export the Firebase services that will be used in the application
 export { 
