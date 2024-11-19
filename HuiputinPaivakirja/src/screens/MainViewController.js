@@ -30,13 +30,15 @@ export default function MainViewController() {
     setImage(imageUri)
     try {
         // This hard coded route object represents the actual information that the user will input
-        // in the boulderScreen.
+        // in the boulderScreen. We can add additional information also.
         const route = { name: 'Orangatang', grade: 'pink', holdColor: 'orange' }
+        // This function will upload the image and add the route and marker to the database
         const id = await addRouteAndMarker(imageUri, route, marker)
         console.log("Adding route and marker with image: ", imageUri, " route: ", route, " marker: ", marker)
         setId(id)
         console.log('Route and marker added with marker id: ', id)
         setLoading(false)
+        // Returning to the mapScreen after adding the route and marker
         setShowMap(true)
     } catch (error) {
         console.log('Error adding route and marker: ', error)
