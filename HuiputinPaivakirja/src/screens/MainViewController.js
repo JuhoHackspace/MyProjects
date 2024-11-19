@@ -35,6 +35,7 @@ export default function MainViewController() {
         setId(id)
         console.log('Route and marker added with marker id: ', id)
         setLoading(false)
+        setShowMap(true)
     } catch (error) {
         console.log('Error adding route and marker: ', error)
     }
@@ -55,11 +56,6 @@ return (
         {loading && (
             <View style={styles.centeredbaseContainer}>
                 <Text>Loading...</Text>
-            </View>
-        )}
-        {!loading && id &&(
-            <View style={styles.centeredbaseContainer}>
-                <Text>Route added with ID: {id}</Text>
             </View>
         )}
     </View>
