@@ -20,7 +20,6 @@ export default function DrawLine({hideButtons}) {
     const onTouchMove = (event) => {
         const locationX = event.nativeEvent.locationX
         const locationY = event.nativeEvent.locationY
-        
         const newPoint = `${currentPath.length === 0 ? 'M' : 'L'}${locationX.toFixed(0)},${locationY.toFixed(0)}`
         setCurrentPath((prevPath) => [...prevPath, newPoint])
     }
@@ -74,7 +73,7 @@ export default function DrawLine({hideButtons}) {
                 />
             </Svg>
             {hideButtons && (  //piilottaa nyt myös tämän buttonin
-            <View style={styles.buttonsContainer} >
+            <View style={styles.buttonsContainer}>
 
             <View style={styles.clearButtonContainer}>
                 <Button title="Clear" icon="trash" onPress={handleClearButtonClick} onLongPress={handleClearButtonLongClick} />
