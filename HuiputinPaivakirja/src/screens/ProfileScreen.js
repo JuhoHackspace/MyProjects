@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,} from 'react-native';
 import { useTheme } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { useAuth } from '../firebase/AuthProvider';
 import DrawerButton from '../components/DrawerButton';
+import UserInfo from '../components/UserInfo';
 
 export default function ProfileScreen({ navigation }) {
   const { colors } = useTheme();
   const { user } = useAuth();
+  
+
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
 
@@ -17,6 +20,7 @@ export default function ProfileScreen({ navigation }) {
       <Text style={{ color: colors.text, fontSize: 24 }}>
         Hello {user?.displayName}! This is your profile.
       </Text>
+      <UserInfo />
     </View>
   );
 }

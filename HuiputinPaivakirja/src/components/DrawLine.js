@@ -46,7 +46,8 @@ export default function DrawLine({hideButtons}) {
         <View
             style={styles.DrawLineContainer}
             onTouchMove={onTouchMove}
-            onTouchEnd={OnTouchEnd} >
+            onTouchEnd={OnTouchEnd}
+            >
             <Svg>
                 {/* Piirretyt viivat toimii */}
                 {paths.map((path, index) => (
@@ -87,6 +88,5 @@ export default function DrawLine({hideButtons}) {
 
             
         </View>
-
     )
 }
