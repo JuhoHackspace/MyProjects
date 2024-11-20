@@ -1,61 +1,126 @@
-import React, { useState } from 'react';
-import { View, TextInput, Image, StyleSheet, Button, Alert } from 'react-native';
-import { addRouteToFirebase } from '../firebase/FirebaseMethods';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Image, StyleSheet, Button, Alert, ActivityIndicator, ScrollView } from 'react-native';
+import { doc, getDoc } from 'firebase/firestore';
+import { routes } from '../firebase/Config';
 
 const BoulderScreen = ({ route }) => {
-  const { imageUri, marker } = route.params;
-  const [grade, setGrade] = useState('');
-  const [tries, setTries] = useState('');
-  const navigation = useNavigation();
+  const { marker } = route.params;
+  const [routeData, setRouteData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [gradeVotes, setGradeVotes] = useState('');
+  const [tryCount, setTryCount] = useState('');
+  const [voteForDelete, setVoteForDelete] = useState('');
 
-  const handleConfirm = async () => {
-    if (!grade || !tries) {
+  useEffect(() => {
+    const fetchRouteData = async () => {
+      try {
+        const routeDocRef = doc(routes, marker.routeId);
+        const routeDoc = await getDoc(routeDocRef);
+        if (routeDoc.exists()) {
+          setRouteData(routeDoc.data());
+        } else {
+          Alert.alert('Error', 'Route data not found.');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Failed to fetch route data.');
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRouteData();
+  }, [marker.routeId]);
+
+  const handleSave = async () => {
+    if (!gradeVotes || !tryCount || !voteForDelete) {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
 
     try {
-      await addRouteToFirebase(marker, imageUri, grade, parseInt(tries, 10));
-      Alert.alert('Success', 'Route saved successfully!');
-      navigation.navigate('MapScreen');
+      const markerRef = doc(routes, marker.routeId);
+      await updateDoc(markerRef, {
+        routeGradeVotes: gradeVotes,
+        tryCount: parseInt(tryCount, 10),
+        voteForDelete,
+      });
+      Alert.alert('Success', 'Route updated successfully!');
     } catch (error) {
-      Alert.alert('Error', 'Failed to save the route.');
+      Alert.alert('Error', 'Failed to update the route.');
+      console.error(error);
     }
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageUri }} style={styles.image} />
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      {/* Näytä reitin kuva, jos saatavilla */}
+      {routeData?.routeImageUrl ? (
+        <Image source={{ uri: routeData.routeImageUrl }} style={styles.image} />
+      ) : (
+        <View style={styles.noImageContainer}>
+          <Button title="No image available" disabled />
+        </View>
+      )}
+
+      {/* Syöttökentät */}
       <TextInput
         style={styles.input}
-        placeholder="Suggested Grade"
-        value={grade}
-        onChangeText={setGrade}
+        placeholder="Route Grade Votes"
+        value={gradeVotes}
+        onChangeText={setGradeVotes}
       />
       <TextInput
         style={styles.input}
-        placeholder="Tries"
+        placeholder="Try Count"
         keyboardType="numeric"
-        value={tries}
-        onChangeText={setTries}
+        value={tryCount}
+        onChangeText={setTryCount}
       />
-      <Button title="Confirm" onPress={handleConfirm} />
-    </View>
+      <TextInput
+        style={styles.input}
+        placeholder="Vote for Delete (yes/no)"
+        value={voteForDelete}
+        onChangeText={setVoteForDelete}
+      />
+      <Button title="Save" onPress={handleSave} />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    flexGrow: 1,
     padding: 16,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   image: {
+    width: '100%', // Kuva täyttää leveydeltä koko ruudun
+    height: 700, // Kiinteä korkeus
+    resizeMode: 'contain', // Kuva näkyy kokonaan ilman leikkausta
+    marginBottom: 16,
+  },
+  noImageContainer: {
     width: '100%',
     height: 200,
-    resizeMode: 'contain',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: 16,
+    backgroundColor: '#ccc',
   },
   input: {
     width: '80%',
