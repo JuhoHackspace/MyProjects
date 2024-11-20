@@ -18,6 +18,7 @@ import {
         users,
         markers,
 } from './Config';
+import { updateDoc } from 'firebase/firestore';
 
 /**
 * Get the display name of the currently authenticated user.
@@ -146,5 +147,14 @@ const AddUserInfo = async (userId, data) => {
         console.error('Error saving data to Firestore:', error);
     }
 }
+export const updateRouteData = async (routeId, data) => {
+        try {
+            const routeDocRef = doc(routes, routeId);
+            await updateDoc(routeDocRef, data);
+        } catch (error) {
+            console.error('Error updating route data:', error);
+            throw error;
+        }
+    };
 
 export { addRouteAndMarker,AddUserInfo,fetchUserData }

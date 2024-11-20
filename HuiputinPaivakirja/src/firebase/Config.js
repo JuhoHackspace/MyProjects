@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc, doc,getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,13 +16,8 @@ const firebaseConfig = {
     measurementId: Constants.expoConfig.extra.measurementId,
 };
 
-// Verify that necessary config values are present to avoid initialization errors.
-if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-    console.error("Firebase configuration is missing. Please check environment variables.");
-    throw new Error("Incomplete Firebase configuration.");
-}
-
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase app only if no apps are initialized
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 // Firestore database and storage services
 const db = getFirestore(app);
@@ -53,8 +48,9 @@ export {
     uploadBytesResumable, 
     getDownloadURL,
     setDoc,
+    updateDoc,
     auth,
     routes,
     users,
-    markers
+    markers,
 };

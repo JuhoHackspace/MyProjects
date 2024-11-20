@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Image, StyleSheet, Button, Alert, ActivityIndicator, ScrollView } from 'react-native';
 import { doc, getDoc } from 'firebase/firestore';
 import { routes } from '../firebase/Config';
+import { updateRouteData } from '../firebase/FirebaseMethods'; // Uudelleenkäytettävä funktio
 
 const BoulderScreen = ({ route }) => {
   const { marker } = route.params;
@@ -39,12 +40,12 @@ const BoulderScreen = ({ route }) => {
     }
 
     try {
-      const markerRef = doc(routes, marker.routeId);
-      await updateDoc(markerRef, {
+      const data = {
         routeGradeVotes: gradeVotes,
         tryCount: parseInt(tryCount, 10),
         voteForDelete,
-      });
+      };
+      await updateRouteData(marker.routeId, data);
       Alert.alert('Success', 'Route updated successfully!');
     } catch (error) {
       Alert.alert('Error', 'Failed to update the route.');
@@ -62,7 +63,6 @@ const BoulderScreen = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {/* Näytä reitin kuva, jos saatavilla */}
       {routeData?.routeImageUrl ? (
         <Image source={{ uri: routeData.routeImageUrl }} style={styles.image} />
       ) : (
@@ -70,8 +70,6 @@ const BoulderScreen = ({ route }) => {
           <Button title="No image available" disabled />
         </View>
       )}
-
-      {/* Syöttökentät */}
       <TextInput
         style={styles.input}
         placeholder="Route Grade Votes"
@@ -109,9 +107,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: '100%', // Kuva täyttää leveydeltä koko ruudun
-    height: 700, // Kiinteä korkeus
-    resizeMode: 'contain', // Kuva näkyy kokonaan ilman leikkausta
+    width: '100%',
+    height: 700,
+    resizeMode: 'contain',
     marginBottom: 16,
   },
   noImageContainer: {
