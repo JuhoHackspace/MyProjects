@@ -33,6 +33,10 @@ const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
 });
 
+const routes = collection(db, 'routes');
+const users = collection(db, 'users');
+const markers = collection(db, 'markers');
+
 // Export the Firebase services that will be used in the application
 export { 
     db,
@@ -47,5 +51,8 @@ export {
     ref, 
     uploadBytesResumable, 
     getDownloadURL,
-    auth
+    auth,
+    routes,
+    users,
+    markers
 };
