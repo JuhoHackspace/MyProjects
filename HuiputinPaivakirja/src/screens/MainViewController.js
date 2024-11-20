@@ -20,6 +20,7 @@ export default function MainViewController() {
   const [image, setImage] = useState(null)
   const [id, setId] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [ showRouteAddedNotification, setShowRouteAddedNotification ] = useState(false)
   
   // This function is called when the user hides the camera screen. This is called once we have the marker
   // data and the imageUri. This function could set the boulderScreen visible. Another async function
@@ -39,6 +40,7 @@ export default function MainViewController() {
         console.log('Route and marker added with marker id: ', id)
         setLoading(false)
         // Returning to the mapScreen after adding the route and marker
+        setShowRouteAddedNotification(true)
         setShowMap(true)
     } catch (error) {
         console.log('Error adding route and marker: ', error)
@@ -55,7 +57,15 @@ export default function MainViewController() {
 // Juho, 19-11-2024
 return (
     <View style={styles.screenBaseContainer}>
-        {showMap && <MapScreen setMarker={setMarker} setShowMap={setShowMap} setShowCamera={setShowCamera}/>}
+        {showMap &&
+             <MapScreen 
+                setMarker={setMarker} 
+                setShowMap={setShowMap} 
+                setShowCamera={setShowCamera}
+                showRouteAddedNotification={showRouteAddedNotification}
+                setShowRouteAddedNotification={setShowRouteAddedNotification}
+            />
+        }
         {showCamera && <CameraScreen setRouteImage={setImage} handleHideCamera={handleHideCamera}/>}
         {loading && (
             <View style={styles.centeredbaseContainer}>

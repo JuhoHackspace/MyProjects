@@ -1,18 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Image, View, StyleSheet, Animated as RnAnimated, Pressable, TouchableWithoutFeedback, Text } from 'react-native';
+import React, { useState } from 'react';
 import Svg, { Circle, G } from 'react-native-svg';
-import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 import styles from '../styles/Styles'
 import { Gesture,
          GestureDetector, 
-         GestureHandlerRootView, 
-         LongPressGestureHandler,
-         PanGestureHandler,
-         PinchGestureHandler } from 'react-native-gesture-handler';
-import Animated, { runOnUI, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+         GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+import AnimatedInfo from './AnimatedInfo';
 
-const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification }) => {
-  const fadeAnim = useRef(new RnAnimated.Value(0)).current;
+const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -21,28 +16,6 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   const initialTranslateY = useSharedValue(0);
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
-  const threshold = 100;
-
-  useEffect(() => {
-    if (showNotification) {
-      fadeAnim.setValue(0); // Reset the animation value
-      RnAnimated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-
-      const timer = setTimeout(() => {
-        RnAnimated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }).start(() => setShowNotification(false));
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [showNotification, fadeAnim, setShowNotification]);
 
   const longPress = Gesture.LongPress()
     .onStart((e) => {
@@ -128,29 +101,38 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
 
   return (
     <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
-      {showNotification && (
-        <RnAnimated.View style={[styles.notification, { opacity: fadeAnim }]}>
-          <Text style={styles.notificationText}>Press long to add new route</Text>
-        </RnAnimated.View>
-      )}  
-          <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
-            <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
-              <Animated.Image
-                source = {require('../../assets/BoulderMap_transformed.png')}
-                style = {[styles.mapImage]}
-                onLayout = {(event) => {
-                  const { width, height } = event.nativeEvent.layout;
-                  setImageWidth(width);
-                  setImageHeight(height);
-                }}
-              />
-              {newMarker && (
-                <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
-                  <Circle cx={newMarker.x} cy={newMarker.y} r={10} fill="red" />
-                </Svg>
-              )}
-            </Animated.View>
-          </GestureDetector>
+      {showNotification &&
+         <AnimatedInfo 
+            showNotification={showNotification} 
+            setShowNotification={setShowNotification} 
+            text="Long press to add a new route" 
+         />
+      }
+      {showRouteAddedNotification &&
+         <AnimatedInfo 
+            showNotification={showRouteAddedNotification} 
+            setShowNotification={setShowRouteAddedNotification} 
+            text="Route succesfully added" 
+         />
+      }
+        <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
+          <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
+            <Animated.Image
+              source = {require('../../assets/BoulderMap_transformed.png')}
+              style = {[styles.mapImage]}
+              onLayout = {(event) => {
+                const { width, height } = event.nativeEvent.layout;
+                setImageWidth(width);
+                setImageHeight(height);
+              }}
+            />
+            {newMarker && (
+              <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
+                <Circle cx={newMarker.x} cy={newMarker.y} r={10} fill="red" />
+              </Svg>
+            )}
+          </Animated.View>
+        </GestureDetector>
     </GestureHandlerRootView>
   );
 };

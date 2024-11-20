@@ -7,7 +7,7 @@ import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 
-const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
+const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotification, setShowRouteAddedNotification}) => {
 
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
@@ -49,7 +49,14 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
       {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
 
-      <Map handleLongPress={handleMapLongPress} newMarker={newMarker} showNotification={showNotification} setShowNotification={setShowNotification} />
+      <Map 
+        handleLongPress={handleMapLongPress} 
+        newMarker={newMarker} 
+        showNotification={showNotification} 
+        setShowNotification={setShowNotification}
+        showRouteAddedNotification={showRouteAddedNotification}
+        setShowRouteAddedNotification={setShowRouteAddedNotification} 
+      />
       <View style={styles.containerBottom}>
         {newMarker && (
           <View style={styles.buttonContainerHorizontal}>
