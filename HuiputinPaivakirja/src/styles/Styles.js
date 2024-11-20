@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     },
     notification: {
         position: 'absolute',
-        top: 0,
+        top: 70,
         left: 0,
         right: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
     },
-    mapContainer: {
+    centeredbaseContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

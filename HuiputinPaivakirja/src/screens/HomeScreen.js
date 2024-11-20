@@ -47,7 +47,7 @@ export default function HomeScreen() {
         <Button
           style={styles.button}
           mode="contained"
-          onPress={() => navigation.navigate('Map')}
+          onPress={() => navigation.navigate('MainViewController')}
           buttonColor={colors.accent}
         >
           To Map
