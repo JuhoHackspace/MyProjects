@@ -8,6 +8,8 @@ import {
         deleteDoc,
         doc,
         getDocs,
+        getDoc,
+        setDoc,
         ref,
         uploadBytesResumable,
         getDownloadURL,
@@ -111,4 +113,38 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         }
 }
 
-export { addRouteAndMarker }
+const fetchUserData = async(userId, setFormStates) => {
+    if  (!userId)
+        return
+    try {
+        const userDocRef = doc(db, 'users', userId);
+        const userSnapshot = await getDoc(userDocRef); //haetaan tiedot jo niitä on siellä
+        if (userSnapshot.exists()) {
+            const userData = userSnapshot.data();
+
+            // aseta haetut tiedot lomakkeen tiloihin
+            setFormStates(userData);
+        } else {
+            console.log('No user data found!');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+
+    }
+}
+
+const AddUserInfo = async (userId, data) => {
+    if (!userId){
+        alert('Miten vittu pääsit tänne?')
+        return
+    }
+    try {
+        const userDocRef = doc(db, 'users', userId);
+            //tallentaa tiedot
+        await setDoc(userDocRef, data, { merge: true }); //mergellä pysty ainaki vaihtamaan vaan yhtäkin tietoa
+    } catch (error) {
+        console.error('Error saving data to Firestore:', error);
+    }
+}
+
+export { addRouteAndMarker,AddUserInfo,fetchUserData }
