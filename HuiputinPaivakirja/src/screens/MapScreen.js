@@ -8,31 +8,16 @@ import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
 
-const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotification, setShowRouteAddedNotification}) => {
-
+const MapScreen = ({ setMarker, setShowMap, setShowCamera, showRouteAddedNotification, setShowRouteAddedNotification }) => {
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
-  const { colors } = useTheme()
-  const [showNotification, setShowNotification] = useState(false)
-  const [markerData, setMarkerData] = useState([]);
+  const { colors } = useTheme();
+  const [showNotification, setShowNotification] = useState(false);
   const navigation = useNavigation();
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     const unsubscribe = listenToMarkers(setMarkers);
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    // Hae markerit Firebase:sta
-    const unsubscribe = onSnapshot(markers, (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMarkerData(data);
-    });
-
     return () => unsubscribe();
   }, []);
 
@@ -64,9 +49,9 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
     setShowNotification(false);
   };
 
+ 
   const handleMarkerPress = (marker) => {
-    // Navigoi BoulderScreeniin ja välitä markerin tiedot
-    navigation.navigate('BoulderScreen', { marker });
+    navigation.navigate('BoulderScreen', { marker }); // Navigoi BoulderScreenille ja välitä markkerin tiedot
   };
 
   return (
@@ -74,31 +59,16 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
       {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
 
-      <Map 
-        handleLongPress={handleMapLongPress} 
-        newMarker={newMarker} 
+      <Map
+        handleLongPress={handleMapLongPress}
+        newMarker={newMarker}
         markers={markers}
-        showNotification={showNotification} 
+        onMarkerPress={handleMarkerPress} // Välitetään painallustoiminto Map-komponentille
+        showNotification={showNotification}
         setShowNotification={setShowNotification}
         showRouteAddedNotification={showRouteAddedNotification}
         setShowRouteAddedNotification={setShowRouteAddedNotification}
       />
-
-      {/* Näytä Firebase-markkerit kartalla */}
-      <Svg style={styles.svgOverlay}>
-        {markerData.map((marker) => (
-          <Circle
-            key={marker.id}
-            cx={marker.x}
-            cy={marker.y}
-            r={10}
-            fill={marker.holdColor}
-            onPress={() => handleMarkerPress(marker)} // Navigoi BoulderScreeniin
-          />
-        ))}
-      </Svg>
-
-      {/* Bottom Buttons */}
       <View style={styles.containerBottom}>
         {newMarker && (
           <View style={styles.buttonContainerHorizontal}>

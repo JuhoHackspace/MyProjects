@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Image, StyleSheet, Button, Alert, ActivityIndicator, ScrollView } from 'react-native';
-import { doc, getDoc } from 'firebase/firestore';
+import { View, TextInput, Image, StyleSheet, Button, Alert, ActivityIndicator, ScrollView,Text } from 'react-native';
+import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { routes } from '../firebase/Config';
-import { updateRouteData } from '../firebase/FirebaseMethods'; // Uudelleenkäytettävä funktio
 
 const BoulderScreen = ({ route }) => {
   const { marker } = route.params;
   const [routeData, setRouteData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [gradeVotes, setGradeVotes] = useState('');
+  const [gradeVote, setGradeVote] = useState('');
   const [tryCount, setTryCount] = useState('');
-  const [voteForDelete, setVoteForDelete] = useState('');
 
   useEffect(() => {
     const fetchRouteData = async () => {
       try {
         const routeDocRef = doc(routes, marker.routeId);
         const routeDoc = await getDoc(routeDocRef);
+
         if (routeDoc.exists()) {
           setRouteData(routeDoc.data());
         } else {
           Alert.alert('Error', 'Route data not found.');
         }
       } catch (error) {
-        Alert.alert('Error', 'Failed to fetch route data.');
         console.error(error);
+        Alert.alert('Error', 'Failed to fetch route data.');
       } finally {
         setLoading(false);
       }
@@ -33,23 +32,27 @@ const BoulderScreen = ({ route }) => {
     fetchRouteData();
   }, [marker.routeId]);
 
+  const calculateAverageGrade = () => {
+    if (!routeData?.routeGradeVotes?.length) return 'No votes yet';
+    const total = routeData.routeGradeVotes.reduce((sum, grade) => sum + parseInt(grade, 10), 0);
+    return (total / routeData.routeGradeVotes.length).toFixed(1);
+  };
+
   const handleSave = async () => {
-    if (!gradeVotes || !tryCount || !voteForDelete) {
+    if (!gradeVote.trim() || !tryCount.trim()) {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
 
     try {
-      const data = {
-        routeGradeVotes: gradeVotes,
-        tryCount: parseInt(tryCount, 10),
-        voteForDelete,
-      };
-      await updateRouteData(marker.routeId, data);
-      Alert.alert('Success', 'Route updated successfully!');
+      const routeDocRef = doc(routes, marker.routeId);
+      await updateDoc(routeDocRef, {
+        routeGradeVotes: arrayUnion(gradeVote.trim()),
+      });
+      Alert.alert('Success', 'Data updated successfully!');
     } catch (error) {
-      Alert.alert('Error', 'Failed to update the route.');
       console.error(error);
+      Alert.alert('Error', 'Failed to save data.');
     }
   };
 
@@ -62,32 +65,27 @@ const BoulderScreen = ({ route }) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {routeData?.routeImageUrl ? (
-        <Image source={{ uri: routeData.routeImageUrl }} style={styles.image} />
-      ) : (
-        <View style={styles.noImageContainer}>
-          <Button title="No image available" disabled />
-        </View>
-      )}
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image
+        source={{ uri: routeData.routeImageUrl }}
+        style={styles.image}
+        onError={() => Alert.alert('Error', 'Failed to load the image.')}
+      />
+      <View>
+        <Text>Average Grade: {calculateAverageGrade()}</Text>
+      </View>
       <TextInput
         style={styles.input}
-        placeholder="Route Grade Votes"
-        value={gradeVotes}
-        onChangeText={setGradeVotes}
+        placeholder="Grade Vote"
+        value={gradeVote}
+        onChangeText={setGradeVote}
       />
       <TextInput
         style={styles.input}
         placeholder="Try Count"
-        keyboardType="numeric"
         value={tryCount}
+        keyboardType="numeric"
         onChangeText={setTryCount}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Vote for Delete (yes/no)"
-        value={voteForDelete}
-        onChangeText={setVoteForDelete}
       />
       <Button title="Save" onPress={handleSave} />
     </ScrollView>
@@ -95,39 +93,10 @@ const BoulderScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    padding: 16,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  image: {
-    width: '100%',
-    height: 700,
-    resizeMode: 'contain',
-    marginBottom: 16,
-  },
-  noImageContainer: {
-    width: '100%',
-    height: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-    backgroundColor: '#ccc',
-  },
-  input: {
-    width: '80%',
-    padding: 8,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: '#ccc',
-  },
+  container: { padding: 16 },
+  image: { width: '100%', height: 200, resizeMode: 'contain' },
+  input: { borderWidth: 1, marginVertical: 8, padding: 8 },
+  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default BoulderScreen;

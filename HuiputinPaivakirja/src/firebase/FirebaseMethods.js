@@ -18,7 +18,6 @@ import {
         users,
         markers,
 } from './Config';
-import { updateDoc } from 'firebase/firestore';
 
 /**
 * Get the display name of the currently authenticated user.
@@ -147,15 +146,6 @@ const AddUserInfo = async (userId, data) => {
         console.error('Error saving data to Firestore:', error);
     }
 }
-export const updateRouteData = async (routeId, data) => {
-        try {
-            const routeDocRef = doc(routes, routeId);
-            await updateDoc(routeDocRef, data);
-        } catch (error) {
-            console.error('Error updating route data:', error);
-            throw error;
-        }
-    };
 
 const listenToMarkers = (callback) => {
         return onSnapshot(markers, (snapshot) => {
@@ -166,4 +156,29 @@ const listenToMarkers = (callback) => {
         });
     };
 
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers }
+    const fetchRouteData = async () => {
+        try {
+          const routeDocRef = doc(routes, marker.routeId);
+          const routeDoc = await getDoc(routeDocRef);
+      
+          if (routeDoc.exists()) {
+            const routeData = routeDoc.data();
+            if (routeData.routeImageUrl.startsWith('http')) {
+              setRouteData(routeData);
+            } else {
+              const storageRef = ref(storage, routeData.routeImageUrl);
+              const url = await getDownloadURL(storageRef);
+              setRouteData({ ...routeData, routeImageUrl: url });
+            }
+          } else {
+            Alert.alert('Error', 'Route data not found.');
+          }
+        } catch (error) {
+          Alert.alert('Error', 'Failed to fetch route data.');
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData }
