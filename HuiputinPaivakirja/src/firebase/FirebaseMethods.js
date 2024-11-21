@@ -157,4 +157,13 @@ export const updateRouteData = async (routeId, data) => {
         }
     };
 
-export { addRouteAndMarker,AddUserInfo,fetchUserData }
+const listenToMarkers = (callback) => {
+        return onSnapshot(markers, (snapshot) => {
+            const markers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            callback(markers);
+        }, (error) => {
+            console.error('Error listening to markers:', error);
+        });
+    };
+
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers }

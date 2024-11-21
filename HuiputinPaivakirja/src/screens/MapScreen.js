@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import Map from '../components/Map';
@@ -6,9 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
-import { onSnapshot } from 'firebase/firestore';
-import { markers } from '../firebase/Config'; 
-import Svg, { Circle } from 'react-native-svg';
+import { listenToMarkers } from '../firebase/FirebaseMethods';
 
 const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotification, setShowRouteAddedNotification}) => {
 
@@ -18,6 +16,12 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
   const [showNotification, setShowNotification] = useState(false)
   const [markerData, setMarkerData] = useState([]);
   const navigation = useNavigation();
+  const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = listenToMarkers(setMarkers);
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     // Hae markerit Firebase:sta
@@ -70,11 +74,11 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
       {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
 
-      {/* Map Component */}
-      <Map
-        handleLongPress={handleMapLongPress}
-        newMarker={newMarker}
-        showNotification={showNotification}
+      <Map 
+        handleLongPress={handleMapLongPress} 
+        newMarker={newMarker} 
+        markers={markers}
+        showNotification={showNotification} 
         setShowNotification={setShowNotification}
         showRouteAddedNotification={showRouteAddedNotification}
         setShowRouteAddedNotification={setShowRouteAddedNotification}

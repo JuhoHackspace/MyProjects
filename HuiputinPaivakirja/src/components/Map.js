@@ -7,7 +7,7 @@ import { Gesture,
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import AnimatedInfo from './AnimatedInfo';
 
-const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
+const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -16,6 +16,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   const initialTranslateY = useSharedValue(0);
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
+  const [showMarkers, setShowMarkers] = useState(false);
 
   const longPress = Gesture.LongPress()
     .onStart((e) => {
@@ -39,6 +40,11 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
     })
     .onUpdate((e) => {
       if(initialScale.value * e.scale < 0.8 || initialScale.value * e.scale > 5.0 ) return;
+      if(initialScale.value * e.scale > 1.5) {
+        setShowMarkers(true);
+      }else {
+        setShowMarkers(false);
+      }
       try {
         //console.log('Pinch update event: ', e);
         scale.value = initialScale.value * e.scale;
@@ -47,6 +53,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
         console.log('Error in pinch event: ', error);
       }
     })
+    .runOnJS(true);
   
   const pan = Gesture.Pan()
     .maxPointers(1)
@@ -128,9 +135,15 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
             />
             {newMarker && (
               <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
-                <Circle cx={newMarker.x} cy={newMarker.y} r={10} fill="red" />
+                <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red" />
               </Svg>
             )}
+            {markers.length > 0 && showMarkers && markers.map((marker) => (
+              <Svg key={markers.routeId} style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
+                <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} />
+                <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor} />
+              </Svg>
+            ))}
           </Animated.View>
         </GestureDetector>
     </GestureHandlerRootView>

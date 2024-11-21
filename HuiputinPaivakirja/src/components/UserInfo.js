@@ -111,7 +111,7 @@ export default function UserInfo() {
 
             <Button
                 title={'Save Profile'}
-                color={colors.primary}
+                color={colors.accent}
                 onPress={() => AddUserInfo(userId, userData)}
             />
         </View>
