@@ -31,6 +31,7 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
     if (addingMarker) {
       try {
         const { x, y } = event;
+        console.log('X', x, 'Y', y);
         setNewMarker({ x: x, y: y });
       } catch (error) {
         console.log('Error in handleMapLongPress: ', error);
