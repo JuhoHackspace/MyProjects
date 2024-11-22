@@ -71,10 +71,12 @@ export default function UserInfo() {
       <Picker
         selectedValue={gender}
         onValueChange={(itemValue) => setGender(itemValue)}
+        placeholder="Gender"
+
       >
-        <Picker.Item label="Gender" value={null} />
-        <Picker.Item label="Men" value="Men" />
-        <Picker.Item label="Women" value="Women" />
+        <Picker.Item label="Everything else" value={null} />
+        <Picker.Item label="Man" value="Men" />
+        <Picker.Item label="Woman" value="Women" />
       </Picker>
             <TextInput
                 style={[localStyles.input, { borderColor: colors.primary }]}
