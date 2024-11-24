@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import Svg, { Circle, G } from 'react-native-svg';
+import React, { useState, useEffect } from 'react';
+import Svg, { Circle, Text } from 'react-native-svg';
 import styles from '../styles/Styles'
 import { Gesture,
          GestureDetector, 
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import AnimatedInfo from './AnimatedInfo';
+import sectors from '../Helpers/Sectors';
 
 const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
   const translateX = useSharedValue(0);
@@ -17,6 +18,33 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
   const [showMarkers, setShowMarkers] = useState(false);
+  const [clusters, setClusters] = useState([]);
+
+  useEffect(() => {
+    setClusters(clusterMarkersBySectors(markers));
+  }, [markers]);
+
+  const clusterMarkersBySectors = (markers) => {
+    const clusters = sectors.map(sector => {
+      const sectorMarkers = markers.filter(marker => 
+        marker.x >= sector.xMin && marker.x <= sector.xMax &&
+        marker.y >= sector.yMin && marker.y <= sector.yMax
+      );
+      const centerX = (sector.xMin + sector.xMax) / 2;
+      const centerY = (sector.yMin + sector.yMax) / 2;
+      return {
+        id: sector.id,
+        name: sector.name,
+        x: centerX,
+        y: centerY,
+        count: sectorMarkers.length,
+        visible: sectorMarkers.length > 0,
+        markers: sectorMarkers,
+      };
+    });
+    console.log('Clusters: ', clusters);
+    return clusters;
+  };
 
   const longPress = Gesture.LongPress()
     .onStart((e) => {
@@ -138,6 +166,17 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
                 <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red" />
               </Svg>
             )}
+            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
+              if(cluster.visible) {
+                return (
+                <Svg style={styles.svgOverlay}>
+                  <Circle key={cluster.id} cx={cluster.x} cy={cluster.y} r={20} fill="blue"/>
+                  <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
+                      {cluster.count}
+                  </Text>
+                </Svg>
+              )}
+            })}
             {markers.length > 0 && showMarkers && markers.map((marker) => (
               <Svg key={markers.routeId} style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
                 <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} />
