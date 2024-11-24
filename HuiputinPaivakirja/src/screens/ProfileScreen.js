@@ -7,54 +7,29 @@ import DrawerButton from '../components/DrawerButton';
 import UserInfo from '../components/UserInfo';
 import Button from '../components/Button';
 import ModalView from '../components/ModalView';
-import { auth } from '../firebase/Config'; 
-import { deleteUser } from 'firebase/auth';
-import { reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
-
 
 export default function ProfileScreen({ navigation }) {
   const { colors } = useTheme();
-  const { user } = useAuth();
+  const { user, reauthenticateUser, deleteAccount } = useAuth(); // Import the reauthenticateUser and deleteAccount functions from the AuthProvider
   const [modalVisible, setModalVisible] = useState(false);
   const [password, setPassword] = useState("");
 
-  // Function to reauthenticate the user before deleting the account (Firebase auth requires recent authentication for ex. account deletion)
-  const reauthenticateUser = async () => {
-    try {
-      const email = user?.email;
-      if (!email) throw new Error("User email not found");
-
-      const credential = EmailAuthProvider.credential(email, password); // Luo tunnistetiedot
-      await reauthenticateWithCredential(auth.currentUser, credential);
-      console.log("Reauthentication successful");
-      return true;
-    } catch (error) {
-      console.error("Error reauthenticating user:", error);
-      Alert.alert("Reauthentication Failed", "Please check your password and try again.");
-      return false;
-    }
-  };
-
-  // Function to delete the account and all the data located in Firestore and Storage (using Firebase Delete Data addon
   const handleDeleteAccount = async () => {
     try {
-      const isReauthenticated = await reauthenticateUser();
-      if (!isReauthenticated) return;
+      // Reauthenticate user before deleting the account (required by Firebase)
+      await reauthenticateUser(password);
 
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        await deleteUser(currentUser);
-        Alert.alert("Account Deleted", "Your account has been successfully deleted.");
-      }
+      // Delete the account
+      await deleteAccount();
+
+      Alert.alert("Account Deleted", "Your account has been successfully deleted.");
     } catch (error) {
-      console.error("Error deleting account: ", error);
-      Alert.alert("Error", "There was a problem deleting your account. Please try again.");
+      Alert.alert("Error", error.message);
     } finally {
       setModalVisible(false);
-      setPassword("");
+      setPassword(""); 
     }
   };
-  
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
