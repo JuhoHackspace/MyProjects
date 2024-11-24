@@ -153,7 +153,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
           <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
             <Animated.Image
-              source = {require('../../assets/BoulderMap_transformed.png')}
+              source = {require('../../assets/BoulderMap_transformed_2.png')}
               style = {[styles.mapImage]}
               onLayout = {(event) => {
                 const { width, height } = event.nativeEvent.layout;
@@ -167,11 +167,13 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
               </Svg>
             )}
             {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
-              if(cluster.visible) {
+              if(cluster) {
                 return (
                 <Svg style={styles.svgOverlay}>
-                  <Circle key={cluster.id} cx={cluster.x} cy={cluster.y} r={20} fill="blue"/>
                   <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
+                      {cluster.name}
+                  </Text>
+                  <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
                       {cluster.count}
                   </Text>
                 </Svg>
