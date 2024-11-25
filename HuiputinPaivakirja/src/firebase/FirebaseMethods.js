@@ -81,6 +81,7 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
                 routeGradeVotes: [],
                 votedGrade: '',
 
+
             });
             const routeId = docRef.id;
             console.log('Image added with ID: ', docRef.id);
