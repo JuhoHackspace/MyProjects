@@ -94,7 +94,7 @@ const BoulderScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: { padding: 16 },
-  image: { width: '100%', height: 200, resizeMode: 'contain' },
+  image: { width: '100%', height: 700, resizeMode: 'contain' },
   input: { borderWidth: 1, marginVertical: 8, padding: 8 },
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
