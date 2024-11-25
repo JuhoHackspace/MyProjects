@@ -75,10 +75,14 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
             const docRef = await addDoc(routes, {
                 routeImageUrl: url,
                 created: new Date().toISOString(),
+                createdBy: {id: auth.currentUser.uid, name: auth.currentUser.displayName? auth.currentUser.displayName: 'Unknown'},
                 routeName: routeInfo.name,
                 routeGradeColor: routeInfo.grade,
                 routeHoldColor: routeInfo.holdColor,
                 routeGradeVotes: [],
+                votedForDelete: [],
+                sentBy: [], // Tähän tulee lista käyttäjän id:stä, joka on lähettänyt reitin
+                visible: true,
                 votedGrade: '',
 
             });
@@ -147,4 +151,13 @@ const AddUserInfo = async (userId, data) => {
     }
 }
 
-export { addRouteAndMarker,AddUserInfo,fetchUserData }
+const listenToMarkers = (callback) => {
+        return onSnapshot(markers, (snapshot) => {
+            const markers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            callback(markers);
+        }, (error) => {
+            console.error('Error listening to markers:', error);
+        });
+    };
+
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers }
