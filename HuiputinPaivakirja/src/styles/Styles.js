@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     headerContainer: {
         alignSelf: 'center',
         marginBottom: 20,
-        marginTop: 50,
+        marginTop: 70,
     },
     header: {
         fontSize: 24,

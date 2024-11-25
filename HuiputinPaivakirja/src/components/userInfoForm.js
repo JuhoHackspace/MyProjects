@@ -1,22 +1,31 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,} from 'react-native';
-import { useTheme } from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
+import { useTheme, TextInput, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { Picker } from '@react-native-picker/picker';
 import { useAuth } from '../firebase/AuthProvider';
 import { AddUserInfo,fetchUserData } from '../firebase/FirebaseMethods'
+import { ScrollView } from 'react-native-gesture-handler';
 
 
-export default function UserInfo() {
+export default function UserInfoForm() {
 
-    useEffect(() => {
-        fetchUserData(userId, setFormStates);
+    useEffect(async () => {
+        try {
+            const userData = await fetchUserData(userId);
+            if (userData) {
+                setFormStates(userData);
+                setDataExists(true);
+            }
+        } catch (error) {
+            console.error("Error fetching user data: ", error);
+        }
     }, [userId])
 
     const { colors } = useTheme();
     const { user } = useAuth();
     const userId = user?.uid;
-
+    const [dataExists, setDataExists] = useState(false)
     
     const [name, setName] = useState('')
     const [age, setAge] = useState('')
@@ -52,17 +61,17 @@ export default function UserInfo() {
 
     return (
         
-        <View >
+        <ScrollView style={styles.inputContainer}>
             <Text style={{fontSize: 18 }}>User information:</Text>
             <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
+                style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Name"
                 placeholderTextColor={colors.placeholder}
                 value={name}
                 onChangeText={setName}
             />
             <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
+                style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Age"
                 placeholderTextColor={colors.placeholder}
                 keyboardType="numeric"
@@ -75,11 +84,12 @@ export default function UserInfo() {
         onValueChange={(itemValue) => setGender(itemValue)}
       >
         <Picker.Item label="Gender" value={null} />
-        <Picker.Item label="Men" value="Men" />
-        <Picker.Item label="Women" value="Women" />
+        <Picker.Item label="Men" value="Male" />
+        <Picker.Item label="Women" value="Female" />
+        <Picker.Item label="Other" value="Other" />
       </Picker>
             <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
+                style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Country"
                 placeholderTextColor={colors.placeholder}
                 value={country}
@@ -87,7 +97,7 @@ export default function UserInfo() {
             />
 
             <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
+                style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Height"
                 placeholderTextColor={colors.placeholder}
                 keyboardType="numeric"
@@ -95,7 +105,7 @@ export default function UserInfo() {
                 onChangeText={setHeight}
             />
             <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
+                style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Weight"
                 placeholderTextColor={colors.placeholder}
                 keyboardType="numeric"
@@ -103,31 +113,21 @@ export default function UserInfo() {
                 onChangeText={setWeight}
             />
             <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
+                style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Ape index"
                 placeholderTextColor={colors.placeholder}
                 keyboardType="numeric"
                 value={apeIndex}
                 onChangeText={setApeIndex}
             />
-
-            <Button
-                title={'Save Profile'}
-                color={colors.accent}
-                onPress={() => AddUserInfo(userId, userData)}
-            />
-        </View>
+            <View style={styles.buttonContainerHorizontal}>
+                <Button
+                    style={styles.button}
+                    mode='contained'
+                    buttonColor={colors.accent}
+                    onPress={() => AddUserInfo(userId, userData)}
+                >Save</Button>
+            </View>
+        </ScrollView>
     )
 }
-
-
-const localStyles = StyleSheet.create({
-    input: {
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        marginVertical: 5,
-        fontSize: 16,
-    },
-});

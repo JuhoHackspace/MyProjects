@@ -117,7 +117,7 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         }
 }
 
-const fetchUserData = async(userId, setFormStates) => {
+const fetchUserData = async(userId) => {
     if  (!userId)
         return
     try {
@@ -127,9 +127,10 @@ const fetchUserData = async(userId, setFormStates) => {
             const userData = userSnapshot.data();
 
             // aseta haetut tiedot lomakkeen tiloihin
-            setFormStates(userData);
+            return userData;
         } else {
             console.log('No user data found!');
+            return null;
         }
     } catch (error) {
         console.error('Error fetching user data:', error);
