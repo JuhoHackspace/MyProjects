@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import Svg, { Circle, G } from 'react-native-svg';
+import React, { useState, useEffect } from 'react';
+import Svg, { Circle, Text } from 'react-native-svg';
 import styles from '../styles/Styles'
 import { Gesture,
          GestureDetector, 
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import AnimatedInfo from './AnimatedInfo';
+import sectors from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
+const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -16,7 +17,39 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
   const initialTranslateY = useSharedValue(0);
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
+  const [showMarkers, setShowMarkers] = useState(false);
+  const [clusters, setClusters] = useState([]);
 
+  useEffect(() => {
+    setClusters(clusterMarkersBySectors(markers));
+  }, [markers]);
+
+  // Cluster markers by sectors. Creates a cluster for each sector and counts the markers in each sector.
+  const clusterMarkersBySectors = (markers) => {
+    const clusters = sectors.map(sector => {
+      const sectorMarkers = markers.filter(marker => 
+        marker.x >= sector.xMin && marker.x <= sector.xMax &&
+        marker.y >= sector.yMin && marker.y <= sector.yMax
+      );
+      const centerX = (sector.xMin + sector.xMax) / 2;
+      const centerY = (sector.yMin + sector.yMax) / 2;
+      return {
+        id: sector.id,
+        name: sector.name,
+        x: centerX,
+        y: centerY,
+        count: sectorMarkers.length,
+        visible: sectorMarkers.length > 0,
+        markers: sectorMarkers,
+      };
+    });
+    console.log('Clusters: ', clusters);
+    return clusters;
+  };
+
+  // Gesture handlers
+
+  // Long press gesture handler. This handler is used for adding a new route to the map.
   const longPress = Gesture.LongPress()
     .onStart((e) => {
       try {
@@ -28,6 +61,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
     })
     .runOnJS(true);
 
+  // Pinch gesture handler. This handler is used for zooming in and out of the map.
   const pinch = Gesture.Pinch()
     .onTouchesMove((e) => {
       if(e.numberOfTouches !==2 ) return;
@@ -39,6 +73,11 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
     })
     .onUpdate((e) => {
       if(initialScale.value * e.scale < 0.8 || initialScale.value * e.scale > 5.0 ) return;
+      if(initialScale.value * e.scale > 1.75) {
+        setShowMarkers(true);
+      }else {
+        setShowMarkers(false);
+      }
       try {
         //console.log('Pinch update event: ', e);
         scale.value = initialScale.value * e.scale;
@@ -47,7 +86,9 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
         console.log('Error in pinch event: ', error);
       }
     })
+    .runOnJS(true);
   
+  // Pan gesture handler. This handler is used for moving the map around.
   const pan = Gesture.Pan()
     .maxPointers(1)
     .onBegin((e) => {
@@ -69,6 +110,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
       }
     }
   )
+  
   .onEnd(() => {
     //console.log('Pan end event')
     if (scale.value <= 1) {
@@ -118,7 +160,7 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
           <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
             <Animated.Image
-              source = {require('../../assets/BoulderMap_transformed.png')}
+              source = {require('../../assets/BoulderMap_transformed_2.png')}
               style = {[styles.mapImage]}
               onLayout = {(event) => {
                 const { width, height } = event.nativeEvent.layout;
@@ -128,9 +170,28 @@ const Map = ({ handleLongPress, newMarker, showNotification, setShowNotification
             />
             {newMarker && (
               <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
-                <Circle cx={newMarker.x} cy={newMarker.y} r={10} fill="red" />
+                <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red" />
               </Svg>
             )}
+            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
+              if(cluster) {
+                return (
+                <Svg key={cluster.id} style={styles.svgOverlay}>
+                  <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
+                      {cluster.name}
+                  </Text>
+                  <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
+                      {cluster.count}
+                  </Text>
+                </Svg>
+              )}
+            })}
+            {markers.length > 0 && showMarkers && markers.map((marker) => (
+              <Svg key={markers.routeId} style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
+                <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} />
+                <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor} />
+              </Svg>
+            ))}
           </Animated.View>
         </GestureDetector>
     </GestureHandlerRootView>
