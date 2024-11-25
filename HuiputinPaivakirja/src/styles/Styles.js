@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     },
     button: {
         margin: 10,
-        width: 100,
+        width: 200, 
     },
     buttonLong: {
         width: 150,
