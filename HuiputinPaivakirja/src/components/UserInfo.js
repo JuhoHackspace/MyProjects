@@ -25,7 +25,7 @@ export default function UserInfo() {
     const [weight, setWeight] = useState('')
     const [apeIndex, setApeIndex] = useState('')
     const [gender, setGender] = useState(null)
-
+    const [sends, setSends] = useState([])
     const setFormStates = (data) => {
         setName(data.name || '')
         setAge(data.age || '')
@@ -34,6 +34,7 @@ export default function UserInfo() {
         setWeight(data.weight || '')
         setApeIndex(data.apeindex || '')
         setGender(data.gender || null)
+        setSends(data.sends || []) // Tähän tulee lista objekteja reiteistä jotka lähetetty: {routeId: '123', tries: 3}
     };
 
    
@@ -46,6 +47,7 @@ export default function UserInfo() {
         height: height,
         weight: weight,
         apeindex: apeIndex,
+        sends: sends
     }
 
     return (
@@ -111,7 +113,7 @@ export default function UserInfo() {
 
             <Button
                 title={'Save Profile'}
-                color={colors.primary}
+                color={colors.accent}
                 onPress={() => AddUserInfo(userId, userData)}
             />
         </View>
