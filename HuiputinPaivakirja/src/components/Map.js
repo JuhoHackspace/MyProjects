@@ -25,6 +25,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
     setClusters(clusterMarkersBySectors(markers));
   }, [markers]);
 
+  // Cluster markers by sectors. Creates a cluster for each sector and counts the markers in each sector.
   const clusterMarkersBySectors = (markers) => {
     const clusters = sectors.map(sector => {
       const sectorMarkers = markers.filter(marker => 
@@ -47,6 +48,9 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
     return clusters;
   };
 
+  // Gesture handlers
+
+  // Long press gesture handler. This handler is used for adding a new route to the map.
   const longPress = Gesture.LongPress()
     .onStart((e) => {
       try {
@@ -58,6 +62,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
     })
     .runOnJS(true);
 
+  // Pinch gesture handler. This handler is used for zooming in and out of the map.
   const pinch = Gesture.Pinch()
     .onTouchesMove((e) => {
       if(e.numberOfTouches !==2 ) return;
@@ -69,7 +74,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
     })
     .onUpdate((e) => {
       if(initialScale.value * e.scale < 0.8 || initialScale.value * e.scale > 5.0 ) return;
-      if(initialScale.value * e.scale > 1.5) {
+      if(initialScale.value * e.scale > 1.75) {
         setShowMarkers(true);
       }else {
         setShowMarkers(false);
@@ -84,6 +89,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
     })
     .runOnJS(true);
   
+  // Pan gesture handler. This handler is used for moving the map around.
   const pan = Gesture.Pan()
     .maxPointers(1)
     .onBegin((e) => {
@@ -105,6 +111,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
       }
     }
   )
+  
   .onEnd(() => {
     //console.log('Pan end event')
     if (scale.value <= 1) {
@@ -154,7 +161,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
           <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
             <Animated.Image
-              source = {require('../../assets/BoulderMap_transformed.png')}
+              source = {require('../../assets/BoulderMap_transformed_2.png')}
               style = {[styles.mapImage]}
               onLayout = {(event) => {
                 const { width, height } = event.nativeEvent.layout;
@@ -168,11 +175,13 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
               </Svg>
             )}
             {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
-              if(cluster.visible) {
+              if(cluster) {
                 return (
-                <Svg style={styles.svgOverlay}>
-                  <Circle key={cluster.id} cx={cluster.x} cy={cluster.y} r={20} fill="blue"/>
+                <Svg key={cluster.id} style={styles.svgOverlay}>
                   <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
+                      {cluster.name}
+                  </Text>
+                  <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
                       {cluster.count}
                   </Text>
                 </Svg>
