@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Alert } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { useAuth } from '../firebase/AuthProvider';
 import DrawerButton from '../components/DrawerButton';
 import UserInfo from '../components/UserInfo';
-import Button from '../components/Button';
 import ModalView from '../components/ModalView';
 
 export default function ProfileScreen({ navigation }) {
@@ -42,12 +41,17 @@ export default function ProfileScreen({ navigation }) {
       <UserInfo />
 
       {/* Delete Account Button */}
-      <Button
-        title="Delete my account"
-        onPress={() => setModalVisible(true)}
-        icon="trash"
-        color={colors.primary}
-      />
+      <View style={styles.deleteButtonContainer}>
+        <Button
+          mode="contained"
+          onPress={() => setModalVisible(true)}
+          icon="trash-can"
+          buttonColor={colors.accent}
+          style={styles.button}
+        >
+          Delete my account
+        </Button>
+      </View>
 
       {/* ModalView */}
       <ModalView
