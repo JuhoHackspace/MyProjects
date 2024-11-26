@@ -5,7 +5,7 @@ import { View, ActivityIndicator } from 'react-native';
 export default function LoadingIcon() {
   return (
     <View style={styles.centeredbaseContainer}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color='gray'/>
     </View>
   )
 }

@@ -46,7 +46,8 @@ export default function ProfileScreen({ navigation }) {
           Profile
         </Text>
       </View>
-      {loading && <LoadingIcon />}
+      {loading ? <LoadingIcon /> :
+      <>
       {!showForm && <UserInfo userData={userData}/>}
       {showForm && <UserInfoForm userData={userData} saveData={saveData} setShowForm={setShowForm}/>}
       {!showForm && <View style={styles.buttonContainerHorizontal}> 
@@ -59,6 +60,7 @@ export default function ProfileScreen({ navigation }) {
             Update Profile  
         </Button>
       </View>}
+      </>}
     </View>
   );
 }
