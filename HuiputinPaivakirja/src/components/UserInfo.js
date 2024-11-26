@@ -1,133 +1,26 @@
-import React, { useState,useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,} from 'react-native';
-import { useTheme } from 'react-native-paper';
-import styles from '../styles/Styles';
-import { Picker } from '@react-native-picker/picker';
-import { useAuth } from '../firebase/AuthProvider';
-import { AddUserInfo,fetchUserData } from '../firebase/FirebaseMethods'
+import { View, Text } from 'react-native'
+import React, { useState } from 'react'
+import { useAuth } from '../firebase/AuthProvider'
+import styles from '../styles/Styles'
 
+export default function UserInfo({userData}) {
+  const { user } = useAuth()
 
-export default function UserInfo() {
-
-    useEffect(() => {
-        fetchUserData(userId, setFormStates);
-    }, [userId])
-
-    const { colors } = useTheme();
-    const { user } = useAuth();
-    const userId = user?.uid;
-
-    
-    const [name, setName] = useState('')
-    const [age, setAge] = useState('')
-    const [country, setCountry] = useState('')
-    const [height, setHeight] = useState('')
-    const [weight, setWeight] = useState('')
-    const [apeIndex, setApeIndex] = useState('')
-    const [gender, setGender] = useState(null)
-    const [sends, setSends] = useState([])
-    const setFormStates = (data) => {
-        setName(data.name || '')
-        setAge(data.age || '')
-        setCountry(data.country || '')
-        setHeight(data.height || '')
-        setWeight(data.weight || '')
-        setApeIndex(data.apeindex || '')
-        setGender(data.gender || null)
-        setSends(data.sends || []) // Tähän tulee lista objekteja reiteistä jotka lähetetty: {routeId: '123', tries: 3}
-    };
-
-   
-
-    const userData = {
-        name: name,
-        age: age,
-        gender: gender,
-        country: country,
-        height: height,
-        weight: weight,
-        apeindex: apeIndex,
-        sends: sends
-    }
-
-    return (
-        
-        <View >
-            <Text style={{fontSize: 18 }}>User information:</Text>
-            <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
-                placeholder="Name"
-                placeholderTextColor={colors.placeholder}
-                value={name}
-                onChangeText={setName}
-            />
-            <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
-                placeholder="Age"
-                placeholderTextColor={colors.placeholder}
-                keyboardType="numeric"
-                value={age}
-                onChangeText={setAge}
-            />
-            
-      <Picker
-        selectedValue={gender}
-        onValueChange={(itemValue) => setGender(itemValue)}
-      >
-        <Picker.Item label="Gender" value={null} />
-        <Picker.Item label="Men" value="Men" />
-        <Picker.Item label="Women" value="Women" />
-      </Picker>
-            <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
-                placeholder="Country"
-                placeholderTextColor={colors.placeholder}
-                value={country}
-                onChangeText={setCountry}
-            />
-
-            <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
-                placeholder="Height"
-                placeholderTextColor={colors.placeholder}
-                keyboardType="numeric"
-                value={height}
-                onChangeText={setHeight}
-            />
-            <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
-                placeholder="Weight"
-                placeholderTextColor={colors.placeholder}
-                keyboardType="numeric"
-                value={weight}
-                onChangeText={setWeight}
-            />
-            <TextInput
-                style={[localStyles.input, { borderColor: colors.primary }]}
-                placeholder="Ape index"
-                placeholderTextColor={colors.placeholder}
-                keyboardType="numeric"
-                value={apeIndex}
-                onChangeText={setApeIndex}
-            />
-
-            <Button
-                title={'Save Profile'}
-                color={colors.accent}
-                onPress={() => AddUserInfo(userId, userData)}
-            />
+  return (
+    <View style={styles.inputContainer}>
+      <Text style={styles.basicText}>Display name: {user.displayName}</Text>
+      <Text style={styles.basicText}>User email: {user.email} </Text>
+      {userData && (
+        <View>
+            <Text style={styles.basicText}>Name: {userData.name}</Text>
+            <Text style={styles.basicText}>Age: {userData.age}</Text>
+            <Text style={styles.basicText}>Gender: {userData.gender}</Text>
+            <Text style={styles.basicText}>Country: {userData.country}</Text>
+            <Text style={styles.basicText}>Height: {userData.height}</Text>
+            <Text style={styles.basicText}>Weight: {userData.weight}</Text>
+            <Text style={styles.basicText}>Ape index: {userData.apeindex}</Text>         
         </View>
-    )
+      )}
+    </View>
+  )
 }
-
-
-const localStyles = StyleSheet.create({
-    input: {
-        height: 40,
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        marginVertical: 5,
-        fontSize: 16,
-    },
-});

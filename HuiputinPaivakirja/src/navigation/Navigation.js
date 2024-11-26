@@ -6,8 +6,7 @@ import { AuthProvider, useAuth } from '../firebase/AuthProvider';
 import CustomDrawerContent from './CustomDrawerContent';
 import AuthStackNavigator from './AuthStackNavigator';
 import MainStackNavigator from './MainStackNavigator';
-
-import { View, ActivityIndicator } from 'react-native';
+import LoadingIcon from '../components/LoadingIcon';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,9 +16,7 @@ function AppNavigator() {
   if (loading) {
     // Show loading indicator while checking if user is logged in
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
+      <LoadingIcon />
     );
   }
 

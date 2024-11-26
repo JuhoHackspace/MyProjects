@@ -32,7 +32,7 @@ export default function LoginScreen({ navigation }) {
       </View>
       <View style={styles.buttonContainerVertical}>
         <Button
-          style={styles.button}
+          style={styles.buttonLonger}
           mode="contained"
           onPress={() => login(email, password)}
           buttonColor={colors.accent}
@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
           Login
         </Button>
         <Button
-          style={styles.button}
+          style={styles.buttonLonger}
           mode="contained"
           onPress={() => navigation.navigate('CreateAccount')}
           buttonColor={colors.accent}
