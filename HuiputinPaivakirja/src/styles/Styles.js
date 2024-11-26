@@ -1,4 +1,3 @@
-
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -8,7 +7,7 @@ export const styles = StyleSheet.create({
     headerContainer: {
         alignSelf: 'center',
         marginBottom: 20,
-        marginTop: 50,
+        marginTop: 70,
     },
     header: {
         fontSize: 24,
@@ -46,10 +45,14 @@ export const styles = StyleSheet.create({
     },
     button: {
         margin: 10,
-        width: 100,
+        width: 100, 
     },
     buttonLong: {
         width: 150,
+        margin: 10,
+    },
+    buttonLonger: {
+        width: 200,
         margin: 10,
     },
     inputContainer: {
@@ -68,6 +71,10 @@ export const styles = StyleSheet.create({
     },
     greetingText: {
         fontSize: 18,
+    },
+    basicText: {
+        fontSize: 18,
+        marginBottom: 10,
     },
     notification: {
         position: 'absolute',
@@ -97,6 +104,11 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: '100%',
+    },
+    deleteButtonContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
     },
 });
 
