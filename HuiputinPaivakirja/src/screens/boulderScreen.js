@@ -5,40 +5,38 @@ import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { routes, users } from '../firebase/Config';
 
 const BoulderScreen = ({ route }) => {
-  const { marker, mainViewData, mode } = route.params;
-  const [routeData, setRouteData] = useState(null);
+  const { marker, mainViewData, mode, imageUri } = route.params;
+  const [routeData, setRouteData] = useState(mainViewData || null);
   const [loading, setLoading] = useState(true);
   const [gradeVote, setGradeVote] = useState('');
   const [tryCount, setTryCount] = useState('');
   const [votedForDelete, setVoteForDelete] = useState('NO');
 
   useEffect(() => {
-    if (!marker.routeId) {
-      Alert.alert('Error', 'Route ID is missing.');
-      setLoading(false);
-      return;
-    }
+    if (mode === 'marker' && marker.routeId) {
+      const fetchRouteData = async () => {
+        try {
+          const routeDocRef = doc(routes, marker.routeId);
+          const routeDoc = await getDoc(routeDocRef);
 
-    const fetchRouteData = async () => {
-      try {
-        const routeDocRef = doc(routes, marker.routeId);
-        const routeDoc = await getDoc(routeDocRef);
-
-        if (routeDoc.exists()) {
-          setRouteData(routeDoc.data());
-        } else {
-          Alert.alert('Error', 'Route data not found.');
+          if (routeDoc.exists()) {
+            setRouteData(routeDoc.data());
+          } else {
+            Alert.alert('Error', 'Route data not found.');
+          }
+        } catch (error) {
+          console.error(error);
+          Alert.alert('Error', 'Failed to fetch route data.');
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error(error);
-        Alert.alert('Error', 'Failed to fetch route data.');
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchRouteData();
-  }, [marker.routeId]);
+      fetchRouteData();
+    } else {
+      setLoading(false);
+    }
+  }, [marker.routeId, mode]);
 
   const calculateAverageGrade = () => {
     if (!routeData?.routeGradeVotes?.length) return 'No votes yet';
@@ -90,20 +88,19 @@ const BoulderScreen = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {mode === 'marker' ? (
+      {mode === 'mainView' ? (
         <>
           <Image
-            source={{ uri: routeData.routeImageUrl }}
+            source={{ uri: imageUri }}
             style={styles.image}
             onError={() => Alert.alert('Error', 'Failed to load the image.')}
           />
-          <View>
-            <Text>Route Name: {routeData.routeName}</Text>
-            <Text>Average Grade: {calculateAverageGrade()}</Text>
-            <Text>Route Hold Color: {routeData.routeHoldColor}</Text>
-            <Text>Route Grade Color: {routeData.routeGradeColor}</Text>
-            <Text>Sent By: {routeData.sentBy}</Text>
-          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Route Name"
+            value={routeData.name}
+            onChangeText={(text) => setRouteData({ ...routeData, name: text })}
+          />
           <TextInput
             style={styles.input}
             placeholder="Grade Vote"
@@ -129,14 +126,45 @@ const BoulderScreen = ({ route }) => {
         </>
       ) : (
         <>
-          <Text>Main View Data: {mainViewData}</Text>
-          {}
+          <Image
+            source={{ uri: routeData?.routeImageUrl }}
+            style={styles.image}
+            onError={() => Alert.alert('Error', 'Failed to load the image.')}
+          />
+          <View>
+            <Text>Route Name: {routeData?.routeName}</Text>
+            <Text>Average Grade: {calculateAverageGrade()}</Text>
+            <Text>Route Hold Color: {routeData?.routeHoldColor}</Text>
+            <Text>Route Grade Color: {routeData?.routeGradeColor}</Text>
+            <Text>Sent By: {routeData?.sentBy}</Text>
+          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="Grade Vote"
+            value={gradeVote}
+            onChangeText={setGradeVote}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Try Count"
+            value={tryCount}
+            keyboardType="numeric"
+            onChangeText={setTryCount}
+          />
+          <Picker
+            selectedValue={votedForDelete}
+            style={styles.picker}
+            onValueChange={(itemValue) => setVoteForDelete(itemValue)}
+          >
+            <Picker.Item label="NO" value="NO" />
+            <Picker.Item label="YES" value="YES" />
+          </Picker>
+          <Button title="Save" onPress={handleSave} />
         </>
       )}
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: { padding: 16 },

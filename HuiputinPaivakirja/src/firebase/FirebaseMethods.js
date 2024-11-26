@@ -101,20 +101,20 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
 
 const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         try {
-            const routeId = await saveRouteToFirebase(imageUri, routeInfo);
-            const docRef = await addDoc(markers, {
-                routeId: routeId,
-                x: markerInfo.x,
-                y: markerInfo.y,
-                created: new Date().toISOString(),
-                holdColor: routeInfo.holdColor,
-                gradeColor: routeInfo.grade,
-            });
-            const markerId = docRef.id;
-            console.log("Marker added with ID: ", docRef.id);
-            return markerId;
+          const routeId = await saveRouteToFirebase(imageUri, routeInfo);
+          const docRef = await addDoc(markers, {
+            routeId: routeId,
+            x: markerInfo.x,
+            y: markerInfo.y,
+            created: new Date().toISOString(),
+            holdColor: routeInfo.holdColor,
+            gradeColor: routeInfo.grade,
+          });
+          const markerId = docRef.id;
+          console.log("Marker added with ID: ", docRef.id);
+          return { routeId, markerId };
         } catch (error) {
-            console.error('Error adding route and marker:', error);
+          console.error('Error adding route and marker:', error);
         }
 }
 
