@@ -8,7 +8,7 @@ import { AddUserInfo,fetchUserData } from '../firebase/FirebaseMethods'
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-export default function UserInfoForm() {
+export default function UserInfoForm({}) {
 
     useEffect(() => {
         const fetchData = async (userId) => {
@@ -67,7 +67,7 @@ export default function UserInfoForm() {
     return (
         
         <ScrollView style={styles.inputContainer}>
-            <Text style={{fontSize: 18 }}>User information:</Text>
+            <Text style={styles.basicText}>Update user information:</Text>
             <TextInput
                 style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Name"

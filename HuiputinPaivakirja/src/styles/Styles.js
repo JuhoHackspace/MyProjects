@@ -69,6 +69,10 @@ export const styles = StyleSheet.create({
     greetingText: {
         fontSize: 18,
     },
+    basicText: {
+        fontSize: 18,
+        marginBottom: 10,
+    },
     notification: {
         position: 'absolute',
         top: 70,
