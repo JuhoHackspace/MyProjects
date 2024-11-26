@@ -10,15 +10,20 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 export default function UserInfoForm() {
 
-    useEffect(async () => {
-        try {
-            const userData = await fetchUserData(userId);
-            if (userData) {
-                setFormStates(userData);
-                setDataExists(true);
+    useEffect(() => {
+        const fetchData = async (userId) => {
+            try {
+                const userData = await fetchUserData(userId);
+                if (userData) {
+                    setFormStates(userData);
+                    setDataExists(true);
+                }
+            } catch (error) {
+                console.error("Error fetching user data: ", error);
             }
-        } catch (error) {
-            console.error("Error fetching user data: ", error);
+        }
+        if (userId) {
+            fetchData(userId);
         }
     }, [userId])
 
