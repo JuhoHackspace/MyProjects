@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text,} from 'react-native';
-import { Button, useTheme } from 'react-native-paper';
+import { View, Text, Alert } from 'react-native';
+import { useTheme, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { useAuth } from '../firebase/AuthProvider';
 import DrawerButton from '../components/DrawerButton';
@@ -8,15 +8,35 @@ import UserInfoForm from '../components/userInfoForm';
 import UserInfo from '../components/UserInfo';
 import { AddUserInfo, fetchUserData } from '../firebase/FirebaseMethods'
 import LoadingIcon from '../components/LoadingIcon';
+import ModalView from '../components/ModalView';
 
 export default function ProfileScreen({ navigation }) {
   const { colors, fonts } = useTheme();
-  const { user } = useAuth();
+  const { user, reauthenticateUser, deleteAccount } = useAuth(); // Import the reauthenticateUser and deleteAccount functions from the AuthProvider;
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const userId = user?.uid;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [password, setPassword] = useState("");
 
+  const handleDeleteAccount = async () => {
+    try {
+      // Reauthenticate user before deleting the account (required by Firebase)
+      await reauthenticateUser(password);
+
+      // Delete the account
+      await deleteAccount();
+
+      Alert.alert("Account Deleted", "Your account has been successfully deleted.");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setModalVisible(false);
+      setPassword(""); 
+    }
+  };
+  
   useEffect(() => {
       const unsubscribe = fetchUserData(userId, (data) => {
           setUserData(data);
@@ -38,7 +58,6 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
-
       {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
       <View style={styles.headerContainer}>
@@ -50,7 +69,7 @@ export default function ProfileScreen({ navigation }) {
       <>
       {!showForm && <UserInfo userData={userData}/>}
       {showForm && <UserInfoForm userData={userData} saveData={saveData} setShowForm={setShowForm}/>}
-      {!showForm && <View style={styles.buttonContainerHorizontal}> 
+      {!showForm && <View style={styles.buttonContainerVertical}> 
         <Button 
           style={styles.buttonLong} 
           mode="contained" 
@@ -59,8 +78,26 @@ export default function ProfileScreen({ navigation }) {
         >
             Update Profile  
         </Button>
+        <Button
+          mode="contained"
+          onPress={() => setModalVisible(true)}
+          icon="trash-can"
+          buttonColor={colors.accent}
+          style={styles.buttonLonger}
+        >
+          Delete my account
+        </Button>
       </View>}
       </>}
+      {/* ModalView */}
+      <ModalView
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onDelete={handleDeleteAccount}
+        deleteConfirmation={true}
+        password={password}
+        setPassword={setPassword}
+      />
     </View>
   );
 }

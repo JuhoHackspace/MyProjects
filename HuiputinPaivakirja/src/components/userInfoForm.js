@@ -12,14 +12,14 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
 
     const { colors } = useTheme();
     
-    const [name, setName] = useState(userData.name)
-    const [age, setAge] = useState(userData.age)
-    const [country, setCountry] = useState(userData.country)
-    const [height, setHeight] = useState(userData.height)
-    const [weight, setWeight] = useState(userData.weight)
-    const [apeIndex, setApeIndex] = useState(userData.apeindex)
-    const [gender, setGender] = useState(userData.gender)
-    const [sends, setSends] = useState(userData.sends)
+    const [name, setName] = useState(userData? userData.name : "")
+    const [age, setAge] = useState(userData? userData.age : "")
+    const [country, setCountry] = useState(userData? userData.country : "")
+    const [height, setHeight] = useState(userData? userData.height : "")
+    const [weight, setWeight] = useState(userData? userData.weight : "")
+    const [apeIndex, setApeIndex] = useState(userData? userData.apeindex : "")
+    const [gender, setGender] = useState(userData? userData.gender : "")
+    const [sends, setSends] = useState(userData? userData.sends : "")
 
     const newUserData = {
         name: name,

@@ -145,6 +145,7 @@ const fetchUserData = (userId, setUserData) => {
         setUserData(doc.data());
       } else {
         console.log('No user data found!');
+        setUserData(null);
       }
     }, (error) => {
       console.error('Error fetching user data:', error);
