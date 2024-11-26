@@ -4,6 +4,7 @@ import CameraScreen from './CameraScreen'
 import MapScreen from './MapScreen'
 import styles from '../styles/Styles'
 import { addRouteAndMarker } from '../firebase/FirebaseMethods'
+import LoadingIcon from '../components/LoadingIcon'
 
 /**
  * This component is the main controller for viewing routes and adding new routes
@@ -68,9 +69,7 @@ return (
         }
         {showCamera && <CameraScreen setRouteImage={setImage} handleHideCamera={handleHideCamera}/>}
         {loading && (
-            <View style={styles.centeredbaseContainer}>
-                <Text>Loading...</Text>
-            </View>
+            <LoadingIcon/>
         )}
     </View>
 )
