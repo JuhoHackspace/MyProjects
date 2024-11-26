@@ -57,8 +57,8 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
         onValueChange={(itemValue) => setGender(itemValue)}
       >
         <Picker.Item label="Gender" value={null} />
-        <Picker.Item label="Men" value="Male" />
-        <Picker.Item label="Women" value="Female" />
+        <Picker.Item label="Male" value="Male" />
+        <Picker.Item label="Female" value="Female" />
         <Picker.Item label="Other" value="Other" />
       </Picker>
             <TextInput
