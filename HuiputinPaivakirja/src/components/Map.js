@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Svg, { Circle, Text } from 'react-native-svg';
+import Svg, { Circle, Rect, Text } from 'react-native-svg';
 import styles from '../styles/Styles'
 import { Gesture,
          GestureDetector, 
@@ -178,6 +178,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
               if(cluster) {
                 return (
                 <Svg key={cluster.id} style={styles.svgOverlay}>
+                  <Rect x={cluster.x-30} y={cluster.y-12} width={60} height={15} fill="red" />
                   <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
                       {cluster.name}
                   </Text>

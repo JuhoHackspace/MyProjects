@@ -1,26 +1,103 @@
-import React from 'react';
-import { View, Text,} from 'react-native';
-import { useTheme } from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Alert } from 'react-native';
+import { useTheme, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { useAuth } from '../firebase/AuthProvider';
 import DrawerButton from '../components/DrawerButton';
+import UserInfoForm from '../components/userInfoForm';
 import UserInfo from '../components/UserInfo';
+import { AddUserInfo, fetchUserData } from '../firebase/FirebaseMethods'
+import LoadingIcon from '../components/LoadingIcon';
+import ModalView from '../components/ModalView';
 
 export default function ProfileScreen({ navigation }) {
-  const { colors } = useTheme();
-  const { user } = useAuth();
+  const { colors, fonts } = useTheme();
+  const { user, reauthenticateUser, deleteAccount } = useAuth(); // Import the reauthenticateUser and deleteAccount functions from the AuthProvider;
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const userId = user?.uid;
+  const [modalVisible, setModalVisible] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleDeleteAccount = async () => {
+    try {
+      // Reauthenticate user before deleting the account (required by Firebase)
+      await reauthenticateUser(password);
+
+      // Delete the account
+      await deleteAccount();
+
+      Alert.alert("Account Deleted", "Your account has been successfully deleted.");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setModalVisible(false);
+      setPassword(""); 
+    }
+  };
   
+  useEffect(() => {
+      const unsubscribe = fetchUserData(userId, (data) => {
+          setUserData(data);
+          setLoading(false);
+      });
+      return () => unsubscribe();
+  }, [userId])
+
+  const saveData = async (userData) => {
+    setLoading(true);
+    try {
+        await AddUserInfo(userId, userData);
+        setLoading(false);
+        setShowForm(false);
+    } catch (error) {
+        console.error("Error saving user data: ", error);
+    }
+  }
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
-
       {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
-
-      <Text style={{ color: colors.text, fontSize: 24 }}>
-        Hello {user?.displayName}! This is your profile.
-      </Text>
-      <UserInfo />
+      <View style={styles.headerContainer}>
+        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28}}>
+          Profile
+        </Text>
+      </View>
+      {loading ? <LoadingIcon /> :
+      <>
+      {!showForm && <UserInfo userData={userData}/>}
+      {showForm && <UserInfoForm userData={userData} saveData={saveData} setShowForm={setShowForm}/>}
+      {!showForm && <View style={styles.buttonContainerVertical}> 
+        <Button 
+          style={styles.buttonLong} 
+          mode="contained" 
+          buttonColor = {colors.accent}
+          onPress = {() => setShowForm(true)}
+        >
+            Update Profile  
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => setModalVisible(true)}
+          icon="trash-can"
+          buttonColor={colors.accent}
+          style={styles.buttonLonger}
+        >
+          Delete my account
+        </Button>
+      </View>}
+      </>}
+      {/* ModalView */}
+      <ModalView
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onDelete={handleDeleteAccount}
+        deleteConfirmation={true}
+        password={password}
+        setPassword={setPassword}
+      />
     </View>
   );
 }

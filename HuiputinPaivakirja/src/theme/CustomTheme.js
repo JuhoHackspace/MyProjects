@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { ImageBackground, StyleSheet, View } from 'react-native';
+import { PermanentMarker_400Regular } from '@expo-google-fonts/permanent-marker';
+import * as Font from 'expo-font';
 
 const customTheme = {
   ...DefaultTheme,
@@ -11,19 +13,33 @@ const customTheme = {
     background: '#d3d3d3',  // Custom background color
     text: '#000000',        // Custom text color
   },
+  fonts: {
+    ...DefaultTheme.fonts,
+    special: {
+      fontFamily: 'PermanentMarker-Regular',
+      fontWeight: 'normal',
+    },
+  }
 };
 
 // ThemeProvider component with background image
 const ThemeProvider = ({ children }) => {
+  useEffect(() => {
+    async function loadFonts() {
+      try {
+        await Font.loadAsync({
+          'PermanentMarker-Regular': PermanentMarker_400Regular,
+        });
+      } catch (error) {
+        console.error('Error loading fonts: ', error);
+      }
+    }
+
+    loadFonts();
+  }, []);
   return (
     <PaperProvider theme={customTheme}>
-      <ImageBackground
-        source={require('../../assets/vuori_valkoinen.png')}
-        style={styles.backgroundImage}
-        resizeMode="contain"
-      >
-        <View style={styles.overlay}>{children}</View>
-      </ImageBackground>
+      {children}
     </PaperProvider>
   );
 };
