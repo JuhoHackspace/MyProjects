@@ -117,7 +117,7 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         }
 }
 
-const fetchUserData = async(userId) => {
+/*const fetchUserData = async(userId, setUserData) => {
     if  (!userId)
         return
     try {
@@ -125,18 +125,33 @@ const fetchUserData = async(userId) => {
         const userSnapshot = await getDoc(userDocRef); //haetaan tiedot jo niitä on siellä
         if (userSnapshot.exists()) {
             const userData = userSnapshot.data();
-
-            // aseta haetut tiedot lomakkeen tiloihin
-            return userData;
+            // Set the user data to the state
+            setUserData(userData);
         } else {
             console.log('No user data found!');
-            return null;
         }
     } catch (error) {
         console.error('Error fetching user data:', error);
 
     }
-}
+}*/
+
+const fetchUserData = (userId, setUserData) => {
+    if (!userId) return;
+  
+    const userDocRef = doc(db, 'users', userId);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        setUserData(doc.data());
+      } else {
+        console.log('No user data found!');
+      }
+    }, (error) => {
+      console.error('Error fetching user data:', error);
+    });
+  
+    return unsubscribe;
+};
 
 const AddUserInfo = async (userId, data) => {
     if (!userId){

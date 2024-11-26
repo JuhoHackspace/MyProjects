@@ -8,52 +8,20 @@ import { AddUserInfo,fetchUserData } from '../firebase/FirebaseMethods'
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-export default function UserInfoForm({}) {
-
-    useEffect(() => {
-        const fetchData = async (userId) => {
-            try {
-                const userData = await fetchUserData(userId);
-                if (userData) {
-                    setFormStates(userData);
-                    setDataExists(true);
-                }
-            } catch (error) {
-                console.error("Error fetching user data: ", error);
-            }
-        }
-        if (userId) {
-            fetchData(userId);
-        }
-    }, [userId])
+export default function UserInfoForm({userData, saveData, setShowForm}) {
 
     const { colors } = useTheme();
-    const { user } = useAuth();
-    const userId = user?.uid;
-    const [dataExists, setDataExists] = useState(false)
     
-    const [name, setName] = useState('')
-    const [age, setAge] = useState('')
-    const [country, setCountry] = useState('')
-    const [height, setHeight] = useState('')
-    const [weight, setWeight] = useState('')
-    const [apeIndex, setApeIndex] = useState('')
-    const [gender, setGender] = useState(null)
-    const [sends, setSends] = useState([])
-    const setFormStates = (data) => {
-        setName(data.name || '')
-        setAge(data.age || '')
-        setCountry(data.country || '')
-        setHeight(data.height || '')
-        setWeight(data.weight || '')
-        setApeIndex(data.apeindex || '')
-        setGender(data.gender || null)
-        setSends(data.sends || []) // Tähän tulee lista objekteja reiteistä jotka lähetetty: {routeId: '123', tries: 3}
-    };
+    const [name, setName] = useState(userData.name)
+    const [age, setAge] = useState(userData.age)
+    const [country, setCountry] = useState(userData.country)
+    const [height, setHeight] = useState(userData.height)
+    const [weight, setWeight] = useState(userData.weight)
+    const [apeIndex, setApeIndex] = useState(userData.apeindex)
+    const [gender, setGender] = useState(userData.gender)
+    const [sends, setSends] = useState(userData.sends)
 
-   
-
-    const userData = {
+    const newUserData = {
         name: name,
         age: age,
         gender: gender,
@@ -125,13 +93,19 @@ export default function UserInfoForm({}) {
                 value={apeIndex}
                 onChangeText={setApeIndex}
             />
-            <View style={styles.buttonContainerHorizontal}>
+            <View style={styles.buttonContainerVertical}>
                 <Button
                     style={styles.button}
                     mode='contained'
                     buttonColor={colors.accent}
-                    onPress={() => AddUserInfo(userId, userData)}
+                    onPress={() => saveData(newUserData)}
                 >Save</Button>
+                <Button
+                    style={styles.button}
+                    mode='contained'
+                    buttonColor={colors.accent}
+                    onPress={() => setShowForm(false)}
+                >Cancel</Button>
             </View>
         </ScrollView>
     )

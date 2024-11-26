@@ -30,7 +30,6 @@ const ThemeProvider = ({ children }) => {
         await Font.loadAsync({
           'PermanentMarker-Regular': PermanentMarker_400Regular,
         });
-        setFontsLoaded(true);
       } catch (error) {
         console.error('Error loading fonts: ', error);
       }
