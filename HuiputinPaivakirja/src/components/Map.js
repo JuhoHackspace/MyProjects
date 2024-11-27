@@ -5,10 +5,9 @@ import { Gesture,
          GestureDetector, 
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import AnimatedInfo from './AnimatedInfo';
 import sectors from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
+const Map = ({ handleLongPress, newMarker, markers }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -143,20 +142,6 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
 
   return (
     <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
-      {showNotification &&
-         <AnimatedInfo 
-            showNotification={showNotification} 
-            setShowNotification={setShowNotification} 
-            text="Long press to add a new route" 
-         />
-      }
-      {showRouteAddedNotification &&
-         <AnimatedInfo 
-            showNotification={showRouteAddedNotification} 
-            setShowNotification={setShowRouteAddedNotification} 
-            text="Route succesfully added" 
-         />
-      }
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
           <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
             <Animated.Image
