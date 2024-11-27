@@ -4,10 +4,7 @@ import CameraScreen from './CameraScreen'
 import MapScreen from './MapScreen'
 import styles from '../styles/Styles'
 import { addRouteAndMarker } from '../firebase/FirebaseMethods'
-import LoadingIcon from '../components/LoadingIcon'
-import { useNavigation } from '@react-navigation/native';
-import ImagePreview from '../components/ImagePreview';
-
+import BoulderScreen from './boulderScreen'
 /**
  * This component is the main controller for viewing routes and adding new routes
  * It keeps track of the current state of the app and manages the transitions
@@ -17,41 +14,41 @@ import ImagePreview from '../components/ImagePreview';
  * @returns MainViewController component
  */
 export default function MainViewController() {
-    const [showCamera, setShowCamera] = useState(false);
-    const [showMap, setShowMap] = useState(true);
-    const [marker, setMarker] = useState(null);
-    const [image, setImage] = useState(null);
-    const [id, setId] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [showRouteAddedNotification, setShowRouteAddedNotification] = useState(false);
-    const [routeGradeColor, setRouteGradeColor] = useState('pink');
-    const navigation = useNavigation();
+  const [showCamera, setShowCamera] = useState(false)
+  const [showMap, setShowMap] = useState(true)
+  const [showBoulderScreen, setShowBoulderScreen] = useState(false)
+  const [marker, setMarker] = useState(null)
+  const [image, setImage] = useState(null)
+  const [id, setId] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [ showRouteAddedNotification, setShowRouteAddedNotification ] = useState(false)
   
   // This function is called when the user hides the camera screen. This is called once we have the marker
   // data and the imageUri. This function could set the boulderScreen visible. Another async function
   // defined here, could be called from the boulderScreen to finally add the route to the database.
-          // This hard coded route object represents the actual information that the user will input
-        // in the boulderScreen. We can add additional information also.
-        const handleHideCamera = async (imageUri) => {
-            setShowCamera(false);
-            setLoading(true);
-            setImage(imageUri);
-            try {
-              const route = { name: 'Orangatang', grade: routeGradeColor, holdColor: 'orange' };
-              const { routeId, markerId } = await addRouteAndMarker(imageUri, route, marker);
-              console.log('Adding route and marker with image: ', imageUri, ' route: ', route, ' marker: ', marker);
-              setId(markerId);
-              console.log('Route and marker added with marker id: ', { routeId, markerId });
-              setLoading(false);
-              setShowRouteAddedNotification(true);
-              setShowMap(false); // Piilotetaan kartta
-        
-              // Navigoi BoulderScreen-komponenttiin ja välitä tarvittavat parametrit
-              navigation.navigate('BoulderScreen', { marker: { ...marker, routeId, markerId }, mainViewData: route, mode: 'mainView', imageUri });
-            } catch (error) {
-              console.log('Error adding route and marker: ', error);
-            }
-          };
+  const handleHideCamera = async (imageUri) => {
+    setShowCamera(false)
+    setImage(imageUri)
+    setShowBoulderScreen(true)
+  }
+
+  const setNewRouteData = async (routeData) => {
+    setShowBoulderScreen(false)
+    setLoading(true)
+    try {
+        // This function will upload the image and add the route and marker to the database
+        const id = await addRouteAndMarker(image, routeData, marker)
+        console.log("Adding route and marker with image: ", image, " route: ", routeData, " marker: ", marker)
+        setId(id)
+        console.log('Route and marker added with marker id: ', id)
+        setLoading(false)
+        // Returning to the mapScreen after adding the route and marker
+        setShowRouteAddedNotification(true)
+        setShowMap(true)
+    } catch (error) {
+        console.log('Error adding route and marker: ', error)
+    }
+}
 // Once the marker and image are set, the idea is to render boulderScreen
 // for the user to add more information about the route
 // Once all information is added, we can call addRouteAndMarker to add the route to the database
@@ -63,21 +60,21 @@ export default function MainViewController() {
 // Juho, 19-11-2024
 return (
     <View style={styles.screenBaseContainer}>
-      {showMap && (
-        <MapScreen
-          setMarker={setMarker}
-          setShowMap={setShowMap}
-          setShowCamera={setShowCamera}
-          showRouteAddedNotification={showRouteAddedNotification}
-          setShowRouteAddedNotification={setShowRouteAddedNotification}
-        />
-      )}
-      {showCamera && <CameraScreen setRouteImage={setImage} handleHideCamera={handleHideCamera} />}
-      {image && !showCamera && (
-        <ImagePreview image={image} setImage={setImage} savePicture={handleHideCamera} setRouteGradeColor={setRouteGradeColor} />
-      )}
-      {loading && (
-            <LoadingIcon/>
+        {showMap &&
+             <MapScreen 
+                setMarker={setMarker} 
+                setShowMap={setShowMap} 
+                setShowCamera={setShowCamera}
+                showRouteAddedNotification={showRouteAddedNotification}
+                setShowRouteAddedNotification={setShowRouteAddedNotification}
+            />
+        }
+        {showCamera && <CameraScreen setRouteImage={setImage} handleHideCamera={handleHideCamera}/>}
+        {showBoulderScreen && <BoulderScreen setNewRouteData={setNewRouteData} imageUri={image}/>}
+        {loading && (
+            <View style={styles.centeredbaseContainer}>
+                <Text>Loading...</Text>
+            </View>
         )}
     </View>
 )

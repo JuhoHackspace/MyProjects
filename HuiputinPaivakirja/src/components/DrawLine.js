@@ -4,7 +4,7 @@ import { Svg, Path } from 'react-native-svg';
 import styles from '../styles/CameraAndImageStyles';
 import Button from './Button';
 
-export default function DrawLine({ hideButtons, setRouteGradeColor }) {
+export default function DrawLine({ hideButtons}) {
   const [paths, setPaths] = useState([]);
   const [currentPath, setCurrentPath] = useState([]);
 
@@ -36,14 +36,10 @@ export default function DrawLine({ hideButtons, setRouteGradeColor }) {
   };
 
   const changeLineColor = () => {
-    nextLineColor((prevIndex) => {
-      const newIndex = (prevIndex + 1) % gradeColors.length;
-      if (setRouteGradeColor) {
-        setRouteGradeColor(gradeColors[newIndex]); // Päivittää routeGradeColor
-      }
-      return newIndex;
-    });
-  };
+
+    nextLineColor((prevIndex) => (prevIndex + 1) % gradeColors.length)
+}
+
 
   return (
     <View style={styles.DrawLineContainer} onTouchMove={onTouchMove} onTouchEnd={OnTouchEnd}>

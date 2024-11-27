@@ -52,7 +52,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera, showRouteAddedNotific
 
  
   const handleMarkerPress = (marker) => {
-    navigation.navigate('BoulderScreen', { marker, mode: 'marker' }); // Navigoi BoulderScreenille ja välitä markkerin tiedot
+    navigation.navigate('BoulderScreen', { marker }); // Navigoi BoulderScreenille ja välitä markkerin tiedot
   };
 
   return (

@@ -179,28 +179,28 @@ const listenToMarkers = (callback) => {
     };
 
     const fetchRouteData = async () => {
-        try {
-          const routeDocRef = doc(routes, marker.routeId);
-          const routeDoc = await getDoc(routeDocRef);
-      
-          if (routeDoc.exists()) {
-            const routeData = routeDoc.data();
-            if (routeData.routeImageUrl.startsWith('http')) {
-              setRouteData(routeData);
-            } else {
-              const storageRef = ref(storage, routeData.routeImageUrl);
-              const url = await getDownloadURL(storageRef);
-              setRouteData({ ...routeData, routeImageUrl: url });
-            }
+      try {
+        const routeDocRef = doc(routes, marker.routeId);
+        const routeDoc = await getDoc(routeDocRef);
+    
+        if (routeDoc.exists()) {
+          const routeData = routeDoc.data();
+          if (routeData.routeImageUrl.startsWith('http')) {
+            setRouteData(routeData);
           } else {
-            Alert.alert('Error', 'Route data not found.');
+            const storageRef = ref(storage, routeData.routeImageUrl);
+            const url = await getDownloadURL(storageRef);
+            setRouteData({ ...routeData, routeImageUrl: url });
           }
-        } catch (error) {
-          Alert.alert('Error', 'Failed to fetch route data.');
-          console.error(error);
-        } finally {
-          setLoading(false);
+        } else {
+          Alert.alert('Error', 'Route data not found.');
         }
-      };
+      } catch (error) {
+        Alert.alert('Error', 'Failed to fetch route data.');
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
 export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData }

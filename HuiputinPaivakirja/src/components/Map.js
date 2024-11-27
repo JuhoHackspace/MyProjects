@@ -8,8 +8,7 @@ import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import AnimatedInfo from './AnimatedInfo';
 import sectors from '../Helpers/Sectors';
 
-
-const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification, handleMarkerPress }) => {
+const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -189,7 +188,7 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
               )}
             })}
             {markers.length > 0 && showMarkers && markers.map((marker) => (
-              <Svg key={markers.routeId} style={styles.svgOverlay} onPress={()=> {handleMarkerPress(marker)}}>
+              <Svg key={markers.routeId} style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
                 <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} />
                 <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor} />
               </Svg>
