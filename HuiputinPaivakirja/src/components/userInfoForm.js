@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { useTheme, TextInput, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { Picker } from '@react-native-picker/picker';
-import { useAuth } from '../firebase/AuthProvider';
-import { AddUserInfo,fetchUserData } from '../firebase/FirebaseMethods'
 import { ScrollView } from 'react-native-gesture-handler';
 
 
@@ -95,15 +93,21 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
             />
             <View style={styles.buttonContainerVertical}>
                 <Button
-                    style={styles.button}
+                    style={styles.buttonLong}
                     mode='contained'
                     buttonColor={colors.accent}
+                    icon = "content-save"
+                    contentStyle={styles.buttonContent}
+                    labelStyle={styles.buttonLabel}
                     onPress={() => saveData(newUserData)}
                 >Save</Button>
                 <Button
-                    style={styles.button}
+                    style={styles.buttonLong}
                     mode='contained'
                     buttonColor={colors.accent}
+                    icon = "cancel"
+                    contentStyle={styles.buttonContent}
+                    labelStyle={styles.buttonLabel}
                     onPress={() => setShowForm(false)}
                 >Cancel</Button>
             </View>

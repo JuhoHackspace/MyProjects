@@ -7,15 +7,16 @@ import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
+import { useNotification } from '../context/NotificationContext';
 
-const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotification, setShowRouteAddedNotification}) => {
+const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
 
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
   const { colors } = useTheme()
-  const [showNotification, setShowNotification] = useState(false)
   const navigation = useNavigation();
   const [markers, setMarkers] = useState([]);
+  const showNotification = useNotification();
 
   useEffect(() => {
     const unsubscribe = listenToMarkers(setMarkers);
@@ -24,7 +25,7 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
 
   const handleAddNewRoute = () => {
     setAddingMarker(true);
-    setShowNotification(true)
+    showNotification('Long press on the map to add a new route', 3000);
   };
 
   const handleMapLongPress = (event) => {
@@ -48,7 +49,6 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
   const handleCancelMarker = () => {
     setAddingMarker(false);
     setNewMarker(null);
-    setShowNotification(false)
   };
 
   return (
@@ -61,10 +61,6 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera, showRouteAddedNotifica
         handleLongPress={handleMapLongPress} 
         newMarker={newMarker} 
         markers={markers}
-        showNotification={showNotification} 
-        setShowNotification={setShowNotification}
-        showRouteAddedNotification={showRouteAddedNotification}
-        setShowRouteAddedNotification={setShowRouteAddedNotification} 
       />
       <View style={styles.containerBottom}>
         {newMarker && (

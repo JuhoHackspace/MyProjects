@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { useAuth } from '../firebase/AuthProvider'
 import styles from '../styles/Styles'
 
