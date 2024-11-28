@@ -47,12 +47,13 @@ export default function ProfileScreen({ navigation }) {
 
   const saveData = async (userData) => {
     setLoading(true);
+    setShowForm(false);
     try {
         await AddUserInfo(userId, userData);
         setLoading(false);
-        setShowForm(false);
     } catch (error) {
         console.error("Error saving user data: ", error);
+        alert("Error saving user data. Please try again.");
     }
   }
 
