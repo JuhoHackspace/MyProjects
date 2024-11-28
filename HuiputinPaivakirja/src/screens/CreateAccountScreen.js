@@ -47,10 +47,13 @@ export default function CreateAccountScreen({ navigation }) {
       </View>
       <View style={styles.buttonContainerVertical}>
         <Button
-          style={styles.button}
+          style={styles.buttonLong}
           mode="contained"
           onPress={() => createAccount(username, email, password, confirmPassword)}
           buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+          icon = "account-plus"
         >
           Submit
         </Button>

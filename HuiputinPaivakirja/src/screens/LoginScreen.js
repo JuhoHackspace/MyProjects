@@ -36,6 +36,9 @@ export default function LoginScreen({ navigation }) {
           mode="contained"
           onPress={() => login(email, password)}
           buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+          icon = "login"
         >
           Login
         </Button>
@@ -44,6 +47,9 @@ export default function LoginScreen({ navigation }) {
           mode="contained"
           onPress={() => navigation.navigate('CreateAccount')}
           buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+          icon = "account-plus"
         >
           Create Account
         </Button>
