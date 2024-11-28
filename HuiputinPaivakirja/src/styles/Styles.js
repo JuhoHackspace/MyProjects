@@ -55,6 +55,14 @@ export const styles = StyleSheet.create({
         width: 200,
         margin: 10,
     },
+    buttonContent: {
+        flexDirection: 'row-reverse', // Ensure the icon is on the left
+        justifyContent: 'center', // Center the text
+    },
+    buttonLabel: {
+        flex: 1, // Ensure the text takes up the remaining space
+        textAlign: 'center', // Center the text
+    },
     inputContainer: {
         marginBottom: 20,
         paddingHorizontal: 16,

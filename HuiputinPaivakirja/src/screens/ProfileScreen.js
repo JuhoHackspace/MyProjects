@@ -72,9 +72,12 @@ export default function ProfileScreen({ navigation }) {
       {showForm && <UserInfoForm userData={userData} saveData={saveData} setShowForm={setShowForm}/>}
       {!showForm && <View style={styles.buttonContainerVertical}> 
         <Button 
-          style={styles.buttonLong} 
+          style={styles.buttonLonger} 
           mode="contained" 
+          icon="account-edit"
           buttonColor = {colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
           onPress = {() => setShowForm(true)}
         >
             Update Profile  
@@ -84,6 +87,8 @@ export default function ProfileScreen({ navigation }) {
           onPress={() => setModalVisible(true)}
           icon="trash-can"
           buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
           style={styles.buttonLonger}
         >
           Delete my account
