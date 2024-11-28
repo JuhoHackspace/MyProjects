@@ -95,15 +95,21 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
             />
             <View style={styles.buttonContainerVertical}>
                 <Button
-                    style={styles.button}
+                    style={styles.buttonLong}
                     mode='contained'
                     buttonColor={colors.accent}
+                    icon = "content-save"
+                    contentStyle={styles.buttonContent}
+                    labelStyle={styles.buttonLabel}
                     onPress={() => saveData(newUserData)}
                 >Save</Button>
                 <Button
-                    style={styles.button}
+                    style={styles.buttonLong}
                     mode='contained'
                     buttonColor={colors.accent}
+                    icon = "cancel"
+                    contentStyle={styles.buttonContent}
+                    labelStyle={styles.buttonLabel}
                     onPress={() => setShowForm(false)}
                 >Cancel</Button>
             </View>
