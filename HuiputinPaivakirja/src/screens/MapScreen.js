@@ -9,11 +9,10 @@ import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
 import { useNotification } from '../context/NotificationContext';
 
-const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
-
+const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
-  const { colors } = useTheme()
+  const { colors } = useTheme();
   const navigation = useNavigation();
   const [markers, setMarkers] = useState([]);
   const showNotification = useNotification();
@@ -49,29 +48,20 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
   const handleCancelMarker = () => {
     setAddingMarker(false);
     setNewMarker(null);
-    setShowNotification(false);
   };
 
- 
   const handleMarkerPress = (marker) => {
-    navigation.navigate('BoulderScreen', { marker }); // Navigoi BoulderScreenille ja välitä markkerin tiedot
+    navigation.navigate('BoulderScreen', { marker }); // Navigate to BoulderScreen and pass marker data
   };
 
   return (
     <View style={styles.screenBaseContainer}>
-      {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
-
       <Map
         handleLongPress={handleMapLongPress}
         newMarker={newMarker}
         markers={markers}
-        onMarkerPress={handleMarkerPress}
-        handleMarkerPress={handleMarkerPress} // Välitetään painallustoiminto Map-komponentille
-        showNotification={showNotification}
-        setShowNotification={setShowNotification}
-        showRouteAddedNotification={showRouteAddedNotification}
-        setShowRouteAddedNotification={setShowRouteAddedNotification}
+        handleMarkerPress={handleMarkerPress} // Pass handleMarkerPress to Map component
       />
       <View style={styles.containerBottom}>
         {newMarker && (

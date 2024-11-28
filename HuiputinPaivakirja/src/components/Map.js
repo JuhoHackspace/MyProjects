@@ -7,7 +7,7 @@ import { Gesture,
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import sectors from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, markers }) => {
+const Map = ({ handleLongPress, newMarker, markers, handleMarkerPress }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -172,7 +172,7 @@ const Map = ({ handleLongPress, newMarker, markers }) => {
                 )}
               })}
               {markers.length > 0 && showMarkers && markers.map((marker) => (
-                  <Svg key={marker.id} style={{position: 'absolute', left: marker.x - 4, top: marker.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={()=>{console.log("Press event svg: ", marker.routeId)}}>
+                  <Svg key={marker.id} style={{position: 'absolute', left: marker.x - 4, top: marker.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={() => handleMarkerPress(marker)}>
                     <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
                     <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor}/>
                   </Svg>

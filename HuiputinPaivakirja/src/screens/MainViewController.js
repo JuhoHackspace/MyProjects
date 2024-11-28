@@ -72,9 +72,7 @@ return (
         {showCamera && <CameraScreen setRouteImage={setImage} handleHideCamera={handleHideCamera}/>}
         {showBoulderScreen && <BoulderScreen setNewRouteData={setNewRouteData} imageUri={image}/>}
         {loading && (
-            <View style={styles.centeredbaseContainer}>
-                <Text>Loading...</Text>
-            </View>
+          <LoadingIcon/>
         )}
     </View>
 )
