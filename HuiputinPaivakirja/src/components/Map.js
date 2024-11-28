@@ -5,10 +5,9 @@ import { Gesture,
          GestureDetector, 
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import AnimatedInfo from './AnimatedInfo';
 import sectors from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, handleMarkerPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
+const Map = ({ handleLongPress, newMarker, markers }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -143,20 +142,6 @@ const Map = ({ handleLongPress, handleMarkerPress, newMarker, markers, showNotif
 
   return (
     <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
-      {showNotification &&
-         <AnimatedInfo 
-            showNotification={showNotification} 
-            setShowNotification={setShowNotification} 
-            text="Long press to add a new route" 
-         />
-      }
-      {showRouteAddedNotification &&
-         <AnimatedInfo 
-            showNotification={showRouteAddedNotification} 
-            setShowNotification={setShowRouteAddedNotification} 
-            text="Route succesfully added" 
-         />
-      }
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
           <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
             <Animated.Image
@@ -168,31 +153,31 @@ const Map = ({ handleLongPress, handleMarkerPress, newMarker, markers, showNotif
                 setImageHeight(height);
               }}
             />
-            {newMarker && (
-              <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
-                <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red" />
-              </Svg>
-            )}
-            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
-              if(cluster) {
-                return (
-                <Svg key={cluster.id} style={styles.svgOverlay}>
-                  <Rect x={cluster.x-30} y={cluster.y-12} width={60} height={15} fill="red" />
-                  <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
-                      {cluster.name}
-                  </Text>
-                  <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
-                      {cluster.count}
-                  </Text>
-                </Svg>
+            <Svg style={styles.svgOverlay}>
+              {newMarker && (
+                  <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red"/>
               )}
-            })}
-            {markers.length > 0 && showMarkers && markers.map((marker) => (
-              <Svg key={markers.routeId} style={styles.svgOverlay} onPress={() => {handleMarkerPress(marker)} }>
-                <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} />
-                <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor} />
-              </Svg>
-            ))}
+              {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
+                if(cluster) {
+                  return (
+                  <React.Fragment key={cluster.id}>
+                    <Rect x={cluster.x-30} y={cluster.y-12} width={60} height={15} fill="red" />
+                    <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
+                        {cluster.name}
+                    </Text>
+                    <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
+                        {cluster.count}
+                    </Text>
+                  </React.Fragment>
+                )}
+              })}
+              {markers.length > 0 && showMarkers && markers.map((marker) => (
+                  <Svg key={marker.id} style={{position: 'absolute', left: marker.x - 4, top: marker.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={()=>{console.log("Press event svg: ", marker.routeId)}}>
+                    <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
+                    <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor}/>
+                  </Svg>
+              ))}
+            </Svg>
           </Animated.View>
         </GestureDetector>
     </GestureHandlerRootView>

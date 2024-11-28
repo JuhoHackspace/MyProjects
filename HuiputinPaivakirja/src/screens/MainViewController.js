@@ -4,7 +4,9 @@ import CameraScreen from './CameraScreen'
 import MapScreen from './MapScreen'
 import styles from '../styles/Styles'
 import { addRouteAndMarker } from '../firebase/FirebaseMethods'
-import BoulderScreen from './boulderScreen'
+import LoadingIcon from '../components/LoadingIcon'
+import { useNotification } from '../context/NotificationContext'
+import BoulderScreen from '../screens/boulderScreen'
 /**
  * This component is the main controller for viewing routes and adding new routes
  * It keeps track of the current state of the app and manages the transitions
@@ -21,8 +23,8 @@ export default function MainViewController() {
   const [image, setImage] = useState(null)
   const [id, setId] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [ showRouteAddedNotification, setShowRouteAddedNotification ] = useState(false)
-  
+  const showNotification = useNotification()
+
   // This function is called when the user hides the camera screen. This is called once we have the marker
   // data and the imageUri. This function could set the boulderScreen visible. Another async function
   // defined here, could be called from the boulderScreen to finally add the route to the database.
@@ -42,9 +44,9 @@ export default function MainViewController() {
         setId(id)
         console.log('Route and marker added with marker id: ', id)
         setLoading(false)
-        // Returning to the mapScreen after adding the route and marker
-        setShowRouteAddedNotification(true)
+        // Returning to the mapScreen after adding the route and marker        
         setShowMap(true)
+        showNotification('Route successfully added', 3000)
     } catch (error) {
         console.log('Error adding route and marker: ', error)
     }
@@ -65,8 +67,6 @@ return (
                 setMarker={setMarker} 
                 setShowMap={setShowMap} 
                 setShowCamera={setShowCamera}
-                showRouteAddedNotification={showRouteAddedNotification}
-                setShowRouteAddedNotification={setShowRouteAddedNotification}
             />
         }
         {showCamera && <CameraScreen setRouteImage={setImage} handleHideCamera={handleHideCamera}/>}
