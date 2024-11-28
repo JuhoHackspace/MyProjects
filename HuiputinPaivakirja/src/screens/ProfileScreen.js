@@ -53,7 +53,7 @@ export default function ProfileScreen({ navigation }) {
         setLoading(false);
     } catch (error) {
         console.error("Error saving user data: ", error);
-        alert("Error saving user data. Please try again.");
+        Alert.alert("Error saving user data. Please try again.");
     }
   }
 
