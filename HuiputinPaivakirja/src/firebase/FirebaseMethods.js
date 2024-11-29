@@ -1,4 +1,5 @@
 import {
+        arrayUnion,
         db,
         storage,
         collection,
@@ -10,6 +11,7 @@ import {
         getDocs,
         getDoc,
         setDoc,
+        updateDoc,
         ref,
         uploadBytesResumable,
         getDownloadURL,
@@ -196,4 +198,26 @@ const fetchRouteData = async (routeId, setRouteData, setLoading) => {
     }
 };
 
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData }
+const voteForDelete = async (routeId) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        await updateDoc(routeDocRef, {
+            votedForDelete: arrayUnion({votedBy: auth.currentUser.uid, votedAt: new Date().toISOString()}),
+        });
+        console.log('Voted for delete successfully!');
+    } catch (error) {
+        console.error('Error voting for delete:', error);
+    }
+};
+
+const setRouteInvisible = async (marker) => {
+    try {
+        const markerDocRef = doc(markers, marker.id);
+        await updateDoc(markerDocRef, {
+            visible: false,
+        });
+    } catch (error) {
+        console.error('Error deleting route:', error);
+    }
+}
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete }

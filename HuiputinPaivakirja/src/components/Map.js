@@ -171,12 +171,14 @@ const Map = ({ handleLongPress, newMarker, markers, handleMarkerPress }) => {
                   </React.Fragment>
                 )}
               })}
-              {markers.length > 0 && showMarkers && markers.map((marker) => (
+              {markers.length > 0 && showMarkers && markers.map((marker) => {
+                  return (
                   <Svg key={marker.id} style={{position: 'absolute', left: marker.x - 4, top: marker.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={() => handleMarkerPress(marker)}>
                     <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
                     <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor}/>
                   </Svg>
-              ))}
+                  )
+              })}
             </Svg>
           </Animated.View>
         </GestureDetector>
