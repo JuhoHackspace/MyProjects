@@ -84,7 +84,6 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
                 routeGradeVotes: [],
                 votedForDelete: [],
                 sentBy: [], // Tähän tulee lista käyttäjän id:stä, joka on lähettänyt reitin
-                visible: true,
                 votedGrade: '',
 
 
@@ -111,6 +110,7 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
             created: new Date().toISOString(),
             holdColor: routeInfo.holdColor,
             gradeColor: routeInfo.grade,
+            visible: true,
           });
           const markerId = docRef.id;
           console.log("Marker added with ID: ", docRef.id);
@@ -180,7 +180,7 @@ const listenToMarkers = (callback) => {
         });
     };
 
-const fetchRouteData = async (routeId, setRouteData, setLoading) => {
+/*const fetchRouteData = async (routeId, setRouteData, setLoading) => {
     try {
         const routeDocRef = doc(routes, routeId);
         const routeDoc = await getDoc(routeDocRef);
@@ -196,6 +196,23 @@ const fetchRouteData = async (routeId, setRouteData, setLoading) => {
     } finally {
         setLoading(false);
     }
+};*/
+
+const fetchRouteData = (routeId, setRouteData, setLoading) => {
+    const routeDocRef = doc(routes, routeId);
+    const unsubscribe = onSnapshot(routeDocRef, (doc) => {
+      if (doc.exists()) {
+        setRouteData(doc.data());
+      } else {
+        console.log('No route data found!');
+        setRouteData(null);
+      }
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching route data:', error);
+    });
+  
+    return unsubscribe;
 };
 
 const voteForDelete = async (routeId) => {
@@ -210,9 +227,9 @@ const voteForDelete = async (routeId) => {
     }
 };
 
-const setRouteInvisible = async (marker) => {
+const setRouteInvisible = async (markerId) => {
     try {
-        const markerDocRef = doc(markers, marker.id);
+        const markerDocRef = doc(markers, markerId);
         await updateDoc(markerDocRef, {
             visible: false,
         });
@@ -220,4 +237,4 @@ const setRouteInvisible = async (marker) => {
         console.error('Error deleting route:', error);
     }
 }
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete }
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible }

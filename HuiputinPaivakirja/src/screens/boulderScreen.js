@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView,Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import { fetchRouteData, voteForDelete } from '../firebase/FirebaseMethods';
+import { fetchRouteData, voteForDelete, setRouteInvisible } from '../firebase/FirebaseMethods';
 import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
@@ -25,12 +25,15 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const userId = user?.uid;
 
   useEffect(() => {
-    function loadData() {
+      let unsubscribe;
       if (route != undefined) {
-        fetchRouteData(marker.routeId, setRouteData, setLoading);
+        unsubscribe = fetchRouteData(marker.routeId, setRouteData, setLoading);
       }
-    }
-    loadData()
+      return () => {
+        if(unsubscribe) {
+          unsubscribe();
+        }
+      };
   }, []);
 
   const calculateAverageGrade = () => {
@@ -44,21 +47,24 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }
 
   const handleVoteForDelete = async () => {
-    if (routeData.votedForDelete.some(vote => vote.votedBy === userId)) {
+    /*if (routeData.votedForDelete.some(vote => vote.votedBy === userId)) {
       Alert.alert('Error', 'You have already voted for delete.');
       return;
-    }
+    }*/
     try {
       await voteForDelete(marker.routeId);
-      Alert.alert('Success', 'Voted for delete successfully!');
       if(routeData.votedForDelete.length + 1 === 3) {
+        await setRouteInvisible(marker.id);
         Alert.alert('Success', 'Route will be deleted');
+      }else {
+        Alert.alert('Success', 'Voted for delete successfully!');
       }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to vote for delete.');
     }
   }
+
   const handleSave = async () => {
     if (!gradeVote.trim() || !tryCount.trim()) {
       Alert.alert('Error', 'Please fill out all fields.');

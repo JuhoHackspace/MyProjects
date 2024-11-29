@@ -28,7 +28,7 @@ const Map = ({ handleLongPress, newMarker, markers, handleMarkerPress }) => {
     const clusters = sectors.map(sector => {
       const sectorMarkers = markers.filter(marker => 
         marker.x >= sector.xMin && marker.x <= sector.xMax &&
-        marker.y >= sector.yMin && marker.y <= sector.yMax
+        marker.y >= sector.yMin && marker.y <= sector.yMax && marker.visible
       );
       const centerX = (sector.xMin + sector.xMax) / 2;
       const centerY = (sector.yMin + sector.yMax) / 2;
@@ -172,12 +172,14 @@ const Map = ({ handleLongPress, newMarker, markers, handleMarkerPress }) => {
                 )}
               })}
               {markers.length > 0 && showMarkers && markers.map((marker) => {
+                if(marker.visible) {  
                   return (
                   <Svg key={marker.id} style={{position: 'absolute', left: marker.x - 4, top: marker.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={() => handleMarkerPress(marker)}>
                     <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
                     <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor}/>
                   </Svg>
                   )
+                }
               })}
             </Svg>
           </Animated.View>
