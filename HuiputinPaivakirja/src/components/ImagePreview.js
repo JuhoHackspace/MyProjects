@@ -1,30 +1,26 @@
-import { View, ImageBackground,} from 'react-native'
-import React, { useRef, useState, } from "react";
-import Button from './Button'
-import styles from '../styles/CameraAndImageStyles'
+import React, { useRef, useState } from 'react';
+import { View, ImageBackground } from 'react-native';
+import Button from './Button';
+import styles from '../styles/CameraAndImageStyles';
 import { captureRef } from 'react-native-view-shot';
 import DrawLine from './DrawLine';
 
+export default function ImagePreview({ image, setImage, savePicture}) { // -N
+  const captureRefView = useRef(null);
+  const [hideButtons, setHideButtons] = useState(true);
 
-export default function ImagePreview({ image, setImage, savePicture }) {
- 
-    const captureRefView = useRef(null)
-    const [hideButtons, setHideButtons] = useState(true)
-  
-
-    const handleSavePic = async () => {
-      setHideButtons(false)
-      try {
-        const picAndLines = await captureRef(captureRefView, {
-          format: "png",
-          quality: 0.8,
-        })
-        savePicture(picAndLines)//Tässä on nyt kuva ja piirretty viiva
-        //setHideButtons(true) 
-      } catch (error) {
-        console.error("failed to capture immmage", error)
-      }
+  const handleSavePic = async () => {
+    setHideButtons(false);
+    try {
+      const picAndLines = await captureRef(captureRefView, {
+        format: 'png',
+        quality: 0.8,
+      });
+      savePicture(picAndLines); // Tässä on nyt kuva ja piirretty viiva
+    } catch (error) {
+      console.error('failed to capture image', error);
     }
+  };
 
   return (
     // Display the image in the background with the retake and save buttons on top
@@ -50,4 +46,3 @@ export default function ImagePreview({ image, setImage, savePicture }) {
       
   );
 }
-

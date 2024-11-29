@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper'
+import { Button } from 'react-native-paper';
 import Map from '../components/Map';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../styles/Styles'
+import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
 import { useNotification } from '../context/NotificationContext';
 
-const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
-
+const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
-  const { colors } = useTheme()
+  const { colors } = useTheme();
   const navigation = useNavigation();
   const [markers, setMarkers] = useState([]);
   const showNotification = useNotification();
@@ -41,9 +40,9 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
   };
 
   const handleSetMarker = () => {
-    setMarker(newMarker) // Open CameraScreen after setting the marker
-    setShowMap(false)
-    setShowCamera(true)
+    setMarker(newMarker); // Open CameraScreen after setting the marker
+    setShowMap(false);
+    setShowCamera(true);
   };
 
   const handleCancelMarker = () => {
@@ -51,16 +50,18 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
     setNewMarker(null);
   };
 
+  const handleMarkerPress = (marker) => {
+    navigation.navigate('BoulderScreen', { marker }); // Navigate to BoulderScreen and pass marker data
+  };
+
   return (
     <View style={styles.screenBaseContainer}>
-
-      {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
-
-      <Map 
-        handleLongPress={handleMapLongPress} 
-        newMarker={newMarker} 
+      <Map
+        handleLongPress={handleMapLongPress}
+        newMarker={newMarker}
         markers={markers}
+        handleMarkerPress={handleMarkerPress} // Pass handleMarkerPress to Map component
       />
       <View style={styles.containerBottom}>
         {newMarker && (
@@ -70,13 +71,17 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
               mode="contained"
               onPress={handleSetMarker}
               buttonColor={colors.accent}
-            >Set</Button>
+            >
+              Set
+            </Button>
             <Button
               style={styles.button}
               mode="contained"
               onPress={handleCancelMarker}
               buttonColor={colors.accent}
-            >Cancel</Button>
+            >
+              Cancel
+            </Button>
           </View>
         )}
         {!addingMarker && (
@@ -86,7 +91,9 @@ const MapScreen = ({setMarker, setShowMap, setShowCamera}) => {
               mode="contained"
               onPress={handleAddNewRoute}
               buttonColor={colors.accent}
-            >Add new route</Button>
+            >
+              Add new route
+            </Button>
           </View>
         )}
       </View>

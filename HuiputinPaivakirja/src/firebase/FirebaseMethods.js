@@ -85,6 +85,7 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
                 visible: true,
                 votedGrade: '',
 
+
             });
             const routeId = docRef.id;
             console.log('Image added with ID: ', docRef.id);
@@ -100,20 +101,20 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
 
 const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         try {
-            const routeId = await saveRouteToFirebase(imageUri, routeInfo);
-            const docRef = await addDoc(markers, {
-                routeId: routeId,
-                x: markerInfo.x,
-                y: markerInfo.y,
-                created: new Date().toISOString(),
-                holdColor: routeInfo.holdColor,
-                gradeColor: routeInfo.grade,
-            });
-            const markerId = docRef.id;
-            console.log("Marker added with ID: ", docRef.id);
-            return markerId;
+          const routeId = await saveRouteToFirebase(imageUri, routeInfo);
+          const docRef = await addDoc(markers, {
+            routeId: routeId,
+            x: markerInfo.x,
+            y: markerInfo.y,
+            created: new Date().toISOString(),
+            holdColor: routeInfo.holdColor,
+            gradeColor: routeInfo.grade,
+          });
+          const markerId = docRef.id;
+          console.log("Marker added with ID: ", docRef.id);
+          return { routeId, markerId };
         } catch (error) {
-            console.error('Error adding route and marker:', error);
+          console.error('Error adding route and marker:', error);
         }
 }
 
@@ -177,4 +178,29 @@ const listenToMarkers = (callback) => {
         });
     };
 
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers }
+    const fetchRouteData = async () => {
+      try {
+        const routeDocRef = doc(routes, marker.routeId);
+        const routeDoc = await getDoc(routeDocRef);
+    
+        if (routeDoc.exists()) {
+          const routeData = routeDoc.data();
+          if (routeData.routeImageUrl.startsWith('http')) {
+            setRouteData(routeData);
+          } else {
+            const storageRef = ref(storage, routeData.routeImageUrl);
+            const url = await getDownloadURL(storageRef);
+            setRouteData({ ...routeData, routeImageUrl: url });
+          }
+        } else {
+          Alert.alert('Error', 'Route data not found.');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'Failed to fetch route data.');
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData }
