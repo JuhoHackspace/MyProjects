@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Image, StyleSheet, Button, Alert, ActivityIndicator, ScrollView,Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { routes } from '../firebase/Config';
+import { fetchRouteData } from '../firebase/FirebaseMethods';
+import LoadingIcon from '../components/LoadingIcon';
 
 const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const  marker = route != undefined ? route.params.marker: null;
   const [settingRouteData, setSettingRouteData] = useState(route != undefined ? false : true);
   const [routeData, setRouteData] = useState(null);
   const [loading, setLoading] = useState(route != undefined ? true : false);
+  const [imageLoading, setImageLoading] = useState(route != undefined ? true : false);
+  const [image, setImage] = useState(null);
   const [gradeVote, setGradeVote] = useState('');
   const [tryCount, setTryCount] = useState('');
   const [newRouteName, setNewRouteName] = useState('');
@@ -17,27 +19,12 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [votedForDelete, setVoteForDelete] = useState('NO');
 
   useEffect(() => {
-    if (route != undefined) {
-    const fetchRouteData = async () => {
-      try {
-        const routeDocRef = doc(routes, marker.routeId);
-        const routeDoc = await getDoc(routeDocRef);
-
-        if (routeDoc.exists()) {
-          console.log('routeDocData',routeDoc.data());
-          setRouteData(routeDoc.data());
-        } else {
-          Alert.alert('Error', 'Route data not found.');
-        }
-      } catch (error) {
-        console.error(error);
-        Alert.alert('Error', 'Failed to fetch route data.');
-      } finally {
-        setLoading(false);
+    function loadData() {
+      if (route != undefined) {
+        fetchRouteData(marker.routeId, setRouteData, setLoading);
       }
-    };
-    fetchRouteData();
-  }
+    }
+    loadData()
   }, []);
 
   const calculateAverageGrade = () => {
@@ -67,23 +54,30 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       Alert.alert('Error', 'Failed to save data.');
     }
   };
-
+  const handleImageLoad = () => {
+        setImageLoading(false);
+  };
+  
   if (loading) {
     return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" />
-      </View>
+      <LoadingIcon/>
     );
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image
-        source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
-        style={styles.image}
-        onError={() => Alert.alert('Error', 'Failed to load the image.')}
-      />
-      {settingRouteData ? (
+        <Image
+            source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
+            style={!imageLoading ? styles.image: {display: 'none'}}
+            onLoad={handleImageLoad}
+            onError={() => Alert.alert('Error', 'Failed to load the image.')}
+        />
+        {imageLoading && ( 
+          <View style={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+            <LoadingIcon/>
+          </View>
+      )}
+      {settingRouteData && (
         <>
           <TextInput
             style={styles.input}
@@ -122,7 +116,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             <Picker.Item label="White" value="white" />
           </Picker>
         </>
-      ) : (
+      )}
+      {!settingRouteData && !imageLoading && (
         <>
           <View>
             <Text>Route Name: {routeData?.routeName}</Text>
@@ -154,6 +149,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           </Picker>
         </>
       )}
+      {!imageLoading && 
       <Button
         title="Save"
         onPress={() => {
@@ -163,7 +159,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             handleSave();
           }
         }}
-      />
+      />}
     </ScrollView>
   );
 };
@@ -173,7 +169,6 @@ const styles = StyleSheet.create({
   image: { width: '100%', height: 700, resizeMode: 'contain' },
   input: { borderWidth: 1, marginVertical: 8, padding: 8 },
   picker: { height: 50, width: '100%' },
-  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });
 
 export default BoulderScreen;
