@@ -7,6 +7,9 @@ import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
 import { useAuth } from '../firebase/AuthProvider';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
+import { useNavigation } from '@react-navigation/native';
+import { useNotification } from '../context/NotificationContext';
 
 const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const  marker = route != undefined ? route.params.marker: null;
@@ -23,6 +26,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const { colors } = useTheme();
   const { user } = useAuth();
   const userId = user?.uid;
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
+  const showNotification = useNotification();
 
   useEffect(() => {
       let unsubscribe;
@@ -52,11 +58,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       return;
     }*/
     try {
-      await voteForDelete(marker.routeId);
       if(routeData.votedForDelete.length + 1 === 3) {
-        await setRouteInvisible(marker.id);
-        Alert.alert('Success', 'Route will be deleted');
-      }else {
+        setModalVisible(true);
+      } else {
+        await voteForDelete(marker.routeId);
         Alert.alert('Success', 'Voted for delete successfully!');
       }
     } catch (error) {
@@ -65,6 +70,18 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
   }
 
+  const onDeleteRoute = async () => {
+    setModalVisible(false);
+    try {
+      await voteForDelete(marker.routeId);
+      await setRouteInvisible(marker.id);
+      showNotification('Route deleted successfully!', 4000);
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to delete route.');
+    }
+  }
   const handleSave = async () => {
     if (!gradeVote.trim() || !tryCount.trim()) {
       Alert.alert('Error', 'Please fill out all fields.');
@@ -93,6 +110,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }
 
   return (
+    <>
+    {modalVisible && <ConfirmDeleteModal visible={modalVisible} onClose={() => setModalVisible(false)} onDelete={onDeleteRoute}/>}
     <ScrollView>
         <Image
             source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
@@ -212,6 +231,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         </View>
       }
     </ScrollView>
+    </>
   );
 };
 
