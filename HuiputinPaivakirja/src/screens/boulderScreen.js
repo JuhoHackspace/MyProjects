@@ -88,6 +88,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       return;
     }
     if(routeData.sentBy.some(sentBy => sentBy.senderId === userId)) {
+      setShowMarkAsSent(false);
       Alert.alert('Error', 'You have already marked this route as sent.');
       return;
     }
@@ -104,6 +105,16 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         setImageLoading(false);
   };
   
+  const handleShowMarkAsSent = () => {
+    if(!showMarkAsSent) {
+      setGradeVote('');
+      setTryCount('');
+      setShowMarkAsSent(true);
+    }else {
+      setShowMarkAsSent(false);
+    }
+  }
+
   if (loading) {
     return (
       <LoadingIcon/>
@@ -205,7 +216,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               icon={showMarkAsSent ? "cancel" : "check"}
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
-              onPress={() => setShowMarkAsSent(!showMarkAsSent)}
+              onPress={handleShowMarkAsSent}
             >
               {showMarkAsSent ? "Cancel" : "Mark as sent"}
             </Button>
