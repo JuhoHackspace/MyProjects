@@ -237,4 +237,22 @@ const setRouteInvisible = async (markerId) => {
         console.error('Error deleting route:', error);
     }
 }
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible }
+
+const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
+    const date = new Date().toISOString();
+    try {
+        const routeDocRef = doc(routes, routeId);
+        await updateDoc(routeDocRef, {
+            sentBy: arrayUnion({senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date}),
+            routeGradeVotes: arrayUnion(gradeVote),
+        });
+        const userDocRef = doc(users, auth.currentUser.uid);
+        await updateDoc(userDocRef, {
+            sends: arrayUnion({route: routeId, tries: tryCount, sentAt: date}),
+        });
+        console.log('Route marked as sent successfully!');
+    } catch (error) {
+        console.error('Error marking route as sent:', error);
+    }
+};
+export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent }

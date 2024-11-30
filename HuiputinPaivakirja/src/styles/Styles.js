@@ -118,6 +118,13 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 20,
     },
+    image: { 
+        width: '100%', 
+        height: 700, 
+        resizeMode: 'contain', 
+        marginTop: 32, 
+        marginBottom: 16 
+    },
 });
 
 export default styles;

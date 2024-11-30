@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView,Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import { fetchRouteData, voteForDelete, setRouteInvisible } from '../firebase/FirebaseMethods';
+import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent } from '../firebase/FirebaseMethods';
 import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
@@ -53,10 +53,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }
 
   const handleVoteForDelete = async () => {
-    /*if (routeData.votedForDelete.some(vote => vote.votedBy === userId)) {
+    if (routeData.votedForDelete.some(vote => vote.votedBy === userId)) {
       Alert.alert('Error', 'You have already voted for delete.');
       return;
-    }*/
+    }
     try {
       if(routeData.votedForDelete.length + 1 === 3) {
         setModalVisible(true);
@@ -87,17 +87,18 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
-
+    if(routeData.sentBy.some(sentBy => sentBy.senderId === userId)) {
+      Alert.alert('Error', 'You have already marked this route as sent.');
+      return;
+    }
     try {
-      const routeDocRef = doc(routes, marker.routeId);
-      await updateDoc(routeDocRef, {
-        routeGradeVotes: arrayUnion(gradeVote.trim()),
-      });
-      Alert.alert('Success', 'Data updated successfully!');
+      await markRouteAsSent(marker.routeId, gradeVote, tryCount);
+      showNotification('Route marked as sent successfully!', 4000);
+      navigation.goBack();
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to save data.');
-    }
+      Alert.alert('Error', 'Failed to mark route as sent.');
+    }  
   };
   const handleImageLoad = () => {
         setImageLoading(false);
@@ -115,7 +116,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     <ScrollView>
         <Image
             source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
-            style={!imageLoading ? styleS.image: {display: 'none'}}
+            style={!imageLoading ? styles.image: {display: 'none'}}
             onLoad={handleImageLoad}
             onError={() => Alert.alert('Error', 'Failed to load the image.')}
         />
@@ -136,7 +137,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             <Text>Route Tag Color</Text>
             <Picker
               selectedValue={newRouteGrade}
-              style={styleS.picker}
+              style={styles.input}
               onValueChange={(itemValue) => setNewRouteGrade(itemValue)}
             >
               <Picker.Item label="Yellow" value="yellow" />
@@ -151,7 +152,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             <Text>Route Hold Color</Text>
             <Picker
               selectedValue={newRouteHoldColor}
-              style={styleS.picker}
+              style={styles.input}
               onValueChange={(itemValue) => setNewRouteHoldColor(itemValue)}
             >
               <Picker.Item label="Yellow" value="yellow" />
@@ -170,7 +171,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         <>
           <View style={styles.inputContainer}>
             <Text style={styles.basicText}>Route Name: {routeData?.routeName}</Text>
-            <Text style={styles.basicText}>Sent By: {routeData?.sentBy.join(', ')}</Text>
+            <Text style={styles.basicText}>Sent By: {routeData?.sentBy.map(entry => entry.senderName).join(', ')}</Text>
             <Text style={styles.basicText}>Average Grade: {calculateAverageGrade()}</Text>
             <Text style={styles.basicText}>Route Hold Color: {routeData?.routeHoldColor}</Text>
             <Text style={styles.basicText}>Route Grade Color: {routeData?.routeGradeColor}</Text>
@@ -201,6 +202,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               mode="contained"
               style={styles.buttonLonger}
               buttonColor= {colors.accent}
+              icon={showMarkAsSent ? "cancel" : "check"}
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
               onPress={() => setShowMarkAsSent(!showMarkAsSent)}
             >
               {showMarkAsSent ? "Cancel" : "Mark as sent"}
@@ -211,6 +215,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               mode="contained"
               style={styles.buttonLonger}
               buttonColor= {colors.accent}
+              icon="content-save"
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
               onPress={() => {
                 if (settingRouteData) {
                   handleCreateRoute();
@@ -225,6 +232,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               mode="contained"
               style={styles.buttonLonger}
               buttonColor= {colors.accent}
+              icon="vote"
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
               onPress={handleVoteForDelete}
             >Vote for delete {routeData?.votedForDelete.length}/3</Button>
           )}
@@ -234,10 +244,5 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     </>
   );
 };
-
-const styleS = StyleSheet.create({
-  image: { width: '100%', height: 700, resizeMode: 'contain', marginTop: 32, marginBottom: 16 },
-  picker: { height: 50, width: '100%' },
-});
 
 export default BoulderScreen;
