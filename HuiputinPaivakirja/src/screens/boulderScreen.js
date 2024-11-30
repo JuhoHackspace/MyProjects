@@ -42,6 +42,12 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       };
   }, []);
 
+  useEffect(() => {
+    if (routeData?.sentBy.length === 0) {
+      showNotification('Be the first to send this route!', 4000);
+    }
+  }, [routeData]);
+
   const calculateAverageGrade = () => {
     if (!routeData?.routeGradeVotes?.length) return 'No votes yet';
     const total = routeData.routeGradeVotes.reduce((sum, grade) => sum + parseInt(grade, 10), 0);
