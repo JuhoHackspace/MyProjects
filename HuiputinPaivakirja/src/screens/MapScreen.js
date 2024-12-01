@@ -22,6 +22,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
     return () => unsubscribe();
   }, []);
 
+
   const handleAddNewRoute = () => {
     setAddingMarker(true);
     showNotification('Long press on the map to add a new route', 3000);

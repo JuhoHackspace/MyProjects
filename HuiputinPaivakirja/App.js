@@ -2,13 +2,16 @@ import React from 'react';
 import { ThemeProvider } from './src/theme/CustomTheme';
 import Navigation from './src/navigation/Navigation';
 import { NotificationProvider } from './src/context/NotificationContext';
+import MarkerProvider from './src/context/MarkerProvider';
 
 export default function App() {
   return (
   
     <ThemeProvider>
       <NotificationProvider>
-        <Navigation />
+        <MarkerProvider>
+          <Navigation />
+        </MarkerProvider>
       </NotificationProvider>
     </ThemeProvider>
   );
