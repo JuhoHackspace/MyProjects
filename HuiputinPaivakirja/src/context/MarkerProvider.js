@@ -20,7 +20,7 @@ export default function MarkerProvider({children}) {
       } else {
         const newRoutes = newMarkers.filter(marker => !initialMarkers.some(initialMarker => initialMarker.id === marker.id));
         if (newRoutes.length > 0) {
-           setNewRoutes(newRoutes);
+           showNotification('New route(s) to climb', 4000);
         }
       }
       setMarkers(newMarkers);
@@ -53,13 +53,13 @@ export default function MarkerProvider({children}) {
       };
     });
     console.log('Clusters: ', clusters);
-    const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.map(route => route.id).includes(id)));
+    /*const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.map(route => route.id).includes(id)));
     const clusterNames = clustersWithNewRoutes.map(cluster => cluster.name).join(', ');
     if (clustersWithNewRoutes.length === 1) {
       showNotification(`New route(s) to climb on sector ${clusterNames}`, 3000);
     } else if (clustersWithNewRoutes.length > 1) {
       showNotification(`New route(s) to climb on sectors ${clusterNames}`, 3000);
-    }
+    }*/
     return clusters;
   };
   
