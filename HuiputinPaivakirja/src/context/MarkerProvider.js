@@ -65,6 +65,9 @@ export default function MarkerProvider({children}) {
       };
     });
     console.log('Clusters: ', clusters);
+    if (newRoutes.current.length === 0) {
+        return clusters;
+    }
     const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.current.map(route => route.id).includes(id)));
     const clusterNames = clustersWithNewRoutes.map(cluster => cluster.name).join(', ');
     let routeCreatorId = null;
@@ -74,10 +77,10 @@ export default function MarkerProvider({children}) {
     if(!(clustersWithNewRoutes.length === 1 && routeCreatorId === userId)) {
         if(clustersWithNewRoutes.length > 0) {
             showNotification('New route(s) to climb in ' + clusterNames, 8000);
-            initialMarkers.current = {...initialMarkers.current, ...newRoutes.current};
+            initialMarkers.current = [...initialMarkers.current, ...newRoutes.current];
         } else if (newRoutes.length > 0) {
             showNotification('No new routes to climb!', 8000);
-            initialMarkers.current = {...initialMarkers.current, ...newRoutes.current};
+            initialMarkers.current = [...initialMarkers.current, ...newRoutes.current];
         }
     }
     return clusters;
