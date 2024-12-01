@@ -26,7 +26,7 @@ export default function MarkerProvider({children}) {
         console.log('Initial markers: ', initialMarkers.current);
       } else {
         const _newRoutes = newMarkers.filter(marker => !(initialMarkers.current.some(initialMarker => initialMarker.id === marker.id)));
-        console.log('New routes: ', newRoutes);
+        console.log('New routes: ', _newRoutes);
         if (_newRoutes.length > 0) {
            console.log('New routes added!');
            newRoutes.current = _newRoutes;
@@ -74,7 +74,7 @@ export default function MarkerProvider({children}) {
     if(newRoutes.current.length === 1) {
         routeCreatorId = await getRouteCreatorId(newRoutes.current[0].routeId);
     }
-    if(!(clustersWithNewRoutes.length === 1 && routeCreatorId === userId)) {
+    if(!(newRoutes.current.length === 1 && routeCreatorId === userId)) {
         if(clustersWithNewRoutes.length > 0) {
             showNotification('New route(s) to climb in ' + clusterNames, 8000);
             initialMarkers.current = [...initialMarkers.current, ...newRoutes.current];
@@ -82,6 +82,8 @@ export default function MarkerProvider({children}) {
             showNotification('No new routes to climb!', 8000);
             initialMarkers.current = [...initialMarkers.current, ...newRoutes.current];
         }
+    }else {
+        initialMarkers.current = [...initialMarkers.current, ...newRoutes.current];
     }
     return clusters;
   };
