@@ -74,8 +74,10 @@ export default function MarkerProvider({children}) {
     if(!(clustersWithNewRoutes.length === 1 && routeCreatorId === userId)) {
         if(clustersWithNewRoutes.length > 0) {
             showNotification('New route(s) to climb in ' + clusterNames, 8000);
+            initialMarkers.current = {...initialMarkers.current, ...newRoutes.current};
         } else if (newRoutes.length > 0) {
             showNotification('No new routes to climb!', 8000);
+            initialMarkers.current = {...initialMarkers.current, ...newRoutes.current};
         }
     }
     return clusters;
