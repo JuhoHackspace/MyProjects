@@ -10,6 +10,7 @@ import { useAuth } from '../firebase/AuthProvider';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import { useNavigation } from '@react-navigation/native';
 import { useNotification } from '../context/NotificationProvider';
+import GradePicker from '../components/GradePicker';
 
 const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const  marker = route != undefined ? route.params.marker: null;
@@ -179,6 +180,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               <Picker.Item label="Blue" value="blue" />
               <Picker.Item label="Pink" value="pink" />
               <Picker.Item label="Red" value="red" />
+              <Picker.Item label="Orange" value="orange" />
               <Picker.Item label="Purple" value="purple" />
               <Picker.Item label="Black" value="black" />
               <Picker.Item label="White" value="white" />
@@ -197,12 +199,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           </View>
           {showMarkAsSent && (
             <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Grade Vote"
-                value={gradeVote}
-                onChangeText={setGradeVote}
-              />
+              <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote}/>
               <TextInput
                 style={styles.input}
                 placeholder="Try Count"
