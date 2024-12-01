@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Picker } from '@react-native-picker/picker';
 import styles from '../styles/Styles'
 
 export default function ColorPicker({value, setValue, isGrade}) {
+  useEffect(() => {
+    // Set the first value as the default value if newRouteGrade is not set
+    if (!value) {
+        setValue('yellow');
+    }
+  }, [value, setValue]);
+  
   return (
     <Picker
         selectedValue={value}
