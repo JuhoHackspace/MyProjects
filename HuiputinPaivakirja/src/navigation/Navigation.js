@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { AuthProvider, useAuth } from '../firebase/AuthProvider';
+import { useAuth } from '../firebase/AuthProvider';
 import CustomDrawerContent from './CustomDrawerContent';
 import AuthStackNavigator from './AuthStackNavigator';
 import MainStackNavigator from './MainStackNavigator';
@@ -41,11 +41,9 @@ function AppNavigator() {
 
 function Navigation() {
   return (
-    <AuthProvider>
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
-    </AuthProvider>
   );
 }
 

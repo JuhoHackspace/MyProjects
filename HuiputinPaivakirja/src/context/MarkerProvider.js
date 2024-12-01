@@ -3,6 +3,8 @@ import { View, Text } from 'react-native'
 import { listenToMarkers } from '../firebase/FirebaseMethods';
 import { useNotification } from './NotificationProvider';
 import sectors from '../Helpers/Sectors';
+import { getRouteCreatorId } from '../firebase/FirebaseMethods';
+import { useAuth } from '../firebase/AuthProvider';
 
 const MarkerContext = createContext();
 
@@ -12,6 +14,8 @@ export default function MarkerProvider({children}) {
   const showNotification = useNotification();
   const newRoutes = useRef([]);
   const [clusters, setClusters] = useState([]);
+  const { user } = useAuth();
+  const userId = user?.uid;
 
   useEffect(() => {
     const unsubscribe = listenToMarkers((newMarkers) => {
@@ -60,10 +64,12 @@ export default function MarkerProvider({children}) {
     console.log('Clusters: ', clusters);
     const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.current.map(route => route.id).includes(id)));
     const clusterNames = clustersWithNewRoutes.map(cluster => cluster.name).join(', ');
-    if(clustersWithNewRoutes.length > 0) {
-        showNotification('New route(s) to climb in ' + clusterNames, 8000);
-    } else if (newRoutes.length > 0) {
-        showNotification('No new routes to climb!', 8000);
+    if(!(newRoutes.current.length === 1 && getRouteCreatorId(newRoutes.current[0].routeId) === userId)) {
+        if(clustersWithNewRoutes.length > 0) {
+            showNotification('New route(s) to climb in ' + clusterNames, 8000);
+        } else if (newRoutes.length > 0) {
+            showNotification('No new routes to climb!', 8000);
+        }
     }
     return clusters;
   };
