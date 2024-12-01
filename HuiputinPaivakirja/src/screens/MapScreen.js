@@ -8,20 +8,15 @@ import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
 import { useNotification } from '../context/NotificationContext';
+import { useMarkers } from '../context/MarkerProvider';
 
 const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
   const { colors } = useTheme();
   const navigation = useNavigation();
-  const [markers, setMarkers] = useState([]);
   const showNotification = useNotification();
-
-  useEffect(() => {
-    const unsubscribe = listenToMarkers(setMarkers);
-    return () => unsubscribe();
-  }, []);
-
+  const { markers, clusters } = useMarkers();
 
   const handleAddNewRoute = () => {
     setAddingMarker(true);
@@ -62,6 +57,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
         handleLongPress={handleMapLongPress}
         newMarker={newMarker}
         markers={markers}
+        clusters={clusters}
         handleMarkerPress={handleMarkerPress} // Pass handleMarkerPress to Map component
       />
       <View style={styles.containerBottom}>
