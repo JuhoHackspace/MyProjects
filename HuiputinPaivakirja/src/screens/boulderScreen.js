@@ -50,11 +50,11 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
   }, [routeData]);
 
-  const calculateAverageGrade = () => {
+ /* const calculateAverageGrade = () => {
     if (!routeData?.routeGradeVotes?.length) return 'No votes yet';
     const total = routeData.routeGradeVotes.reduce((sum, grade) => sum + parseInt(grade, 10), 0);
     return (total / routeData.routeGradeVotes.length).toFixed(1);
-  };
+  };*/
 
   const handleCreateRoute = () => {
       setNewRouteData({name: newRouteName, grade: newRouteGrade, holdColor: newRouteHoldColor});
@@ -191,7 +191,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <View style={styles.inputContainer}>
             <Text style={styles.basicText}>Route Name: {routeData?.routeName}</Text>
             <Text style={styles.basicText}>Sent By: {routeData?.sentBy.map(entry => entry.senderName).join(', ')}</Text>
-            <Text style={styles.basicText}>Average Grade: {calculateAverageGrade()}</Text>
+            <Text style={styles.basicText}>Average Grade: {routeData?.votedGrade}</Text>
             <Text style={styles.basicText}>Route Hold Color: {routeData?.routeHoldColor}</Text>
             <Text style={styles.basicText}>Route Grade Color: {routeData?.routeGradeColor}</Text>
           </View>

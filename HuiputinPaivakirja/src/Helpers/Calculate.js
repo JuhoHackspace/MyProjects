@@ -39,16 +39,28 @@ const reverseGradeMapping = Object.fromEntries(
 export const convertGrade = (gradesArray) => {
     if (!gradesArray.length) return 'No grades available';
 
-    // Convert grades to numerical values
+    // käännetään gradet numeroiksi
     const numericalGrades = gradesArray.map(grade => gradeMapping[grade]);
+    console.log('Numerical grades:', numericalGrades);
 
-    // Calculate the average
+    // lasketaan keskiarvo
     const total = numericalGrades.reduce((sum, grade) => sum + grade, 0);
     const average = total / numericalGrades.length;
+    console.log('Average grade:', average);
 
-    // Round to nearest 0.01
+    // pyöristetään keskiarvo
     const roundedAverage = Math.round(average * 100) / 100;
+    console.log('Rounded average:', roundedAverage);
 
-    // Convert back to climbing grade scale
-    return reverseGradeMapping[roundedAverage] || 'Unknown grade';
+    // takas gradeksi
+    if (reverseGradeMapping[roundedAverage]) {
+        return reverseGradeMapping[roundedAverage];
+    }
+
+    // mätsätään lähin grade
+    const closestGrade = Object.keys(reverseGradeMapping).reduce((prev, curr) => {
+        return (Math.abs(curr - roundedAverage) < Math.abs(prev - roundedAverage) ? curr : prev);
+    });
+
+    return reverseGradeMapping[closestGrade] || 'Unknown grade';
 };
