@@ -7,7 +7,7 @@ import { Gesture,
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import sectors from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, markers, handleMarkerPress }) => {
+const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -17,34 +17,6 @@ const Map = ({ handleLongPress, newMarker, markers, handleMarkerPress }) => {
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
   const [showMarkers, setShowMarkers] = useState(false);
-  const [clusters, setClusters] = useState([]);
-
-  useEffect(() => {
-    setClusters(clusterMarkersBySectors(markers));
-  }, [markers]);
-
-  // Cluster markers by sectors. Creates a cluster for each sector and counts the markers in each sector.
-  const clusterMarkersBySectors = (markers) => {
-    const clusters = sectors.map(sector => {
-      const sectorMarkers = markers.filter(marker => 
-        marker.x >= sector.xMin && marker.x <= sector.xMax &&
-        marker.y >= sector.yMin && marker.y <= sector.yMax && marker.visible
-      );
-      const centerX = (sector.xMin + sector.xMax) / 2;
-      const centerY = (sector.yMin + sector.yMax) / 2;
-      return {
-        id: sector.id,
-        name: sector.name,
-        x: centerX,
-        y: centerY,
-        count: sectorMarkers.length,
-        visible: sectorMarkers.length > 0,
-        markers: sectorMarkers,
-      };
-    });
-    console.log('Clusters: ', clusters);
-    return clusters;
-  };
 
   // Gesture handlers
 

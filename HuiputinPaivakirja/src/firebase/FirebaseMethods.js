@@ -120,25 +120,6 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         }
 }
 
-/*const fetchUserData = async(userId, setUserData) => {
-    if  (!userId)
-        return
-    try {
-        const userDocRef = doc(db, 'users', userId);
-        const userSnapshot = await getDoc(userDocRef); //haetaan tiedot jo niitä on siellä
-        if (userSnapshot.exists()) {
-            const userData = userSnapshot.data();
-            // Set the user data to the state
-            setUserData(userData);
-        } else {
-            console.log('No user data found!');
-        }
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-
-    }
-}*/
-
 const fetchUserData = (userId, setUserData) => {
     if (!userId) return;
   
@@ -255,4 +236,4 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
         console.error('Error marking route as sent:', error);
     }
 };
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent }
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent }

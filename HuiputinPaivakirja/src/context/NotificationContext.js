@@ -12,9 +12,9 @@ export const NotificationProvider = ({children}) => {
         if (notification.visible) {
             fadeAnim.setValue(0); // Reset the animation value
             Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true,
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
             }).start();
 
             const timer = setTimeout(() => {
