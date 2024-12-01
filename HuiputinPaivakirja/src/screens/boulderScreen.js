@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView,Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
@@ -29,6 +29,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
   const showNotification = useNotification();
+  const notificationshown = useRef(false);
 
   useEffect(() => {
       let unsubscribe;
@@ -43,16 +44,17 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }, []);
 
   useEffect(() => {
-    if (routeData?.sentBy.length === 0) {
+    if (routeData?.sentBy.length === 0 && !notificationshown.current) {
       showNotification('Be the first to send this route!', 4000);
+      notificationshown.current = true;
     }
   }, [routeData]);
 
-  const calculateAverageGrade = () => {
+ /* const calculateAverageGrade = () => {
     if (!routeData?.routeGradeVotes?.length) return 'No votes yet';
     const total = routeData.routeGradeVotes.reduce((sum, grade) => sum + parseInt(grade, 10), 0);
     return (total / routeData.routeGradeVotes.length).toFixed(1);
-  };
+  };*/
 
   const handleCreateRoute = () => {
       setNewRouteData({name: newRouteName, grade: newRouteGrade, holdColor: newRouteHoldColor});
@@ -189,7 +191,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <View style={styles.inputContainer}>
             <Text style={styles.basicText}>Route Name: {routeData?.routeName}</Text>
             <Text style={styles.basicText}>Sent By: {routeData?.sentBy.map(entry => entry.senderName).join(', ')}</Text>
-            <Text style={styles.basicText}>Average Grade: {calculateAverageGrade()}</Text>
+            <Text style={styles.basicText}>Average Grade: {routeData?.votedGrade}</Text>
             <Text style={styles.basicText}>Route Hold Color: {routeData?.routeHoldColor}</Text>
             <Text style={styles.basicText}>Route Grade Color: {routeData?.routeGradeColor}</Text>
           </View>

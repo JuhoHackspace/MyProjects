@@ -20,6 +20,7 @@ import {
         users,
         markers,
 } from './Config';
+import { convertGrade } from '../Helpers/Calculate';
 
 /**
 * Get the display name of the currently authenticated user.
@@ -119,25 +120,6 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
           console.error('Error adding route and marker:', error);
         }
 }
-
-/*const fetchUserData = async(userId, setUserData) => {
-    if  (!userId)
-        return
-    try {
-        const userDocRef = doc(db, 'users', userId);
-        const userSnapshot = await getDoc(userDocRef); //haetaan tiedot jo niitä on siellä
-        if (userSnapshot.exists()) {
-            const userData = userSnapshot.data();
-            // Set the user data to the state
-            setUserData(userData);
-        } else {
-            console.log('No user data found!');
-        }
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-
-    }
-}*/
 
 const fetchUserData = (userId, setUserData) => {
     if (!userId) return;
@@ -239,20 +221,39 @@ const setRouteInvisible = async (markerId) => {
 }
 
 const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
-    const date = new Date().toISOString();
-    try {
-        const routeDocRef = doc(routes, routeId);
-        await updateDoc(routeDocRef, {
-            sentBy: arrayUnion({senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date}),
-            routeGradeVotes: arrayUnion(gradeVote),
-        });
-        const userDocRef = doc(users, auth.currentUser.uid);
-        await updateDoc(userDocRef, {
-            sends: arrayUnion({route: routeId, tries: tryCount, sentAt: date}),
-        });
-        console.log('Route marked as sent successfully!');
-    } catch (error) {
-        console.error('Error marking route as sent:', error);
-    }
+  const date = new Date().toISOString();
+  try {
+      const routeDocRef = doc(routes, routeId);
+      const routeDoc = await getDoc(routeDocRef);
+      const routeData = routeDoc.data();
+
+      // Tarkistetaan, että reitti on olemassa
+      const routeGradeVotes = routeData.routeGradeVotes || [];
+      console.log('Existing routeGradeVotes:', routeGradeVotes);
+
+      // Lisätään uusi ääni listaan
+      const updatedGradeVotes = [...routeGradeVotes, gradeVote];
+      console.log('Updated routeGradeVotes:', updatedGradeVotes);
+
+      // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
+      const averageGrade = convertGrade(updatedGradeVotes);
+      console.log('Calculated averageGrade:', averageGrade);
+
+      // Päivitys
+      await updateDoc(routeDocRef, {
+          sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date }),
+          routeGradeVotes: arrayUnion(gradeVote),
+          votedGrade: averageGrade,
+      });
+
+      const userDocRef = doc(users, auth.currentUser.uid);
+      await updateDoc(userDocRef, {
+          sends: arrayUnion({ route: routeId, tries: tryCount, sentAt: date }),
+      });
+
+      console.log('Route marked as sent successfully!');
+  } catch (error) {
+      console.error('Error marking route as sent:', error);
+  }
 };
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent }
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent }
