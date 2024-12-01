@@ -8,18 +8,22 @@ const MarkerContext = createContext();
 
 export default function MarkerProvider({children}) {
   const [markers, setMarkers] = useState([]);
-  const [initialMarkers, setInitialMarkers] = useState([]);
+  const initialMarkers = useRef([]);
   const showNotification = useNotification();
   const [newRoutes, setNewRoutes] = useState([]);
   const [clusters, setClusters] = useState([]);
 
   useEffect(() => {
     const unsubscribe = listenToMarkers((newMarkers) => {
-      if (initialMarkers.length === 0) {
-        setInitialMarkers(newMarkers);
+      console.log('Initial markers length: ', initialMarkers.current.length);
+      if (initialMarkers.current.length === 0) {
+        initialMarkers.current = newMarkers;
+        console.log('Initial markers: ', initialMarkers.current);
       } else {
-        const newRoutes = newMarkers.filter(marker => !initialMarkers.some(initialMarker => initialMarker.id === marker.id));
+        const newRoutes = newMarkers.filter(marker => !(initialMarkers.current.some(initialMarker => initialMarker.id === marker.id)));
+        console.log('New routes: ', newRoutes);
         if (newRoutes.length > 0) {
+           console.log('New routes added!');
            showNotification('New route(s) to climb', 4000);
         }
       }
