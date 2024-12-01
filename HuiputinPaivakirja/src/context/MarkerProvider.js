@@ -39,11 +39,14 @@ export default function MarkerProvider({children}) {
   }, []);
   
   useEffect(() => {
-    setClusters(clusterMarkersBySectors(markers));
+    async function fetchData() {
+        setClusters(await clusterMarkersBySectors(markers));
+    }
+    fetchData();
   }, [markers]);
 
   // Cluster markers by sectors. Creates a cluster for each sector and counts the markers in each sector.
-  const clusterMarkersBySectors = (markers) => {
+  const clusterMarkersBySectors = async (markers) => {
     const clusters = sectors.map(sector => {
       const sectorMarkers = markers.filter(marker => 
         marker.x >= sector.xMin && marker.x <= sector.xMax &&
@@ -64,7 +67,11 @@ export default function MarkerProvider({children}) {
     console.log('Clusters: ', clusters);
     const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.current.map(route => route.id).includes(id)));
     const clusterNames = clustersWithNewRoutes.map(cluster => cluster.name).join(', ');
-    if(!(newRoutes.current.length === 1 && getRouteCreatorId(newRoutes.current[0].routeId) === userId)) {
+    let routeCreatorId = null;
+    if(newRoutes.current.length === 1) {
+        routeCreatorId = await getRouteCreatorId(newRoutes.current[0].routeId);
+    }
+    if(!(clustersWithNewRoutes.length === 1 && routeCreatorId === userId)) {
         if(clustersWithNewRoutes.length > 0) {
             showNotification('New route(s) to climb in ' + clusterNames, 8000);
         } else if (newRoutes.length > 0) {
