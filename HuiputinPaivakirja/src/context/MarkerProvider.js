@@ -14,10 +14,17 @@ export default function MarkerProvider({children}) {
   const showNotification = useNotification();
   const newRoutes = useRef([]);
   const [clusters, setClusters] = useState([]);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const userId = user?.uid;
 
   useEffect(() => {
+    if(loading) {
+        return;
+    }
+    if (!user) {
+        console.log('User is not authenticated');
+        return;
+    }
     const unsubscribe = listenToMarkers((newMarkers) => {
       console.log('Initial markers length: ', initialMarkers.current.length);
       newRoutes.current = [];
@@ -36,7 +43,7 @@ export default function MarkerProvider({children}) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [user, loading]);
   
   useEffect(() => {
     async function fetchData() {
