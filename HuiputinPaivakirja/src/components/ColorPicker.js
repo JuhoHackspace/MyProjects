@@ -5,9 +5,9 @@ import styles from '../styles/Styles'
 export default function ColorPicker({value, setValue, isGrade}) {
   return (
     <Picker
-        selectedValue={newRouteGrade}
+        selectedValue={value}
         style={styles.input}
-        onValueChange={(itemValue) => setNewRouteGrade(itemValue)}
+        onValueChange={(itemValue) => setValue(itemValue)}
     >
         <Picker.Item label="Yellow" value="yellow" />
         <Picker.Item label="Green" value="green" />
