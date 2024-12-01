@@ -9,7 +9,7 @@ import { useTheme } from 'react-native-paper';
 import { useAuth } from '../firebase/AuthProvider';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import { useNavigation } from '@react-navigation/native';
-import { useNotification } from '../context/NotificationContext';
+import { useNotification } from '../context/NotificationProvider';
 
 const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const  marker = route != undefined ? route.params.marker: null;

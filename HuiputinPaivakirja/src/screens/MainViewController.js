@@ -5,7 +5,7 @@ import MapScreen from './MapScreen'
 import styles from '../styles/Styles'
 import { addRouteAndMarker } from '../firebase/FirebaseMethods'
 import LoadingIcon from '../components/LoadingIcon'
-import { useNotification } from '../context/NotificationContext'
+import { useNotification } from '../context/NotificationProvider'
 import BoulderScreen from '../screens/boulderScreen'
 /**
  * This component is the main controller for viewing routes and adding new routes

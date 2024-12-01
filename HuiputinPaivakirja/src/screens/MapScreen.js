@@ -7,7 +7,7 @@ import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
 import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
-import { useNotification } from '../context/NotificationContext';
+import { useNotification } from '../context/NotificationProvider';
 import { useMarkers } from '../context/MarkerProvider';
 
 const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {

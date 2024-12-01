@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext, createContext } from 'react'
 import { View, Text } from 'react-native'
 import { listenToMarkers } from '../firebase/FirebaseMethods';
-import { useNotification } from './NotificationContext';
+import { useNotification } from './NotificationProvider';
 import sectors from '../Helpers/Sectors';
 
 const MarkerContext = createContext();
@@ -10,21 +10,22 @@ export default function MarkerProvider({children}) {
   const [markers, setMarkers] = useState([]);
   const initialMarkers = useRef([]);
   const showNotification = useNotification();
-  const [newRoutes, setNewRoutes] = useState([]);
+  const newRoutes = useRef([]);
   const [clusters, setClusters] = useState([]);
 
   useEffect(() => {
     const unsubscribe = listenToMarkers((newMarkers) => {
       console.log('Initial markers length: ', initialMarkers.current.length);
+      newRoutes.current = [];
       if (initialMarkers.current.length === 0) {
         initialMarkers.current = newMarkers;
         console.log('Initial markers: ', initialMarkers.current);
       } else {
-        const newRoutes = newMarkers.filter(marker => !(initialMarkers.current.some(initialMarker => initialMarker.id === marker.id)));
+        const _newRoutes = newMarkers.filter(marker => !(initialMarkers.current.some(initialMarker => initialMarker.id === marker.id)));
         console.log('New routes: ', newRoutes);
-        if (newRoutes.length > 0) {
+        if (_newRoutes.length > 0) {
            console.log('New routes added!');
-           showNotification('New route(s) to climb', 4000);
+           newRoutes.current = _newRoutes;
         }
       }
       setMarkers(newMarkers);
@@ -57,13 +58,13 @@ export default function MarkerProvider({children}) {
       };
     });
     console.log('Clusters: ', clusters);
-    /*const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.map(route => route.id).includes(id)));
+    const clustersWithNewRoutes = clusters.filter(cluster => cluster.markers.map(marker => marker.id).some(id => newRoutes.current.map(route => route.id).includes(id)));
     const clusterNames = clustersWithNewRoutes.map(cluster => cluster.name).join(', ');
-    if (clustersWithNewRoutes.length === 1) {
-      showNotification(`New route(s) to climb on sector ${clusterNames}`, 3000);
-    } else if (clustersWithNewRoutes.length > 1) {
-      showNotification(`New route(s) to climb on sectors ${clusterNames}`, 3000);
-    }*/
+    if(clustersWithNewRoutes.length > 0) {
+        showNotification('New route(s) to climb in ' + clusterNames, 8000);
+    } else if (newRoutes.length > 0) {
+        showNotification('No new routes to climb!', 8000);
+    }
     return clusters;
   };
   
