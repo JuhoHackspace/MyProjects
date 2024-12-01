@@ -9,7 +9,9 @@ import { useTheme } from 'react-native-paper';
 import { useAuth } from '../firebase/AuthProvider';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import { useNavigation } from '@react-navigation/native';
-import { useNotification } from '../context/NotificationContext';
+import { useNotification } from '../context/NotificationProvider';
+import GradePicker from '../components/GradePicker';
+import ColorPicker from '../components/ColorPicker';
 
 const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const  marker = route != undefined ? route.params.marker: null;
@@ -154,35 +156,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               onChangeText={setNewRouteName}
             />
             <Text>Route Tag Color</Text>
-            <Picker
-              selectedValue={newRouteGrade}
-              style={styles.input}
-              onValueChange={(itemValue) => setNewRouteGrade(itemValue)}
-            >
-              <Picker.Item label="Yellow" value="yellow" />
-              <Picker.Item label="Green" value="green" />
-              <Picker.Item label="Blue" value="blue" />
-              <Picker.Item label="Pink" value="pink" />
-              <Picker.Item label="Red" value="red" />
-              <Picker.Item label="Purple" value="purple" />
-              <Picker.Item label="Black" value="black" />
-              <Picker.Item label="White" value="white" />
-            </Picker>
+            <ColorPicker value={newRouteGrade} setValue={setNewRouteGrade} isGrade={true}/>
             <Text>Route Hold Color</Text>
-            <Picker
-              selectedValue={newRouteHoldColor}
-              style={styles.input}
-              onValueChange={(itemValue) => setNewRouteHoldColor(itemValue)}
-            >
-              <Picker.Item label="Yellow" value="yellow" />
-              <Picker.Item label="Green" value="green" />
-              <Picker.Item label="Blue" value="blue" />
-              <Picker.Item label="Pink" value="pink" />
-              <Picker.Item label="Red" value="red" />
-              <Picker.Item label="Purple" value="purple" />
-              <Picker.Item label="Black" value="black" />
-              <Picker.Item label="White" value="white" />
-            </Picker>
+            <ColorPicker value={newRouteHoldColor} setValue={setNewRouteHoldColor} isGrade={false}/>
           </View>
         </>
       )}
@@ -197,12 +173,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           </View>
           {showMarkAsSent && (
             <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Grade Vote"
-                value={gradeVote}
-                onChangeText={setGradeVote}
-              />
+              <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote}/>
               <TextInput
                 style={styles.input}
                 placeholder="Try Count"

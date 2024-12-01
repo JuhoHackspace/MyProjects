@@ -256,4 +256,21 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
       console.error('Error marking route as sent:', error);
   }
 };
-export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent }
+
+const getRouteCreatorId = async (routeId) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        const routeDoc = await getDoc(routeDocRef);
+        if (routeDoc.exists()) {
+            return routeDoc.data().createdBy.id;
+        } else {
+            console.log('No route data found!');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching route data:', error);
+        return null;
+    }
+};
+
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId }
