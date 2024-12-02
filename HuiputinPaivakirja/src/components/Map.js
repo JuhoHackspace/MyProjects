@@ -6,6 +6,7 @@ import { Gesture,
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import sectors from '../Helpers/Sectors';
+import ClusterLabel from './ClusterLabel';
 
 const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress }) => {
   const translateX = useSharedValue(0);
@@ -129,20 +130,9 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress 
               {newMarker && (
                   <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red"/>
               )}
-              {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
-                if(cluster) {
-                  return (
-                  <React.Fragment key={cluster.id}>
-                    <Rect x={cluster.x-30} y={cluster.y-12} width={60} height={15} fill="red" />
-                    <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
-                        {cluster.name}
-                    </Text>
-                    <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
-                        {cluster.count}
-                    </Text>
-                  </React.Fragment>
-                )}
-              })}
+            {clusters.length > 0 && !showMarkers && clusters.map(cluster => (
+              <ClusterLabel key={cluster.id} cluster={cluster} />
+            ))}
               {markers.length > 0 && showMarkers && markers.map((marker) => {
                 if(marker.visible) {  
                   return (
