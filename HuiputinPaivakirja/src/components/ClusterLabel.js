@@ -4,8 +4,8 @@ import { useTheme } from 'react-native-paper';
 
 const ClusterLabel = ({ cluster, sector }) => {
   const { colors } = useTheme();
-  const CIRCLE_RADIUS = 12;
-  
+  const CIRCLE_RADIUS = 11;
+
   return (
     <React.Fragment>
       <Rect
@@ -13,9 +13,11 @@ const ClusterLabel = ({ cluster, sector }) => {
         y={sector.yMin}
         width={sector.xMax - sector.xMin}
         height={sector.yMax - sector.yMin}
-        fill="rgba(128, 128, 128, 0.1)"
-        stroke={colors.accent}
+        fill="rgba(128, 128, 128, 0.2)"
+        //stroke={colors.accent}
         strokeWidth="1"
+        rx="8"
+        ry="8"
       />
       <Circle
         cx={cluster.x}
