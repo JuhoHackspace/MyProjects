@@ -34,18 +34,16 @@ const ClusterLabel = ({ cluster, sector }) => {
       >
         {cluster.name.split(' ')[1]}
       </Text>
-      {cluster.count > 0 && (
-        <Text
-          x={cluster.x}
-          y={cluster.y + CIRCLE_RADIUS + 10}
-          fill={colors.accent}
-          fontSize="12"
-          fontWeight="bold"
-          textAnchor="middle"
-        >
-          {cluster.count}
-        </Text>
-      )}
+      <Text
+        x={cluster.x}
+        y={cluster.y + CIRCLE_RADIUS + 10}
+        fill={colors.accent}
+        fontSize="12"
+        fontWeight="bold"
+        textAnchor="middle"
+      >
+        {cluster.count}
+      </Text>
     </React.Fragment>
   );
 };
