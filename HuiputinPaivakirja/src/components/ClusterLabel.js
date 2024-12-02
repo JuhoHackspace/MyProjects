@@ -1,13 +1,22 @@
 import React from 'react';
-import Svg, { Circle, Text } from 'react-native-svg';
+import Svg, { Circle, Text, Rect } from 'react-native-svg';
 import { useTheme } from 'react-native-paper';
 
-const ClusterLabel = ({ cluster }) => {
+const ClusterLabel = ({ cluster, sector }) => {
   const { colors } = useTheme();
   const CIRCLE_RADIUS = 12;
   
   return (
     <React.Fragment>
+      <Rect
+        x={sector.xMin}
+        y={sector.yMin}
+        width={sector.xMax - sector.xMin}
+        height={sector.yMax - sector.yMin}
+        fill="rgba(128, 128, 128, 0.1)"
+        stroke={colors.accent}
+        strokeWidth="1"
+      />
       <Circle
         cx={cluster.x}
         cy={cluster.y}

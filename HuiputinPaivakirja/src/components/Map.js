@@ -130,9 +130,10 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress 
               {newMarker && (
                   <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red"/>
               )}
-            {clusters.length > 0 && !showMarkers && clusters.map(cluster => (
-              <ClusterLabel key={cluster.id} cluster={cluster} />
-            ))}
+            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
+              const sector = sectors.find(s => s.id === cluster.id);
+              return <ClusterLabel key={cluster.id} cluster={cluster} sector={sector} />;
+            })}
               {markers.length > 0 && showMarkers && markers.map((marker) => {
                 if(marker.visible) {  
                   return (
