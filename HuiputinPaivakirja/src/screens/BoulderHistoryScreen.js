@@ -4,6 +4,7 @@ import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper'
 import LoadingIcon from '../components/LoadingIcon'
 import { retrieveBoulderHistory } from '../firebase/FirebaseMethods'
+import ClickableRoute from '../components/ClickableRoute'
 
 export default function BoulderHistoryScreen() {
   const { colors, fonts } = useTheme()
@@ -51,12 +52,7 @@ export default function BoulderHistoryScreen() {
         data={history}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={styles.inputContainer}>
-            <Text style={styles.basicText}>Route: {history[index].route.routeName}</Text>
-            <Text style={styles.basicText}>Grade: {history[index].route.votedGrade}</Text>
-            <Text style={styles.basicText}>Sent At: {formatDate(history[index].send.sentAt)}</Text>
-            <Text style={styles.basicText}>Tries: {history[index].send.tries}</Text>
-          </View>
+          <ClickableRoute data={item} onPress={() => {}} />
         )}
       />
     </View>
