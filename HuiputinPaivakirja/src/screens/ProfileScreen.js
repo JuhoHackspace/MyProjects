@@ -56,6 +56,10 @@ export default function ProfileScreen({ navigation }) {
         Alert.alert("Error saving user data. Please try again.");
     }
   }
+  
+  const handleBoulderHistory = () => {
+    navigation.navigate('BoulderHistoryScreen');
+  }
 
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
@@ -92,6 +96,17 @@ export default function ProfileScreen({ navigation }) {
           style={styles.buttonLonger}
         >
           Delete my account
+        </Button>
+        <Button
+          mode="contained"
+          onPress={handleBoulderHistory}
+          icon="history"
+          buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+          style={styles.buttonLonger}
+        >
+          Boulder History
         </Button>
       </View>}
       </>}

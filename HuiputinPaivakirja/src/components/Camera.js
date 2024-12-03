@@ -12,11 +12,12 @@ export default function Camera({ cameraRef, cameraType, flashMode, takePicture, 
           ref={cameraRef}
           facing={cameraType} 
           flash={flashMode} 
-    >
+    > 
         <View style={styles.buttonsContainer}>
             <View style={styles.cameraButtonContainer}>
                 <Button title="Take a picture" icon="camera" onPress={takePicture} />
             </View>
+            {/*  Jätetään flash ja etu kamera käyttämättä tässä mutta jäävät tänne säilöön jos joskus tarvitaan
             <View style={styles.flashButtonContainer}>
                 <Button
                 title={flashMode === 'off' ? 'Flash Off' : 'Flash On'}
@@ -24,6 +25,7 @@ export default function Camera({ cameraRef, cameraType, flashMode, takePicture, 
                 onPress={toggleFlashMode}
                 color={flashMode === 'off' ? 'red' : 'white'}
                 />
+              
             </View>
             <View style={styles.rotateButtonContainer}>
                 <Button
@@ -31,8 +33,9 @@ export default function Camera({ cameraRef, cameraType, flashMode, takePicture, 
                 icon="cycle"
                 onPress={toggleCameraType}
                 />
-            </View>
+            </View>*/}
         </View>
+        
     </CameraView>
   )
 }
