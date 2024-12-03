@@ -37,6 +37,8 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   };
 
   const handleSetMarker = () => {
+    const { scaleFactorX = 1, scaleFactorY = 1 } = scaleFactors;
+    
     // Convert the coordinates to the original coordinate system before saving
     const originalX = newMarker.x / scaleFactorX;
     const originalY = newMarker.y / scaleFactorY;
