@@ -5,7 +5,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MainViewController from '../screens/MainViewController';
 import BoulderScreen from '../screens/boulderScreen';
-
+import BoulderHistoryScreen from '../screens/BoulderHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +23,7 @@ function MainStackNavigator() {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="BoulderScreen" component={BoulderScreen} />
+      <Stack.Screen name="BoulderHistoryScreen" component={BoulderHistoryScreen} />
     </Stack.Navigator>
   );
 }

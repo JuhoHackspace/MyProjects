@@ -60,6 +60,15 @@ export const modalStyles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
   },
+  picureModalButtonView: {
+    width: '80%',
+    height: 40
+  },
+  modalPicture: {
+    width: '80%',
+    height: 550, 
+    margin: 10
+  },
 });
 
 export default modalStyles;

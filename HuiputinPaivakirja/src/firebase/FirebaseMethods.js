@@ -273,4 +273,27 @@ const getRouteCreatorId = async (routeId) => {
     }
 };
 
-export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId }
+const retrieveBoulderHistory = async () => {
+    try {
+        const userDocRef = doc(users, auth.currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            const sends = userDoc.data().sends;
+            const sendsAndRoutes = await Promise.all(sends.map(async (send) => {
+                const routeDocRef = doc(db, 'routes', send.route);
+                const routeDoc = await getDoc(routeDocRef);
+                return { send, route: routeDoc.data() };
+            }));
+
+            return sendsAndRoutes;
+
+        } else {
+            console.log('No user data found!');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        return null;
+    }
+}
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory }

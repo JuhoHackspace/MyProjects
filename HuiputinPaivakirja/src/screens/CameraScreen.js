@@ -56,16 +56,10 @@ export default function CameraScreen({setRouteImage, handleHideCamera}) {
   };
 
   // Save the picture in the library
-  const savePicture = async (capturedImageUri) => {
+  const savePicture = (capturedImageUri) => {
     if (capturedImageUri) {
-      try {
-      //  await MediaLibrary.saveToLibraryAsync(capturedImageUri) //tallentaa puhelimen muistiin
-      } catch (error) {
-        console.log('Error saving picture: ', error)
-      } finally {
         setImage(null);
         handleHideCamera(capturedImageUri);
-      }
     }
   };
 
