@@ -77,8 +77,13 @@ export const convertGrade = (gradesArray, gradeColor) => {
     } else {
         feedback = 'spot on!';
     }
+    const closestGrade = Object.entries(reverseGradeMapping).reduce((prev, [value, grade]) => {
+        return Math.abs(value - roundedAverage) < Math.abs(prev - roundedAverage)
+            ? { value: parseFloat(value), grade }
+            : prev;
+    }, { value: Infinity, grade: 'unknown grade' }).grade;
 
     // Palautetaan keskiarvo ja palaute
     const grade = reverseGradeMapping[roundedAverage] || 'Unknown grade';
-    return `${grade} (${feedback})`;
+    return `${closestGrade.grade} (${feedback})`;
 };
