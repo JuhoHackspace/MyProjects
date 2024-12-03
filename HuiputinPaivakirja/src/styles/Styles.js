@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import ClickableRoute from '../components/ClickableRoute';
 
 export const styles = StyleSheet.create({
     screenBaseContainer: {
