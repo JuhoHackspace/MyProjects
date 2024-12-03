@@ -7,6 +7,7 @@ import { retrieveBoulderHistory } from '../firebase/FirebaseMethods'
 import ClickableRoute from '../components/ClickableRoute'
 import DrawerButton from '../components/DrawerButton'
 import { useNavigation } from '@react-navigation/native'
+import RoutePictureModal from '../components/RoutePictureModal'
 
 export default function BoulderHistoryScreen() {
   const { colors, fonts } = useTheme()
@@ -15,6 +16,8 @@ export default function BoulderHistoryScreen() {
   const [loading, setLoading] = useState(true)
   const [seeAllHistory, setSeeAllHistory] = useState(false)
   const navigation = useNavigation()
+  const [modalVisible, setModalVisible] = useState(false)
+  const [imageUri, setImageUri] = useState(null)
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -33,14 +36,10 @@ export default function BoulderHistoryScreen() {
     fetchHistory();
   }, []);
 
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  const handleRoutePress = (imageUrl) => {
+    console.log('Image URL: ', imageUrl);
+    setImageUri(imageUrl);
+    setModalVisible(true);
   };
 
   if (loading) {
@@ -51,6 +50,7 @@ export default function BoulderHistoryScreen() {
 
   return (
     <View style={[styles.screenBaseContainer,{backgroundColor: colors.background}]}>
+      <RoutePictureModal visible={modalVisible} onClose={()=>{setModalVisible(false)}} routeImageUrl={imageUri} />
       <DrawerButton navigation={navigation} />
       <View style={styles.headerContainer}>
         <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28 }}>Boulder History</Text>
@@ -65,11 +65,11 @@ export default function BoulderHistoryScreen() {
       </View>
       <ScrollView style={styles.inputContainer}>
         {!seeAllHistory && history.length > 0 && history.map((item, index) => (
-            <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
-            ))}
+            <ClickableRoute key={index} data={item} onPress={() => {handleRoutePress(item.route.routeImageUrl)}} />
+        ))}
         {seeAllHistory && allHistory.length > 0 && allHistory.map((item, index) => (
-            <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
-            ))}
+            <ClickableRoute key={index} data={item} onPress={() => {handleRoutePress(item.route.routeImageUrl)}} />
+        ))}
       </ScrollView>
     </View>
   )
