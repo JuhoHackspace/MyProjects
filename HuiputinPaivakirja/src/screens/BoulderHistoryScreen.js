@@ -55,10 +55,10 @@ export default function BoulderHistoryScreen() {
       <View style={styles.headerContainer}>
         <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28 }}>Boulder History</Text>
       </View>
-      <Text style={[styles.basicText, styles.bold, styles.marginLeft16]}>Your last 5 sends:</Text>
+      <Text style={[styles.basicText, styles.bold, styles.marginLeft16]}>Your last sends:</Text>
       <FlatList
         data={seeAllHistory? allHistory : history}
-        style={styles.inputContainer}
+        style={[styles.inputContainer]}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
