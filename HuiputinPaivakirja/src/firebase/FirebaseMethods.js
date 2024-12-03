@@ -227,6 +227,14 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
       const routeDoc = await getDoc(routeDocRef);
       const routeData = routeDoc.data();
 
+      if (!routeData) {
+          console.error('Route data not found.');
+          return;
+      }
+
+      const gradeColor = routeData.routeGradeColor; // Haetaan värin nimi
+      console.log('Grade color:', gradeColor);
+
       // Tarkistetaan, että reitti on olemassa
       const routeGradeVotes = routeData.routeGradeVotes || [];
       console.log('Existing routeGradeVotes:', routeGradeVotes);
@@ -235,11 +243,11 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
       const updatedGradeVotes = [...routeGradeVotes, gradeVote];
       console.log('Updated routeGradeVotes:', updatedGradeVotes);
 
-      // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
-      const averageGrade = convertGrade(updatedGradeVotes);
+      // Lasketaan keskiarvo ConvertGrade-funktiolla
+      const averageGrade = convertGrade(updatedGradeVotes, gradeColor);
       console.log('Calculated averageGrade:', averageGrade);
 
-      // Päivitys
+      // Päivitetään tiedot tietokantaan
       await updateDoc(routeDocRef, {
           sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date }),
           routeGradeVotes: arrayUnion(gradeVote),
@@ -256,7 +264,6 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
       console.error('Error marking route as sent:', error);
   }
 };
-
 const getRouteCreatorId = async (routeId) => {
     try {
         const routeDocRef = doc(routes, routeId);

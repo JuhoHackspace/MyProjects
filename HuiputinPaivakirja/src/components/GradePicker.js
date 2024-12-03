@@ -15,14 +15,11 @@ export default function GradePicker({newRouteGrade, setNewRouteGrade}) {
         style={styles.input}
         onValueChange={(itemValue) => setNewRouteGrade(itemValue)}
     >
-        <Picker.Item label="4b" value="4b" />
-        <Picker.Item label="4c" value="4c" />
-        <Picker.Item label="5a" value="5a" />
-        <Picker.Item label="5a+" value="5a+" />
-        <Picker.Item label="5b" value="5b" />
-        <Picker.Item label="5b+" value="5b+" />
-        <Picker.Item label="5c" value="5c" />
-        <Picker.Item label="5c+" value="5c+" />
+        <Picker.Item label="3" value="3" />
+        <Picker.Item label="4" value="4" />
+        <Picker.Item label="4+" value="4+" />
+        <Picker.Item label="5" value="5" />
+        <Picker.Item label="5+" value="5+" />
         <Picker.Item label="6a" value="6a" />
         <Picker.Item label="6a+" value="6a+" />
         <Picker.Item label="6b" value="6b" />
