@@ -6,7 +6,7 @@ import { Gesture,
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import sectors from '../Helpers/Sectors';
-import ClusterLabel from './ClusterLabel';
+import SectorOverlay from './SectorOverlay';
 import { ORIGINAL_IMAGE_WIDTH, ORIGINAL_IMAGE_HEIGHT } from '../Helpers/Sectors';
 
 const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress, setScaleFactors }) => {
@@ -22,6 +22,8 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress,
   const [scaleFactorX, setScaleFactorX] = useState(1);
   const [scaleFactorY, setScaleFactorY] = useState(1);
   
+
+  //Scalefactor from the MapScreen component
   useEffect(() => {
     setScaleFactors({ 
       scaleFactorX, 
@@ -123,6 +125,7 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress,
     }
   })
 
+  // This calculates how much we need to scale coordinates based on the actual rendered image size.
   const handleImageLayout = (event) => {
     const { width, height } = event.nativeEvent.layout;
     setImageWidth(width);
@@ -166,7 +169,7 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress,
                 yMin: sector.yMin * scaleFactorY,
                 yMax: sector.yMax * scaleFactorY
               };
-              return <ClusterLabel key={cluster.id} cluster={scaledCluster} sector={scaledSector} />;
+              return <SectorOverlay key={cluster.id} cluster={scaledCluster} sector={scaledSector} />;
             })}
               {markers.length > 0 && showMarkers && markers.map((marker) => {
                 if(marker.visible) {  

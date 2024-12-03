@@ -2,12 +2,13 @@ import React from 'react';
 import Svg, { Circle, Text, Rect } from 'react-native-svg';
 import { useTheme } from 'react-native-paper';
 
-const ClusterLabel = ({ cluster, sector }) => {
+const SectorOverlay = ({ cluster, sector }) => {
   const { colors } = useTheme();
   const CIRCLE_RADIUS = 11;
 
   return (
     <React.Fragment>
+      {/* Sector background rectangle with rounded corners */}
       <Rect
         x={sector.xMin}
         y={sector.yMin}
@@ -19,12 +20,14 @@ const ClusterLabel = ({ cluster, sector }) => {
         rx="8"
         ry="8"
       />
+      {/* Circle indicator for the sector */}
       <Circle
         cx={cluster.x}
         cy={cluster.y}
         r={CIRCLE_RADIUS}
         fill={colors.accent}
       />
+      {/* Sector letter (e.g., "A" from "Sector A") */}
       <Text
         x={cluster.x}
         y={cluster.y + 1}
@@ -36,6 +39,7 @@ const ClusterLabel = ({ cluster, sector }) => {
       >
         {cluster.name.split(' ')[1]}
       </Text>
+      {/* Route count display below the circle */}
       <Text
         x={cluster.x}
         y={cluster.y + CIRCLE_RADIUS + 10}
@@ -50,4 +54,4 @@ const ClusterLabel = ({ cluster, sector }) => {
   );
 };
 
-export default ClusterLabel;
+export default SectorOverlay;

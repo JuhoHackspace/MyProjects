@@ -1,8 +1,7 @@
-// Original image dimensions (not to be confused with the actual resolution of the current image) that the sector coordinates are based on
+// Sectors and markers are placed on a 360x360 grid regardless of the size of the map currently displayed (Not to be confused with the actual resolution of the current image.)
 export const ORIGINAL_IMAGE_WIDTH = 360;  
 export const ORIGINAL_IMAGE_HEIGHT = 360; 
 
-// Sector coordinates are based on the original (not the cureent one) map image.  The coordinates are the top left and bottom right corners of the sector.
 // Y = 0 is the top of the image, X = 0 is the left side of the image.
 const sectors = [
     { id : 1, name: 'Sector A', yMin: 237, yMax: 304, xMin: 40, xMax: 102, color: 'red' },
