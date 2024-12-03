@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
       right: 40,
     },
     SnappiContainer: {
-      backgroundColor: "blue",
+      backgroundColor: "black",
       height: '100%',
       width: '100%',
     },
