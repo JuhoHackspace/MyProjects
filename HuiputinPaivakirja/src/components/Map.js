@@ -5,10 +5,11 @@ import { Gesture,
          GestureDetector, 
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import AnimatedInfo from './AnimatedInfo';
 import sectors from '../Helpers/Sectors';
+import SectorOverlay from './SectorOverlay';
+import { ORIGINAL_IMAGE_WIDTH, ORIGINAL_IMAGE_HEIGHT } from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNotification, showRouteAddedNotification, setShowRouteAddedNotification }) => {
+const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress, setScaleFactors }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -18,34 +19,17 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
   const [showMarkers, setShowMarkers] = useState(false);
-  const [clusters, setClusters] = useState([]);
+  const [scaleFactorX, setScaleFactorX] = useState(1);
+  const [scaleFactorY, setScaleFactorY] = useState(1);
+  
 
+  //Scalefactor from the MapScreen component
   useEffect(() => {
-    setClusters(clusterMarkersBySectors(markers));
-  }, [markers]);
-
-  // Cluster markers by sectors. Creates a cluster for each sector and counts the markers in each sector.
-  const clusterMarkersBySectors = (markers) => {
-    const clusters = sectors.map(sector => {
-      const sectorMarkers = markers.filter(marker => 
-        marker.x >= sector.xMin && marker.x <= sector.xMax &&
-        marker.y >= sector.yMin && marker.y <= sector.yMax
-      );
-      const centerX = (sector.xMin + sector.xMax) / 2;
-      const centerY = (sector.yMin + sector.yMax) / 2;
-      return {
-        id: sector.id,
-        name: sector.name,
-        x: centerX,
-        y: centerY,
-        count: sectorMarkers.length,
-        visible: sectorMarkers.length > 0,
-        markers: sectorMarkers,
-      };
+    setScaleFactors({ 
+      scaleFactorX, 
+      scaleFactorY 
     });
-    console.log('Clusters: ', clusters);
-    return clusters;
-  };
+  }, [scaleFactorX, scaleFactorY]);
 
   // Gesture handlers
 
@@ -141,58 +125,64 @@ const Map = ({ handleLongPress, newMarker, markers, showNotification, setShowNot
     }
   })
 
+  // This calculates how much we need to scale coordinates based on the actual rendered image size.
+  const handleImageLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setImageWidth(width);
+    setImageHeight(height);
+    
+    // Calculate scale factors
+    setScaleFactorX(width / ORIGINAL_IMAGE_WIDTH);
+    setScaleFactorY(height / ORIGINAL_IMAGE_HEIGHT);
+  };
+
+  // Function to scale coordinates
+  const scaleCoordinates = (x, y) => ({
+    x: x * scaleFactorX,
+    y: y * scaleFactorY
+  });
+
   return (
     <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
-      {showNotification &&
-         <AnimatedInfo 
-            showNotification={showNotification} 
-            setShowNotification={setShowNotification} 
-            text="Long press to add a new route" 
-         />
-      }
-      {showRouteAddedNotification &&
-         <AnimatedInfo 
-            showNotification={showRouteAddedNotification} 
-            setShowNotification={setShowRouteAddedNotification} 
-            text="Route succesfully added" 
-         />
-      }
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
           <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
             <Animated.Image
               source = {require('../../assets/BoulderMap_transformed_2.png')}
               style = {[styles.mapImage]}
-              onLayout = {(event) => {
-                const { width, height } = event.nativeEvent.layout;
-                setImageWidth(width);
-                setImageHeight(height);
-              }}
+              onLayout = {handleImageLayout}
             />
-            {newMarker && (
-              <Svg style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
-                <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red" />
-              </Svg>
-            )}
-            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
-              if(cluster) {
-                return (
-                <Svg key={cluster.id} style={styles.svgOverlay}>
-                  <Rect x={cluster.x-30} y={cluster.y-12} width={60} height={15} fill="red" />
-                  <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
-                      {cluster.name}
-                  </Text>
-                  <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
-                      {cluster.count}
-                  </Text>
-                </Svg>
+            <Svg style={styles.svgOverlay}>
+              {newMarker && (
+                  <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red"/>
               )}
+            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
+              const sector = sectors.find(s => s.id === cluster.id);
+              const scaledCluster = {
+                ...cluster,
+                x: cluster.x * scaleFactorX,
+                y: cluster.y * scaleFactorY
+              };
+              const scaledSector = {
+                ...sector,
+                xMin: sector.xMin * scaleFactorX,
+                xMax: sector.xMax * scaleFactorX,
+                yMin: sector.yMin * scaleFactorY,
+                yMax: sector.yMax * scaleFactorY
+              };
+              return <SectorOverlay key={cluster.id} cluster={scaledCluster} sector={scaledSector} />;
             })}
-            {markers.length > 0 && showMarkers && markers.map((marker) => (
-              <Svg key={markers.routeId} style={styles.svgOverlay} onPress={(e)=> {console.log("Press event")}}>
-                <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} />
-                <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor} />
-              </Svg>
-            ))}
+              {markers.length > 0 && showMarkers && markers.map((marker) => {
+                if(marker.visible) {  
+                  const scaled = scaleCoordinates(marker.x, marker.y);
+                  return (
+                  <Svg key={marker.id} style={{position: 'absolute', left: scaled.x - 4, top: scaled.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={() => handleMarkerPress(marker)}>
+                    <Circle cx={scaled.x} cy={scaled.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
+                    <Circle cx={scaled.x} cy={scaled.y} r={5.5} fill={marker.holdColor}/>
+                  </Svg>
+                  )
+                }
+              })}
+            </Svg>
           </Animated.View>
         </GestureDetector>
     </GestureHandlerRootView>

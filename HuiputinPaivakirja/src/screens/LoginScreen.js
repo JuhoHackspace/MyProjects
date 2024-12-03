@@ -5,7 +5,7 @@ import { Button, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from '../firebase/AuthProvider';
 
 export default function LoginScreen({ navigation }) {
-  const { colors } = useTheme();
+  const { colors, fonts } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
@@ -13,7 +13,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Login</Text>
+        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28}}>Login</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
@@ -36,6 +36,9 @@ export default function LoginScreen({ navigation }) {
           mode="contained"
           onPress={() => login(email, password)}
           buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+          icon = "login"
         >
           Login
         </Button>
@@ -44,6 +47,9 @@ export default function LoginScreen({ navigation }) {
           mode="contained"
           onPress={() => navigation.navigate('CreateAccount')}
           buttonColor={colors.accent}
+          contentStyle={styles.buttonContent}
+          labelStyle={styles.buttonLabel}
+          icon = "account-plus"
         >
           Create Account
         </Button>

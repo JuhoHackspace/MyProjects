@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc, doc,getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, query, onSnapshot, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
@@ -40,7 +40,8 @@ const markers = collection(db, 'markers');
 // Export the Firebase services that will be used in the application
 export { 
     db,
-    storage, 
+    storage,
+    arrayUnion,
     collection, 
     addDoc, 
     query, 
@@ -48,7 +49,8 @@ export {
     deleteDoc, 
     doc,
     getDoc, 
-    getDocs, 
+    getDocs,
+    updateDoc,
     ref, 
     uploadBytesResumable, 
     getDownloadURL,

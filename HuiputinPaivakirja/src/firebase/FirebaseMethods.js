@@ -1,4 +1,5 @@
 import {
+        arrayUnion,
         db,
         storage,
         collection,
@@ -10,6 +11,7 @@ import {
         getDocs,
         getDoc,
         setDoc,
+        updateDoc,
         ref,
         uploadBytesResumable,
         getDownloadURL,
@@ -18,6 +20,7 @@ import {
         users,
         markers,
 } from './Config';
+import { convertGrade } from '../Helpers/Calculate';
 
 /**
 * Get the display name of the currently authenticated user.
@@ -82,8 +85,8 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
                 routeGradeVotes: [],
                 votedForDelete: [],
                 sentBy: [], // Tähän tulee lista käyttäjän id:stä, joka on lähettänyt reitin
-                visible: true,
                 votedGrade: '',
+
 
             });
             const routeId = docRef.id;
@@ -100,41 +103,23 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
 
 const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         try {
-            const routeId = await saveRouteToFirebase(imageUri, routeInfo);
-            const docRef = await addDoc(markers, {
-                routeId: routeId,
-                x: markerInfo.x,
-                y: markerInfo.y,
-                created: new Date().toISOString(),
-                holdColor: routeInfo.holdColor,
-                gradeColor: routeInfo.grade,
-            });
-            const markerId = docRef.id;
-            console.log("Marker added with ID: ", docRef.id);
-            return markerId;
+          const routeId = await saveRouteToFirebase(imageUri, routeInfo);
+          const docRef = await addDoc(markers, {
+            routeId: routeId,
+            x: markerInfo.x,
+            y: markerInfo.y,
+            created: new Date().toISOString(),
+            holdColor: routeInfo.holdColor,
+            gradeColor: routeInfo.grade,
+            visible: true,
+          });
+          const markerId = docRef.id;
+          console.log("Marker added with ID: ", docRef.id);
+          return { routeId, markerId };
         } catch (error) {
-            console.error('Error adding route and marker:', error);
+          console.error('Error adding route and marker:', error);
         }
 }
-
-/*const fetchUserData = async(userId, setUserData) => {
-    if  (!userId)
-        return
-    try {
-        const userDocRef = doc(db, 'users', userId);
-        const userSnapshot = await getDoc(userDocRef); //haetaan tiedot jo niitä on siellä
-        if (userSnapshot.exists()) {
-            const userData = userSnapshot.data();
-            // Set the user data to the state
-            setUserData(userData);
-        } else {
-            console.log('No user data found!');
-        }
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-
-    }
-}*/
 
 const fetchUserData = (userId, setUserData) => {
     if (!userId) return;
@@ -177,4 +162,115 @@ const listenToMarkers = (callback) => {
         });
     };
 
-export { addRouteAndMarker,AddUserInfo,fetchUserData, listenToMarkers }
+/*const fetchRouteData = async (routeId, setRouteData, setLoading) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        const routeDoc = await getDoc(routeDocRef);
+    if (routeDoc.exists()) {
+        const routeData = routeDoc.data();
+        setRouteData(routeData);
+    } else {
+        Alert.alert('Error', 'Route data not found.');
+    }
+    } catch (error) {
+        Alert.alert('Error', 'Failed to fetch route data.');
+        console.error(error);
+    } finally {
+        setLoading(false);
+    }
+};*/
+
+const fetchRouteData = (routeId, setRouteData, setLoading) => {
+    const routeDocRef = doc(routes, routeId);
+    const unsubscribe = onSnapshot(routeDocRef, (doc) => {
+      if (doc.exists()) {
+        setRouteData(doc.data());
+      } else {
+        console.log('No route data found!');
+        setRouteData(null);
+      }
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching route data:', error);
+    });
+  
+    return unsubscribe;
+};
+
+const voteForDelete = async (routeId) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        await updateDoc(routeDocRef, {
+            votedForDelete: arrayUnion({votedBy: auth.currentUser.uid, votedAt: new Date().toISOString()}),
+        });
+        console.log('Voted for delete successfully!');
+    } catch (error) {
+        console.error('Error voting for delete:', error);
+    }
+};
+
+const setRouteInvisible = async (markerId) => {
+    try {
+        const markerDocRef = doc(markers, markerId);
+        await updateDoc(markerDocRef, {
+            visible: false,
+        });
+    } catch (error) {
+        console.error('Error deleting route:', error);
+    }
+}
+
+const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
+  const date = new Date().toISOString();
+  try {
+      const routeDocRef = doc(routes, routeId);
+      const routeDoc = await getDoc(routeDocRef);
+      const routeData = routeDoc.data();
+
+      // Tarkistetaan, että reitti on olemassa
+      const routeGradeVotes = routeData.routeGradeVotes || [];
+      console.log('Existing routeGradeVotes:', routeGradeVotes);
+
+      // Lisätään uusi ääni listaan
+      const updatedGradeVotes = [...routeGradeVotes, gradeVote];
+      console.log('Updated routeGradeVotes:', updatedGradeVotes);
+
+      // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
+      const averageGrade = convertGrade(updatedGradeVotes);
+      console.log('Calculated averageGrade:', averageGrade);
+
+      // Päivitys
+      await updateDoc(routeDocRef, {
+          sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date }),
+          routeGradeVotes: arrayUnion(gradeVote),
+          votedGrade: averageGrade,
+      });
+
+      const userDocRef = doc(users, auth.currentUser.uid);
+      await updateDoc(userDocRef, {
+          sends: arrayUnion({ route: routeId, tries: tryCount, sentAt: date }),
+      });
+
+      console.log('Route marked as sent successfully!');
+  } catch (error) {
+      console.error('Error marking route as sent:', error);
+  }
+};
+
+const getRouteCreatorId = async (routeId) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        const routeDoc = await getDoc(routeDocRef);
+        if (routeDoc.exists()) {
+            return routeDoc.data().createdBy.id;
+        } else {
+            console.log('No route data found!');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching route data:', error);
+        return null;
+    }
+};
+
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId }
