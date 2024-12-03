@@ -161,7 +161,13 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         margin: 5
-    }
+    },
+    horizontalSpaceBetween: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+    },  
 });
 
 export default styles;

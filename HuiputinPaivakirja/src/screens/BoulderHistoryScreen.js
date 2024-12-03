@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable } from 'react-native'
+import { View, Text, FlatList, Pressable, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper'
@@ -55,20 +55,22 @@ export default function BoulderHistoryScreen() {
       <View style={styles.headerContainer}>
         <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28 }}>Boulder History</Text>
       </View>
-      <Text style={[styles.basicText, styles.bold, styles.marginLeft16]}>Your last sends:</Text>
-      <FlatList
-        data={seeAllHistory? allHistory : history}
-        style={[styles.inputContainer]}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
-        )}
-      />
-      <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
-        <Text style={[styles.basicText, styles.bold, styles.marginLeft16]}>
-            {!seeAllHistory ? "See all your sends" : "See only last 5 sends"}
-        </Text>
-      </Pressable>
+      <View style={styles.horizontalSpaceBetween}>
+        <Text style={[styles.basicText, styles.bold]}>Your last sends:</Text>
+        <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
+            <Text style={[styles.basicText, styles.bold, styles.marginLeft16, {color: 'blue'}]}>
+                {!seeAllHistory ? "See all" : "See less"}
+            </Text>
+        </Pressable>
+      </View>
+      <ScrollView style={styles.inputContainer}>
+        {!seeAllHistory && history.length > 0 && history.map((item, index) => (
+            <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
+            ))}
+        {seeAllHistory && allHistory.length > 0 && allHistory.map((item, index) => (
+            <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
+            ))}
+      </ScrollView>
     </View>
   )
 }
