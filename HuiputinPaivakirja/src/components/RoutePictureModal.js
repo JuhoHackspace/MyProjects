@@ -15,9 +15,8 @@ export default function ModalView({
       onRequestClose={onClose}
     >
       <View style={modalStyles.centeredView}>
-        <View style={modalStyles.modalView}>
-            <Image source={{uri: routeImageUrl}} style={{width: '100%', height: 550}}/>
-            <View style={modalStyles.modalButtonContainer}>
+            <Image source={{uri: routeImageUrl}} style={{width: '80%', height: 550, margin: 10}}/>
+            <View style={modalStyles.picureModalButtonView}>
             <TouchableOpacity
                 style={modalStyles.modalButton}
                 onPress={onClose}
@@ -25,7 +24,6 @@ export default function ModalView({
                 <Text style={modalStyles.modalButtonText}>Close</Text>
             </TouchableOpacity>
             </View>
-        </View>
       </View>
     </Modal>
   );

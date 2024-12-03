@@ -15,7 +15,7 @@ export default function RoutePolygon({gradeColor, holdColor, votedGrade}) {
         <Text
             x="30"
             y="30"
-            fill="white"
+            fill={holdColor === 'white' || holdColor === 'yellow' || holdColor === 'pink' ? 'black' : 'white'}
             fontSize="15"
             textAnchor="middle"
             fontWeight="bold"
