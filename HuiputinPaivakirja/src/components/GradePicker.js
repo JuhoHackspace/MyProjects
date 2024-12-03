@@ -6,7 +6,7 @@ export default function GradePicker({newRouteGrade, setNewRouteGrade}) {
   useEffect(() => {
     // Set the first value as the default value if newRouteGrade is not set
     if (!newRouteGrade) {
-        setNewRouteGrade('4b');
+        setNewRouteGrade('3');
     }
   }, [newRouteGrade, setNewRouteGrade]);
   return (
