@@ -36,7 +36,8 @@ const difficultyMapping = [
     { color: "pink", grades: ["6A+", "6B", "6B+"], values: [6.17, 6.33, 6.5] },
     { color: "red", grades: ["6C", "6C+", "7A"], values: [6.67, 6.83, 7.0] },
     { color: "purple", grades: ["7A+", "7B"], values: [7.17, 7.33] },
-    { color: "black", grades: ["7B+"], values: [7.5] }
+    { color: "black", grades: ["7B+", '7c+'], values: [7.5, 7,83] },
+    { color: "white", grades: ["8a", "9a+"], values: [8.0, 9.17] },
   ];
 
 const reverseGradeMapping = Object.fromEntries(
