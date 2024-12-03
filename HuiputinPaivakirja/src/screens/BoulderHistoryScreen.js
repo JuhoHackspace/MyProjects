@@ -1,15 +1,20 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, Pressable } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper'
 import LoadingIcon from '../components/LoadingIcon'
 import { retrieveBoulderHistory } from '../firebase/FirebaseMethods'
 import ClickableRoute from '../components/ClickableRoute'
+import DrawerButton from '../components/DrawerButton'
+import { useNavigation } from '@react-navigation/native'
 
 export default function BoulderHistoryScreen() {
   const { colors, fonts } = useTheme()
   const [history, setHistory] = useState([])
+  const [allHistory, setAllHistory] = useState([])
   const [loading, setLoading] = useState(true)
+  const [seeAllHistory, setSeeAllHistory] = useState(false)
+  const navigation = useNavigation()
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -18,6 +23,7 @@ export default function BoulderHistoryScreen() {
             // Sort the sends list by sentAt field in descending order
             const sortedSends = data.sort((a, b) => new Date(b.send.sentAt) - new Date(a.send.sentAt));
             // Take the last five sends
+            setAllHistory(sortedSends);
             const lastFiveSends = sortedSends.slice(0, 5);
             setHistory(lastFiveSends);
             setLoading(false);
@@ -44,17 +50,25 @@ export default function BoulderHistoryScreen() {
   }
 
   return (
-    <View style={styles.screenBaseContainer}>
+    <View style={[styles.screenBaseContainer,{backgroundColor: colors.background}]}>
+      <DrawerButton navigation={navigation} />
       <View style={styles.headerContainer}>
         <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28 }}>Boulder History</Text>
       </View>
+      <Text style={[styles.basicText, styles.bold, styles.marginLeft16]}>Your last 5 sends:</Text>
       <FlatList
-        data={history}
+        data={seeAllHistory? allHistory : history}
+        style={styles.inputContainer}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <ClickableRoute data={item} onPress={() => {}} />
+          <ClickableRoute key={index} data={item} onPress={() => {console.log("Press")}} />
         )}
       />
+      <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
+        <Text style={[styles.basicText, styles.bold, styles.marginLeft16]}>
+            {!seeAllHistory ? "See all your sends" : "See only last 5 sends"}
+        </Text>
+      </Pressable>
     </View>
   )
 }

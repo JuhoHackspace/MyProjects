@@ -1,7 +1,7 @@
-import { View, Text } from 'react-native'
+import { View, Text as Text, Pressable } from 'react-native'
 import React from 'react'
-import Svg, { Polygon } from 'react-native-svg'
 import styles from '../styles/Styles'
+import RoutePolygon from './RoutePolygon';
 
 export default function ClickableRoute({data, onPress}) {
   const formatDate = (isoString) => {
@@ -13,13 +13,18 @@ export default function ClickableRoute({data, onPress}) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
-  
+
   return (
-    <View style={styles.inputContainer}>
-        <Text style={styles.basicText}>Route: {data.route.routeName}</Text>
-        <Text style={styles.basicText}>Grade: {data.route.votedGrade}</Text>
-        <Text style={styles.basicText}>Sent At: {formatDate(data.send.sentAt)}</Text>
-        <Text style={styles.basicText}>Tries: {data.send.tries}</Text>
-    </View>
+    <Pressable onPress={onPress}>   
+    {({ pressed }) => (
+        <View style={[styles.ClickableRouteContainer, { backgroundColor: pressed ? 'lightgray' : 'white' }]}>
+            <RoutePolygon gradeColor={data.route.routeGradeColor} holdColor={data.route.routeHoldColor} votedGrade={data.route.votedGrade}/>
+            <View style={styles.verticalContainerRouteInfo}>
+                <Text style={styles.smallText}>{data.route.routeName}</Text>
+                <Text style={styles.smallText}>{formatDate(data.send.sentAt)}</Text>
+            </View>
+        </View>
+    )}
+    </Pressable>
   )
 }

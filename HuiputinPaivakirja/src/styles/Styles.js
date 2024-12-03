@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import ClickableRoute from '../components/ClickableRoute';
 
 export const styles = StyleSheet.create({
     screenBaseContainer: {
@@ -84,6 +85,12 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 10,
     },
+    marginLeft16: {
+        marginLeft: 16,
+    },
+    bold: {
+        fontWeight: 'bold',
+    },
     notification: {
         position: 'absolute',
         top: 70,
@@ -125,6 +132,36 @@ export const styles = StyleSheet.create({
         marginTop: 32, 
         marginBottom: 16 
     },
+    ClickableRouteContainer: {
+        width: '100%',
+        height: 65,
+        marginBottom: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: 'gray', // Gray border color
+        borderWidth: 1, // Border width
+        borderRadius: 10, // Border radius
+        shadowColor: '#000', // Shadow color
+        shadowOffset: { width: 0, height: 2 }, // Shadow offset
+        shadowOpacity: 0.25, // Shadow opacity
+        shadowRadius: 3.84, // Shadow radius
+        elevation: 5, // Elevation for Android shadow
+        backgroundColor: 'white', // Background color
+        
+    },
+    verticalContainerRouteInfo: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'left',
+        marginLeft: 20,
+        marginTop: 4,
+        marginBottom: 4,
+    },
+    smallText: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        margin: 5
+    }
 });
 
 export default styles;
