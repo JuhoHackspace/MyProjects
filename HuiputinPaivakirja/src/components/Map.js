@@ -6,8 +6,10 @@ import { Gesture,
          GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import sectors from '../Helpers/Sectors';
+import SectorOverlay from './SectorOverlay';
+import { ORIGINAL_IMAGE_WIDTH, ORIGINAL_IMAGE_HEIGHT } from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress }) => {
+const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress, setScaleFactors }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -17,6 +19,17 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress 
   const [imageWidth, setImageWidth] = useState(0);
   const [imageHeight, setImageHeight] = useState(0);
   const [showMarkers, setShowMarkers] = useState(false);
+  const [scaleFactorX, setScaleFactorX] = useState(1);
+  const [scaleFactorY, setScaleFactorY] = useState(1);
+  
+
+  //Scalefactor from the MapScreen component
+  useEffect(() => {
+    setScaleFactors({ 
+      scaleFactorX, 
+      scaleFactorY 
+    });
+  }, [scaleFactorX, scaleFactorY]);
 
   // Gesture handlers
 
@@ -112,6 +125,23 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress 
     }
   })
 
+  // This calculates how much we need to scale coordinates based on the actual rendered image size.
+  const handleImageLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setImageWidth(width);
+    setImageHeight(height);
+    
+    // Calculate scale factors
+    setScaleFactorX(width / ORIGINAL_IMAGE_WIDTH);
+    setScaleFactorY(height / ORIGINAL_IMAGE_HEIGHT);
+  };
+
+  // Function to scale coordinates
+  const scaleCoordinates = (x, y) => ({
+    x: x * scaleFactorX,
+    y: y * scaleFactorY
+  });
+
   return (
     <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
@@ -119,36 +149,35 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress 
             <Animated.Image
               source = {require('../../assets/BoulderMap_transformed_2.png')}
               style = {[styles.mapImage]}
-              onLayout = {(event) => {
-                const { width, height } = event.nativeEvent.layout;
-                setImageWidth(width);
-                setImageHeight(height);
-              }}
+              onLayout = {handleImageLayout}
             />
             <Svg style={styles.svgOverlay}>
               {newMarker && (
                   <Circle cx={newMarker.x} cy={newMarker.y} r={8} fill="red"/>
               )}
-              {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
-                if(cluster) {
-                  return (
-                  <React.Fragment key={cluster.id}>
-                    <Rect x={cluster.x-30} y={cluster.y-12} width={60} height={15} fill="red" />
-                    <Text x={cluster.x} y={cluster.y} fill="white" fontSize="12" textAnchor="middle">
-                        {cluster.name}
-                    </Text>
-                    <Text x={cluster.x} y={cluster.y+15} fill="red" fontSize="12" textAnchor="middle">
-                        {cluster.count}
-                    </Text>
-                  </React.Fragment>
-                )}
-              })}
+            {clusters.length > 0 && !showMarkers && clusters.map(cluster => {
+              const sector = sectors.find(s => s.id === cluster.id);
+              const scaledCluster = {
+                ...cluster,
+                x: cluster.x * scaleFactorX,
+                y: cluster.y * scaleFactorY
+              };
+              const scaledSector = {
+                ...sector,
+                xMin: sector.xMin * scaleFactorX,
+                xMax: sector.xMax * scaleFactorX,
+                yMin: sector.yMin * scaleFactorY,
+                yMax: sector.yMax * scaleFactorY
+              };
+              return <SectorOverlay key={cluster.id} cluster={scaledCluster} sector={scaledSector} />;
+            })}
               {markers.length > 0 && showMarkers && markers.map((marker) => {
                 if(marker.visible) {  
+                  const scaled = scaleCoordinates(marker.x, marker.y);
                   return (
-                  <Svg key={marker.id} style={{position: 'absolute', left: marker.x - 4, top: marker.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={() => handleMarkerPress(marker)}>
-                    <Circle cx={marker.x} cy={marker.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
-                    <Circle cx={marker.x} cy={marker.y} r={5.5} fill={marker.holdColor}/>
+                  <Svg key={marker.id} style={{position: 'absolute', left: scaled.x - 4, top: scaled.y - 4, width: 8, height: 8, zIndex: 100 }} onPress={() => handleMarkerPress(marker)}>
+                    <Circle cx={scaled.x} cy={scaled.y} r={8} fill={marker.gradeColor} onPress={() => {}}/>
+                    <Circle cx={scaled.x} cy={scaled.y} r={5.5} fill={marker.holdColor}/>
                   </Svg>
                   )
                 }
