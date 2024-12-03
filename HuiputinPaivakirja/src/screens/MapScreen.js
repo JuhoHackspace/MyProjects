@@ -17,6 +17,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   const navigation = useNavigation();
   const showNotification = useNotification();
   const { markers, clusters } = useMarkers();
+  const [scaleFactors, setScaleFactors] = useState({ scaleFactorX: 1, scaleFactorY: 1 });
 
   const handleAddNewRoute = () => {
     setAddingMarker(true);
@@ -36,7 +37,14 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   };
 
   const handleSetMarker = () => {
-    setMarker(newMarker); // Open CameraScreen after setting the marker
+    // Convert the coordinates to the original coordinate system before saving
+    const originalX = newMarker.x / scaleFactorX;
+    const originalY = newMarker.y / scaleFactorY;
+    
+    setMarker({ 
+      x: originalX, 
+      y: originalY 
+    });
     setShowMap(false);
     setShowCamera(true);
   };
@@ -59,6 +67,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
         markers={markers}
         clusters={clusters}
         handleMarkerPress={handleMarkerPress} // Pass handleMarkerPress to Map component
+        setScaleFactors={setScaleFactors}
       />
       <View style={styles.containerBottom}>
         {newMarker && (

@@ -9,7 +9,7 @@ import sectors from '../Helpers/Sectors';
 import ClusterLabel from './ClusterLabel';
 import { ORIGINAL_IMAGE_WIDTH, ORIGINAL_IMAGE_HEIGHT } from '../Helpers/Sectors';
 
-const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress }) => {
+const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress, setScaleFactors }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -21,6 +21,13 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress 
   const [showMarkers, setShowMarkers] = useState(false);
   const [scaleFactorX, setScaleFactorX] = useState(1);
   const [scaleFactorY, setScaleFactorY] = useState(1);
+  
+  useEffect(() => {
+    setScaleFactors({ 
+      scaleFactorX, 
+      scaleFactorY 
+    });
+  }, [scaleFactorX, scaleFactorY]);
 
   // Gesture handlers
 
