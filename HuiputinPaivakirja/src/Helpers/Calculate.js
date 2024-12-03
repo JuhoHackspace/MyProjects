@@ -63,7 +63,7 @@ export const convertGrade = (gradesArray, gradeColor) => {
     const colorRange = difficultyMapping.find(entry => entry.color === gradeColor);
     if (!colorRange) {
         console.warn(`Color ${gradeColor} not found in difficultyMapping.`);
-        return reverseGradeMapping[roundedAverage] || 'Unknown grade';
+        return 'Unknown grade';
     }
 
     const [minValue, maxValue] = [Math.min(...colorRange.values), Math.max(...colorRange.values)];
@@ -77,13 +77,15 @@ export const convertGrade = (gradesArray, gradeColor) => {
     } else {
         feedback = 'spot on!';
     }
-    const closestGrade = Object.entries(reverseGradeMapping).reduce((prev, [value, grade]) => {
-        return Math.abs(value - roundedAverage) < Math.abs(prev - roundedAverage)
-            ? { value: parseFloat(value), grade }
-            : prev;
-    }, { value: Infinity, grade: 'unknown grade' }).grade;
 
-    // Palautetaan keskiarvo ja palaute
-    const grade = reverseGradeMapping[roundedAverage] || 'Unknown grade';
-    return `${closestGrade.grade} (${feedback})`;
+    // Päivitetty logiikka lähimmän graden löytämiseksi
+    const closestGrade = Object.keys(gradeMapping).reduce((prev, curr) => {
+        const currValue = gradeMapping[curr];
+        return Math.abs(currValue - roundedAverage) < Math.abs(gradeMapping[prev] - roundedAverage)
+            ? curr
+            : prev;
+    });
+
+    // Palautetaan lähin grade ja palaute
+    return `${closestGrade} (${feedback})`;
 };
