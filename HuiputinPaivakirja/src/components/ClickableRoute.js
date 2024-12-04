@@ -15,7 +15,8 @@ export default function ClickableRoute({data, onPress}) {
   };
 
   return (
-    <Pressable onPress={onPress}>   
+    <Pressable onPress={onPress}> 
+    {/*Pressable route component within boulder history list*/}  
     {({ pressed }) => (
         <View style={[styles.ClickableRouteContainer, { backgroundColor: pressed ? 'lightgray' : 'white' }]}>
             <RoutePolygon gradeColor={data.route.routeGradeColor} holdColor={data.route.routeHoldColor} votedGrade={data.route.votedGrade}/>
