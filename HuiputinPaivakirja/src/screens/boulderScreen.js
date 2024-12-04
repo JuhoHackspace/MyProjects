@@ -170,12 +170,22 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       {settingRouteData && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <TextInput
+            mode="outlined"
             style={[styles.input, { backgroundColor: colors.background }]}
             placeholder="Route Name"
             value={newRouteName}
             onChangeText={setNewRouteName}
             placeholderTextColor={colors.text}
-            theme={{ colors: { text: colors.text, placeholder: colors.text } }}
+            textColor={colors.text}
+            outlineColor={colors.text}
+            activeOutlineColor={colors.accent}
+            theme={{
+              colors: {
+                text: colors.text,
+                placeholder: colors.text,
+                primary: colors.accent,
+              },
+            }}
           />
           <Text style={{ color: colors.text }}>Route Tag Color</Text>
           <ColorPicker value={newRouteGrade} setValue={setNewRouteGrade} isGrade={true} />
@@ -196,13 +206,23 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />
           <TextInput
+            mode="outlined"
             style={[styles.input, { backgroundColor: colors.background }]}
             placeholder="Try Count"
             value={tryCount}
             keyboardType="numeric"
             onChangeText={setTryCount}
             placeholderTextColor={colors.text}
-            theme={{ colors: { text: colors.text, placeholder: colors.text } }}
+            textColor={colors.text}
+            outlineColor={colors.text}
+            activeOutlineColor={colors.accent}
+            theme={{
+              colors: {
+                text: colors.text,
+                placeholder: colors.text,
+                primary: colors.accent,
+              },
+            }}
           />
         </View>
       )}
