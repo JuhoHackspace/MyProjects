@@ -18,6 +18,7 @@ const lightTheme = {
     special: {
       fontFamily: 'PermanentMarker-Regular',
       fontWeight: 'normal',
+      color: '#000000',
     },
   }
 };
@@ -36,6 +37,7 @@ const darkTheme = {
     special: {
       fontFamily: 'PermanentMarker-Regular',
       fontWeight: 'normal',
+      color: '#ffffff',
     },
   }
 };

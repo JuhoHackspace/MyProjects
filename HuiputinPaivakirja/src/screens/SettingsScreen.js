@@ -17,7 +17,12 @@ export default function SettingsScreen({ navigation }) {
       <DrawerButton navigation={navigation} />
       
       <View style={styles.headerContainer}>
-        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28, textAlign: 'center'}}>
+        <Text style={{
+          fontFamily: fonts.special.fontFamily,
+          fontSize: 28,
+          textAlign: 'center',
+          color: fonts.special.color
+        }}>
           Settings
         </Text>
       </View>

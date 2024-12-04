@@ -15,7 +15,12 @@ export default function CreateAccountScreen({ navigation }) {
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
-        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28}}>Create Account</Text>
+        <Text style={{
+          fontFamily: fonts.special.fontFamily,
+          fontSize: 28,
+          textAlign: 'center',
+          color: fonts.special.color
+        }}>Create Account</Text>
       </View>
       <View style={styles.inputContainer}>
       <TextInput

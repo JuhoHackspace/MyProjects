@@ -53,7 +53,12 @@ export default function BoulderHistoryScreen() {
       <RoutePictureModal visible={modalVisible} onClose={()=>{setModalVisible(false)}} routeImageUrl={imageUri} />
       <DrawerButton navigation={navigation} />
       <View style={styles.headerContainer}>
-        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28 }}>Boulder History</Text>
+        <Text style={{
+          fontFamily: fonts.special.fontFamily,
+          fontSize: 28,
+          textAlign: 'center',
+          color: fonts.special.color
+        }}>Boulder History</Text>
       </View>
       <View style={styles.horizontalSpaceBetween}>
         <Text style={[styles.basicText, styles.bold]}>Your last sends:</Text>

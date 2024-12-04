@@ -13,7 +13,12 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
-        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28}}>Login</Text>
+        <Text style={{
+          fontFamily: fonts.special.fontFamily,
+          fontSize: 28,
+          textAlign: 'center',
+          color: fonts.special.color
+        }}>Login</Text>
       </View>
       <View style={styles.inputContainer}>
         <TextInput
