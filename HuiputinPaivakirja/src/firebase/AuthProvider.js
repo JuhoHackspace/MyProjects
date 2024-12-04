@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { auth } from './Config';
+import { auth, doc, db, setDoc } from './Config';
 import {
     onAuthStateChanged,
     signOut,
@@ -71,6 +71,14 @@ export const AuthProvider = ({ children }) => {
         createUserWithEmailAndPassword(auth, email.trim(), password)
             .then((userCredential) => {
                 const user = userCredential.user;
+                const userDocRef = doc(db, "users", user.uid);
+                setDoc(userDocRef, {
+                    sends: [],
+                }).then(() => {
+                    console.log("User document created successfully");
+                }).catch((error) => {
+                    console.error("Error creating user document:", error);
+                });
                 return updateProfile(user, {
                     displayName: username,
                 });

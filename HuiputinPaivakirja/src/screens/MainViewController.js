@@ -10,7 +10,7 @@ import BoulderScreen from '../screens/boulderScreen'
 /**
  * This component is the main controller for viewing routes and adding new routes
  * It keeps track of the current state of the app and manages the transitions
- * between the MapScreen and CameraScreen (and in the future, the BoulderScreen)
+ * between the MapScreen and CameraScreen and the BoulderScreen.
  * It manages the state of the marker and image (and in the future, the route information)
  * and calls the addRouteAndMarker function to add the route and marker to the database
  * @returns MainViewController component
