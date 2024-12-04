@@ -33,7 +33,6 @@ export const getUserDisplayName = () => {
 /**
  * Store image in Firebase storage and return the download URL.
  */
-
 const uploadImage = async (imageUri, routeName) => {
         try {
             // Get the image from the file system
@@ -71,7 +70,6 @@ const uploadImage = async (imageUri, routeName) => {
 /**
  * Store a new route in Firestore.
  */
-
 const saveRouteToFirebase = async (imageUri, routeInfo) => {
         try {
             const url = await uploadImage(imageUri, routeInfo.name);
@@ -100,7 +98,6 @@ const saveRouteToFirebase = async (imageUri, routeInfo) => {
 /**
  * Add the route to Firestore and store a new marker in Firestore.
  */
-
 const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         try {
           const routeId = await saveRouteToFirebase(imageUri, routeInfo);
@@ -121,6 +118,9 @@ const addRouteAndMarker = async (imageUri, routeInfo, markerInfo) => {
         }
 }
 
+/**
+ * Listen to user data changes in Firestore.
+ */
 const fetchUserData = (userId, setUserData) => {
     if (!userId) return;
   
@@ -139,6 +139,9 @@ const fetchUserData = (userId, setUserData) => {
     return unsubscribe;
 };
 
+/**
+ * Add user information to Firestore. Used for updating user data in the profile.
+ */
 const AddUserInfo = async (userId, data) => {
     if (!userId){
         alert('Miten vittu pääsit tänne?')
@@ -153,6 +156,9 @@ const AddUserInfo = async (userId, data) => {
     }
 }
 
+/**
+ * Listen to marker data changes in Firestore.
+ */ 
 const listenToMarkers = (callback) => {
         return onSnapshot(markers, (snapshot) => {
             const markers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -162,24 +168,9 @@ const listenToMarkers = (callback) => {
         });
     };
 
-/*const fetchRouteData = async (routeId, setRouteData, setLoading) => {
-    try {
-        const routeDocRef = doc(routes, routeId);
-        const routeDoc = await getDoc(routeDocRef);
-    if (routeDoc.exists()) {
-        const routeData = routeDoc.data();
-        setRouteData(routeData);
-    } else {
-        Alert.alert('Error', 'Route data not found.');
-    }
-    } catch (error) {
-        Alert.alert('Error', 'Failed to fetch route data.');
-        console.error(error);
-    } finally {
-        setLoading(false);
-    }
-};*/
-
+/**
+ * Listen to route data changes in Firestore.
+ */
 const fetchRouteData = (routeId, setRouteData, setLoading) => {
     const routeDocRef = doc(routes, routeId);
     const unsubscribe = onSnapshot(routeDocRef, (doc) => {
@@ -197,6 +188,9 @@ const fetchRouteData = (routeId, setRouteData, setLoading) => {
     return unsubscribe;
 };
 
+/**
+ * Add a vote for deleting a route. The vote is stored in the route document.
+ */
 const voteForDelete = async (routeId) => {
     try {
         const routeDocRef = doc(routes, routeId);
@@ -209,6 +203,9 @@ const voteForDelete = async (routeId) => {
     }
 };
 
+/**
+ * Sets the route marker invisible in the map. The route is not deleted from the database.
+ */
 const setRouteInvisible = async (markerId) => {
     try {
         const markerDocRef = doc(markers, markerId);
@@ -220,6 +217,10 @@ const setRouteInvisible = async (markerId) => {
     }
 }
 
+/**
+ * Updates the route document to mark the route as sent by the user. The grade vote is added to the route document.
+ * The user document is updated to include the sent route in the users document.
+ */
 const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
   const date = new Date().toISOString();
   try {
@@ -257,6 +258,9 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
   }
 };
 
+/**
+ * Returns the creator ID of the route.
+ */
 const getRouteCreatorId = async (routeId) => {
     try {
         const routeDocRef = doc(routes, routeId);
@@ -273,6 +277,10 @@ const getRouteCreatorId = async (routeId) => {
     }
 };
 
+/**
+ * Returns the boulder history of the user.
+ * The function returns an array of objects containing the send data and the associated route data.
+ */
 const retrieveBoulderHistory = async () => {
     try {
         const userDocRef = doc(users, auth.currentUser.uid);

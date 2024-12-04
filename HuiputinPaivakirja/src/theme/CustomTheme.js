@@ -3,6 +3,7 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import { PermanentMarker_400Regular } from '@expo-google-fonts/permanent-marker';
 import * as Font from 'expo-font';
+import LoadingIcon from '../components/LoadingIcon';
 
 const lightTheme = {
   ...DefaultTheme,
@@ -51,6 +52,7 @@ export const useCustomTheme = () => useContext(ThemeContext);
 const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const theme = isDarkTheme ? darkTheme : lightTheme;
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
     async function loadFonts() {
@@ -58,6 +60,7 @@ const ThemeProvider = ({ children }) => {
         await Font.loadAsync({
           'PermanentMarker-Regular': PermanentMarker_400Regular,
         });
+        setFontsLoaded(true);
       } catch (error) {
         console.error('Error loading fonts: ', error);
       }
@@ -70,6 +73,11 @@ const ThemeProvider = ({ children }) => {
     setIsDarkTheme(!isDarkTheme);
   };
 
+  if (!fontsLoaded) {
+    return (
+      <LoadingIcon />
+    )
+  }
   return (
     <ThemeContext.Provider value={{ isDarkTheme, toggleTheme }}>
       <PaperProvider theme={theme}>
