@@ -11,11 +11,13 @@ export default function DrawLine({ hideButtons}) {
   const gradeColors = ['yellow', 'green', 'blue', 'pink', 'red', 'purple', 'black', 'white'];
   const [lineColor, nextLineColor] = useState(0);
 
+  // Called when the user lifts their finger
   const OnTouchEnd = () => {
     setPaths([...paths, currentPath]); // Lisää nykyinen viiva listaan
     setCurrentPath([]); // Tyhjennetään nykyinen viiva
   };
 
+  // Called when the user moves their finger
   const onTouchMove = (event) => {
     const locationX = event.nativeEvent.locationX;
     const locationY = event.nativeEvent.locationY;
@@ -23,6 +25,7 @@ export default function DrawLine({ hideButtons}) {
     setCurrentPath((prevPath) => [...prevPath, newPoint]);
   };
 
+  // Called when the user presses the clear button
   const handleClearButtonClick = () => {
     if (paths.length > 0) {
       const updatePaths = paths.slice(0, -1); // Poistaa viimeisen viivan
@@ -30,11 +33,13 @@ export default function DrawLine({ hideButtons}) {
     }
   };
 
+  // Called when the user long presses the clear button
   const handleClearButtonLongClick = () => {
     setPaths([]);
     setCurrentPath([]);
   };
 
+  // Called when the user presses the change line color button
   const changeLineColor = () => {
 
     nextLineColor((prevIndex) => (prevIndex + 1) % gradeColors.length)
@@ -43,6 +48,7 @@ export default function DrawLine({ hideButtons}) {
 
   return (
     <View style={styles.DrawLineContainer} onTouchMove={onTouchMove} onTouchEnd={OnTouchEnd}>
+       {/* Draw the route on top of the route image using Path from SVG */}
       <Svg>
         {paths.map((path, index) => (
           <Path
@@ -64,6 +70,7 @@ export default function DrawLine({ hideButtons}) {
           strokeLinecap={'round'}
         />
       </Svg>
+      {/*Hide these buttons when the image is being saved. State is received from the parent component */}
       {hideButtons && (
         <View style={styles.buttonsContainer}>
           <View style={styles.clearButtonContainer}>

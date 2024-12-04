@@ -9,6 +9,7 @@ export default function ImagePreview({ image, setImage, savePicture}) { // -N
   const captureRefView = useRef(null);
   const [hideButtons, setHideButtons] = useState(true);
 
+  // Capture the image and the drawn line and save it
   const handleSavePic = async () => {
     setHideButtons(false);
     try {
@@ -16,7 +17,7 @@ export default function ImagePreview({ image, setImage, savePicture}) { // -N
         format: 'png',
         quality: 0.8,
       });
-      savePicture(picAndLines); // Tässä on nyt kuva ja piirretty viiva
+      savePicture(picAndLines); // picAndLines is the image with the drawn line
     } catch (error) {
       console.error('failed to capture image', error);
     }
@@ -26,12 +27,13 @@ export default function ImagePreview({ image, setImage, savePicture}) { // -N
     // Display the image in the background with the retake and save buttons on top
     <View ref={captureRefView} style={styles.SnappiContainer}>
     <ImageBackground source={{ uri: image }} style={styles.SnappiContainer}>
+      {/*Draw the route on top of the route image */}
       <DrawLine
       hideButtons={hideButtons}
       />
       </ImageBackground>
 
-      {hideButtons && ( //piilottaa buttonit kun otetaan kuva missä näkyy reitti
+      {hideButtons && ( // Hide the buttons when the image is being saved
         <View style={styles.buttonsContainer}>
           
           <View style={styles.retakeButtonContainer}>

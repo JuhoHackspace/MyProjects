@@ -13,9 +13,19 @@ import { useNotification } from '../context/NotificationProvider';
 import GradePicker from '../components/GradePicker';
 import ColorPicker from '../components/ColorPicker';
 
+/** 
+ * BoulderScreen component serves two purposes: Creating a new route and displaying an existing route.
+ * When creating a new route, the user can input the route name, grade, and hold color.
+ * When displaying an existing route, the user can mark the route as sent, save the data, and vote for delete.
+ * @param {Object} route - The route object containing the marker data.
+ * @param {Function} setNewRouteData - Function to set the new route data.
+ * @param {String} imageUri - The uri of the image taken by the user. This is displayed when creating a new route.
+ * @returns BoulderScreen component
+*/
+
 const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const  marker = route != undefined ? route.params.marker: null;
-  const [settingRouteData, setSettingRouteData] = useState(route != undefined ? false : true);
+  const [settingRouteData, setSettingRouteData] = useState(route != undefined ? false : true); // Set to true when creating a new route
   const [routeData, setRouteData] = useState(null);
   const [loading, setLoading] = useState(route != undefined ? true : false);
   const [imageLoading, setImageLoading] = useState(route != undefined ? true : false);
@@ -33,7 +43,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const showNotification = useNotification();
   const notificationshown = useRef(false);
 
-  // Fetch route data when the screen is loaded
+  // Fetch route data and listen to it continuously when the screen is loaded
   useEffect(() => {
       let unsubscribe;
       if (route != undefined) {
@@ -61,6 +71,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
 
   // Function to handle voting for delete
   const handleVoteForDelete = async () => {
+    // Check if the user has already voted for delete
     if (routeData.votedForDelete.some(vote => vote.votedBy === userId)) {
       Alert.alert('Error', 'You have already voted for delete.');
       return;
