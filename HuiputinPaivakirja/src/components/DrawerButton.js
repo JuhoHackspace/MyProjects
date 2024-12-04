@@ -15,7 +15,7 @@ function DrawerButton({ navigation }) {
             onPress={() => navigation.getParent().openDrawer()}
             style={[styles.button, { top: insets.top + 10 }]} // Safe area adjustment
         >
-            <MaterialCommunityIcons name="menu" size={24} color={colors.text} />
+            <MaterialCommunityIcons name="menu" size={34} color={colors.text} />
         </TouchableOpacity>
     );
 }
