@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView,Text } from 'react-native';
+import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent } from '../firebase/FirebaseMethods';
@@ -148,72 +148,72 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }
 
   return (
-    <>
-    {/* Modal to confirm the delete */}
-    {modalVisible && <ConfirmDeleteModal visible={modalVisible} onClose={() => setModalVisible(false)} onDelete={onDeleteRoute}/>}
-    <ScrollView>
-        {/* Display the image of the route. Uses uri given as props or url from route data, depending on the settingRouteData variable */}
-        <Image
-            source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
-            style={!imageLoading ? styles.image: {display: 'none'}}
-            onLoad={handleImageLoad}
-            onError={() => Alert.alert('Error', 'Failed to load the image.')}
+    <ScrollView style={{ backgroundColor: colors.background }}>
+      {modalVisible && (
+        <ConfirmDeleteModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onDelete={onDeleteRoute}
         />
-        {/* Show a loading icon while the image is loading */}
-        {imageLoading && ( 
-          <View style={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-            <LoadingIcon/>
-          </View>
       )}
-      {/* Show the input fields for setting new route data */}
+      <Image
+        source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
+        style={!imageLoading ? styles.image : { display: 'none' }}
+        onLoad={handleImageLoad}
+        onError={() => Alert.alert('Error', 'Failed to load the image.')}
+      />
+      {imageLoading && (
+        <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+          <LoadingIcon />
+        </View>
+      )}
       {settingRouteData && (
-        <>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Route Name"
-              value={newRouteName}
-              onChangeText={setNewRouteName}
-            />
-            <Text>Route Tag Color</Text>
-            <ColorPicker value={newRouteGrade} setValue={setNewRouteGrade} isGrade={true}/>
-            <Text>Route Hold Color</Text>
-            <ColorPicker value={newRouteHoldColor} setValue={setNewRouteHoldColor} isGrade={false}/>
-          </View>
-        </>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
+          <TextInput
+            style={[styles.input, { backgroundColor: colors.background }]}
+            placeholder="Route Name"
+            value={newRouteName}
+            onChangeText={setNewRouteName}
+            placeholderTextColor={colors.text}
+            theme={{ colors: { text: colors.text, placeholder: colors.text } }}
+          />
+          <Text style={{ color: colors.text }}>Route Tag Color</Text>
+          <ColorPicker value={newRouteGrade} setValue={setNewRouteGrade} isGrade={true} />
+          <Text style={{ color: colors.text }}>Route Hold Color</Text>
+          <ColorPicker value={newRouteHoldColor} setValue={setNewRouteHoldColor} isGrade={false} />
+        </View>
       )}
-      {/* Show the route data when an existing route is opened */}
       {!settingRouteData && !imageLoading && (
-        <>
-          <View style={styles.inputContainer}>
-            <Text style={styles.basicText}>Route Name: {routeData?.routeName}</Text>
-            <Text style={styles.basicText}>Sent By: {routeData?.sentBy.map(entry => entry.senderName).join(', ')}</Text>
-            <Text style={styles.basicText}>Average Grade: {routeData?.votedGrade}</Text>
-            <Text style={styles.basicText}>Route Hold Color: {routeData?.routeHoldColor}</Text>
-            <Text style={styles.basicText}>Route Grade Color: {routeData?.routeGradeColor}</Text>
-          </View>
-          {showMarkAsSent && (
-            <View style={styles.inputContainer}>
-              <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote}/>
-              <TextInput
-                style={styles.input}
-                placeholder="Try Count"
-                value={tryCount}
-                keyboardType="numeric"
-                onChangeText={setTryCount}
-              />
-            </View>
-          )}
-        </>
+        <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
+          <Text style={[styles.basicText, { color: colors.text }]}>Route Name: {routeData?.routeName}</Text>
+          <Text style={[styles.basicText, { color: colors.text }]}>Sent By: {routeData?.sentBy.map(entry => entry.senderName).join(', ')}</Text>
+          <Text style={[styles.basicText, { color: colors.text }]}>Average Grade: {routeData?.votedGrade}</Text>
+          <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
+          <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
+        </View>
       )}
-      {!imageLoading &&
-        <View style={styles.buttonContainerVertical}>
-          {/* Show the buttons for marking as sent, saving, and voting for delete */}
+      {showMarkAsSent && (
+        <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
+          <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />
+          <TextInput
+            style={[styles.input, { backgroundColor: colors.background }]}
+            placeholder="Try Count"
+            value={tryCount}
+            keyboardType="numeric"
+            onChangeText={setTryCount}
+            placeholderTextColor={colors.text}
+            theme={{ colors: { text: colors.text, placeholder: colors.text } }}
+          />
+        </View>
+      )}
+      {!imageLoading && (
+        <View style={[styles.buttonContainerVertical, { backgroundColor: colors.background }]}>
           {!settingRouteData && (
             <Button
               mode="contained"
               style={styles.buttonLonger}
-              buttonColor= {colors.accent}
+              buttonColor={colors.accent}
+              textColor="white"
               icon={showMarkAsSent ? "cancel" : "check"}
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
@@ -222,11 +222,12 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               {showMarkAsSent ? "Cancel" : "Mark as sent"}
             </Button>
           )}
-          {(showMarkAsSent || settingRouteData) &&
+          {(showMarkAsSent || settingRouteData) && (
             <Button
               mode="contained"
               style={styles.buttonLonger}
-              buttonColor= {colors.accent}
+              buttonColor={colors.accent}
+              textColor="white"
               icon="content-save"
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
@@ -237,23 +238,27 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                   handleSave();
                 }
               }}
-            >{settingRouteData ? "Create" : "Save"}</Button>
-          }
+            >
+              {settingRouteData ? "Create" : "Save"}
+            </Button>
+          )}
           {!showMarkAsSent && !settingRouteData && (
             <Button
               mode="contained"
               style={styles.buttonLonger}
-              buttonColor= {colors.accent}
+              buttonColor={colors.accent}
+              textColor="white"
               icon="vote"
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
               onPress={handleVoteForDelete}
-            >Vote for delete {routeData?.votedForDelete.length}/3</Button>
+            >
+              Vote for delete {routeData?.votedForDelete.length}/3
+            </Button>
           )}
         </View>
-      }
+      )}
     </ScrollView>
-    </>
   );
 };
 
