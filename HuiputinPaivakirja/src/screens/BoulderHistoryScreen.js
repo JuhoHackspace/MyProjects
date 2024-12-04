@@ -57,11 +57,11 @@ export default function BoulderHistoryScreen() {
       </View>
       <View style={styles.horizontalSpaceBetween}>
         <Text style={[styles.basicText, styles.bold]}>Your last sends:</Text>
-        <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
+        {history.length != allHistory.length && <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
             <Text style={[styles.basicText, styles.bold, styles.marginLeft16, {color: 'blue'}]}>
                 {!seeAllHistory ? "See all" : "See less"}
             </Text>
-        </Pressable>
+        </Pressable>}
       </View>
       <ScrollView style={styles.inputContainer}>
         {!seeAllHistory && history.length > 0 && history.map((item, index) => (
