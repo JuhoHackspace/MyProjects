@@ -14,11 +14,11 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props} style={{ backgroundColor: colors.background }}>
       <PaperDrawer.Section theme={{ colors: { text: colors.text } }}>
         <PaperDrawer.Item
-          label="Home"
+          label="Map"
           icon={({ size }) => (
-            <MaterialCommunityIcons name="home-outline" color={colors.text} size={size} />
+            <MaterialCommunityIcons name="map-outline" color={colors.text} size={size} />
           )}
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('MainViewController')}
           theme={{ colors: { text: colors.text, onSurfaceVariant: colors.text } }}
         />
         <PaperDrawer.Item
