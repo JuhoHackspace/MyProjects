@@ -6,6 +6,7 @@ import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent } fro
 import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
+import { useCustomTheme } from '../theme/CustomTheme';
 import { useAuth } from '../firebase/AuthProvider';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 import { useNavigation } from '@react-navigation/native';
@@ -36,6 +37,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [newRouteGrade, setNewRouteGrade] = useState('yellow');
   const [newRouteHoldColor, setNewRouteHoldColor] = useState('yellow');
   const { colors } = useTheme();
+  const { isDarkTheme } = useCustomTheme();
   const { user } = useAuth();
   const userId = user?.uid;
   const [modalVisible, setModalVisible] = useState(false);
@@ -171,7 +173,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <TextInput
             mode="outlined"
-            style={[styles.input, { backgroundColor: colors.background }]}
+            style={[styles.input, { backgroundColor: isDarkTheme ? colors.background : 'white' }]}
             placeholder="Route Name"
             value={newRouteName}
             onChangeText={setNewRouteName}
@@ -189,7 +191,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           />
           <Text style={{ color: colors.text }}>Route Tag Color</Text>
           <ColorPicker value={newRouteGrade} setValue={setNewRouteGrade} isGrade={true} />
-          <Text style={{ color: colors.text }}>Route Hold Color</Text>
+          <Text style={{ color: colors.text, marginTop: 10 }}>Route Hold Color</Text>
           <ColorPicker value={newRouteHoldColor} setValue={setNewRouteHoldColor} isGrade={false} />
         </View>
       )}

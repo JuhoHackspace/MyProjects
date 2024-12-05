@@ -69,6 +69,7 @@ export const styles = StyleSheet.create({
     },
     input: {
         marginBottom: 10,
+        //color: 'white',
     },
     greetingContainer: {
         marginTop: 100,
