@@ -209,7 +209,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />
           <TextInput
             mode="outlined"
-            style={[styles.input, { backgroundColor: colors.background }]}
+            style={[styles.input, { 
+              backgroundColor: isDarkTheme ? colors.background : 'white',
+              marginTop: 16 
+            }]}
             placeholder="Try Count"
             value={tryCount}
             keyboardType="numeric"
