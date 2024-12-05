@@ -31,7 +31,9 @@ function AppNavigator() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
-        drawerPosition: 'right', // Works as intended
+        drawerPosition: 'right',
+        swipeEnabled: false, // Disable drawer gesture
+        gestureEnabled: false // Disable all drawer gestures
       }}
     >
       <Drawer.Screen name="MainStack" component={MainStackNavigator} />

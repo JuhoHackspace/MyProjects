@@ -66,7 +66,12 @@ export default function ProfileScreen({ navigation }) {
       {/* Include the DrawerButton */}
       <DrawerButton navigation={navigation} />
       <View style={styles.headerContainer}>
-        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28}}>
+        <Text style={{
+          fontFamily: fonts.special.fontFamily,
+          fontSize: 28,
+          textAlign: 'center',
+          color: fonts.special.color
+        }}>
           Profile
         </Text>
       </View>

@@ -8,6 +8,8 @@ import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import sectors from '../Helpers/Sectors';
 import SectorOverlay from './SectorOverlay';
 import { ORIGINAL_IMAGE_WIDTH, ORIGINAL_IMAGE_HEIGHT } from '../Helpers/Sectors';
+import { useTheme } from 'react-native-paper';
+import { useCustomTheme } from '../theme/CustomTheme';
 
 const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress, setScaleFactors }) => {
   const translateX = useSharedValue(0);
@@ -21,6 +23,8 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress,
   const [showMarkers, setShowMarkers] = useState(false);
   const [scaleFactorX, setScaleFactorX] = useState(1);
   const [scaleFactorY, setScaleFactorY] = useState(1);
+  const { isDarkTheme } = useCustomTheme();
+  const { colors } = useTheme();
   
 
   //Scalefactor from the MapScreen component
@@ -143,12 +147,15 @@ const Map = ({ handleLongPress, newMarker, markers, clusters, handleMarkerPress,
   });
 
   return (
-    <GestureHandlerRootView style={[styles.centeredbaseContainer]}>
+    <GestureHandlerRootView style={[styles.centeredbaseContainer, { backgroundColor: colors.background }]}>
         <GestureDetector gesture={Gesture.Race(pinch, pan, longPress)}>
-          <Animated.View style={[styles.mapImage, {transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}]}]}>
+          <Animated.View style={[styles.mapImage, {
+            transform: [{scale: scale}, {translateX: translateX}, {translateY: translateY}],
+            backgroundColor: colors.background
+          }]}>
             <Animated.Image
               source = {require('../../assets/BoulderMap_transformed_2.png')}
-              style = {[styles.mapImage]}
+              style = {[styles.mapImage, { tintColor: isDarkTheme ? '#ffffff' : undefined }]}
               onLayout = {handleImageLayout}
             />
             <Svg style={styles.svgOverlay}>

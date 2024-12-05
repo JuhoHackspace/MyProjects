@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, BackHandler } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import CameraScreen from './CameraScreen'
 import MapScreen from './MapScreen'
@@ -24,6 +24,30 @@ export default function MainViewController() {
   const [id, setId] = useState(null)
   const [loading, setLoading] = useState(false)
   const showNotification = useNotification()
+
+  // Handle back button press
+  useEffect(() => {
+    const backAction = () => {
+      if (showBoulderScreen) {
+        setShowBoulderScreen(false);
+        setShowMap(true);
+        return true; // Prevent default behavior
+      }
+      if (showCamera) {
+        setShowCamera(false);
+        setShowMap(true);
+        return true; // Prevent default behavior
+      }
+      return false; // Let default behavior happen (exit app)
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [showBoulderScreen, showCamera]);
 
   // This function is called when the user hides the camera screen. This is called once we have the marker
   // data and the imageUri. This function could set the boulderScreen visible. Another async function
