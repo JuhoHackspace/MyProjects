@@ -10,24 +10,29 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
 
     const { colors } = useTheme();
     const { isDarkTheme } = useCustomTheme();
-    const [name, setName] = useState(userData? userData.name : "")
-    const [age, setAge] = useState(userData? userData.age : "")
-    const [country, setCountry] = useState(userData? userData.country : "")
-    const [height, setHeight] = useState(userData? userData.height : "")
-    const [weight, setWeight] = useState(userData? userData.weight : "")
-    const [apeIndex, setApeIndex] = useState(userData? userData.apeindex : "")
-    const [gender, setGender] = useState(userData? userData.gender : "")
-    const [sends, setSends] = useState(userData? userData.sends : "")
+    const [name, setName] = useState(userData.name? userData.name : "")
+    const [age, setAge] = useState(userData.age? userData.age : "")
+    const [country, setCountry] = useState(userData.country? userData.country : "")
+    const [height, setHeight] = useState(userData.height? userData.height : "")
+    const [weight, setWeight] = useState(userData.weight? userData.weight : "")
+    const [apeIndex, setApeIndex] = useState(userData.apeindex? userData.apeIndex : "")
+    const [gender, setGender] = useState(userData.gender? userData.gender : "")
+    const [sends, setSends] = useState(userData.sends? userData.sends : "")
 
-    const newUserData = {
-        name: name,
-        age: age,
-        gender: gender,
-        country: country,
-        height: height,
-        weight: weight,
-        apeindex: apeIndex,
-        sends: sends
+    const handleSave = () => {
+        const newUserData = {
+            name: name,
+            age: age,
+            gender: gender,
+            country: country,
+            height: height,
+            weight: weight,
+            apeindex: apeIndex,
+            sends: sends
+        }
+
+        const filteredData = Object.fromEntries(Object.entries(newUserData).filter(([key, value]) => value !== ""));
+        saveData(filteredData);
     }
 
     return (
@@ -103,7 +108,7 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
                     icon = "content-save"
                     contentStyle={styles.buttonContent}
                     labelStyle={styles.buttonLabel}
-                    onPress={() => saveData(newUserData)}
+                    onPress={handleSave}
                 >Save</Button>
                 <Button
                     style={styles.buttonLong}

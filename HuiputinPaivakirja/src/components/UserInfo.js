@@ -14,13 +14,13 @@ export default function UserInfo({userData}) {
       <Text style={[styles.basicText, { color: colors.text }]}>User email: {user.email} </Text>
       {userData && (
         <View>
-            <Text style={[styles.basicText, { color: colors.text }]}>Name: {userData.name}</Text>
-            <Text style={[styles.basicText, { color: colors.text }]}>Age: {userData.age}</Text>
-            <Text style={[styles.basicText, { color: colors.text }]}>Gender: {userData.gender}</Text>
-            <Text style={[styles.basicText, { color: colors.text }]}>Country: {userData.country}</Text>
-            <Text style={[styles.basicText, { color: colors.text }]}>Height: {userData.height}</Text>
-            <Text style={[styles.basicText, { color: colors.text }]}>Weight: {userData.weight}</Text>
-            <Text style={[styles.basicText, { color: colors.text }]}>Ape index: {userData.apeindex}</Text>         
+            {userData.name && <Text style={[styles.basicText, { color: colors.text }]}>Name: {userData.name}</Text>}
+            {userData.age && <Text style={[styles.basicText, { color: colors.text }]}>Age: {userData.age}</Text>}
+            {userData.gender && <Text style={[styles.basicText, { color: colors.text }]}>Gender: {userData.gender}</Text>}
+            {userData.country && <Text style={[styles.basicText, { color: colors.text }]}>Country: {userData.country}</Text>}
+            {userData.height && <Text style={[styles.basicText, { color: colors.text }]}>Height: {userData.height}</Text>}
+            {userData.weight && <Text style={[styles.basicText, { color: colors.text }]}>Weight: {userData.weight}</Text>}
+            {userData.apeindex && <Text style={[styles.basicText, { color: colors.text }]}>Ape index: {userData.apeindex}</Text>}         
         </View>
       )}
     </View>

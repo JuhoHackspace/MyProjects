@@ -144,6 +144,7 @@ const fetchUserData = (userId, setUserData) => {
  * Add user information to Firestore. Used for updating user data in the profile.
  */
 const AddUserInfo = async (userId, data) => {
+    console.log('Adding user info:', data);
     if (!userId){
         alert('Miten vittu pääsit tänne?')
         return
@@ -151,7 +152,7 @@ const AddUserInfo = async (userId, data) => {
     try {
         const userDocRef = doc(db, 'users', userId);
             //tallentaa tiedot
-        await setDoc(userDocRef, data, { merge: true }); //mergellä pysty ainaki vaihtamaan vaan yhtäkin tietoa
+        await updateDoc(userDocRef, data, { merge: true }); //mergellä pysty ainaki vaihtamaan vaan yhtäkin tietoa
     } catch (error) {
         console.error('Error saving data to Firestore:', error);
     }
