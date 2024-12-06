@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent } from '../firebase/FirebaseMethods';
+import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteTries, cancelRouteAsSent } from '../firebase/FirebaseMethods';
 import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useNotification } from '../context/NotificationProvider';
 import GradePicker from '../components/GradePicker';
 import ColorPicker from '../components/ColorPicker';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 /** 
  * BoulderScreen component serves two purposes: Creating a new route and displaying an existing route.
  * When creating a new route, the user can input the route name, grade, and hold color.
@@ -44,7 +44,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const navigation = useNavigation();
   const showNotification = useNotification();
   const notificationshown = useRef(false);
-
+  const [routeFlashed, setRouteFlashed] = useState(false);
+  const [routeDone, setRouteDone] = useState(false);
+  const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
+  const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
   // Fetch route data and listen to it continuously when the screen is loaded
   useEffect(() => {
       let unsubscribe;
@@ -64,6 +67,31 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       showNotification('Be the first to send this route!', 4000);
       notificationshown.current = true;
     }
+    async function getTries() {
+      try {
+        setRouteDone(false);
+        setRouteFlashed(false);
+        if(routeData?.sentBy.some(sentBy => sentBy.senderId === userId)) {
+          const tries = await getRouteTries(marker.routeId);
+          const sentAt = routeData.sentBy.find(sentBy => sentBy.senderId === userId).sentAt;
+          setDoneRouteSentAt(sentAt);
+          console.log(tries);
+          if(parseInt(tries) == 1) {
+            setRouteFlashed(true);
+            setDoneRouteTryCount(tries);
+            console.log('Route flashed');
+          } else if(parseInt(tries) > 1) {
+            setRouteDone(true);
+            setDoneRouteTryCount(tries);
+            console.log('Route done');
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'Failed to get tries.');
+      }
+    }
+    getTries();
   }, [routeData]);
 
   // Function to handle creating a new route
@@ -112,15 +140,23 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       return;
     }*/
     // Check if the user has already marked the route as sent
-    if(routeData.sentBy.some(sentBy => sentBy.senderId === userId)) {
+    /*if(routeData.sentBy.some(sentBy => sentBy.senderId === userId)) {
       setShowMarkAsSent(false);
       Alert.alert('Error', 'You have already marked this route as sent.');
       return;
-    }
+    }*/
+    console.log('Try count: ', tryCount);
     try {
-      await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
-      showNotification('Route marked as sent successfully!', 4000); // Show a notification
-      navigation.goBack();
+      if(routeFlashed || routeDone) {
+        setTryCount(1);
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
+      } else {
+        if(showMarkAsSent) {
+          setShowMarkAsSent(false);
+        }
+        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
+      }
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to mark route as sent.');
@@ -136,7 +172,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const handleShowMarkAsSent = () => {
     if(!showMarkAsSent) {
       setGradeVote('');
-      setTryCount('');
+      setTryCount(1);
       setShowMarkAsSent(true);
     }else {
       setShowMarkAsSent(false);
@@ -241,7 +277,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 style={styles.buttonLong}
                 buttonColor={colors.accent}
                 textColor="white"
-                icon="flash"
+                icon={() => (
+                  <Icon name='check' size={20} color={!showMarkAsSent && routeFlashed ? 'green' : 'white'} />
+                )}
+                iconColor='green'
                 contentStyle={styles.buttonContent}
                 labelStyle={styles.buttonLabel}
                 onPress={() => handleSave()}
@@ -254,10 +293,19 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               style={styles.buttonLong}
               buttonColor={colors.accent}
               textColor="white"
-              icon={showMarkAsSent ? "cancel" : "check"}
+              icon={() => (
+                <Icon name={showMarkAsSent ? 'cancel' : 'check'} size={20} color={!showMarkAsSent && routeDone ? 'green' : 'white'} />
+              )}
+              iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
-              onPress={handleShowMarkAsSent}
+              onPress={() => {
+                if(routeDone && !showMarkAsSent) {
+                  handleSave();
+                }else {
+                  handleShowMarkAsSent();
+                }
+              }}
             >
               {showMarkAsSent ? "Cancel" : "Done"}
             </Button>

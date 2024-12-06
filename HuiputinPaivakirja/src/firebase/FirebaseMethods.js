@@ -1,5 +1,6 @@
 import {
         arrayUnion,
+        arrayRemove,
         db,
         storage,
         collection,
@@ -224,6 +225,10 @@ const setRouteInvisible = async (markerId) => {
 const markRouteAsSent = async (routeId, tryCount) => {
   const date = new Date().toISOString();
   try {
+      const userDocRef = doc(users, auth.currentUser.uid);
+      await updateDoc(userDocRef, {
+        sends: arrayUnion({ route: routeId, tries: tryCount, sentAt: date }),
+      });
       const routeDocRef = doc(routes, routeId);
       /*const routeDoc = await getDoc(routeDocRef);
       const routeData = routeDoc.data();
@@ -245,16 +250,29 @@ const markRouteAsSent = async (routeId, tryCount) => {
           sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date })
       });
 
-      const userDocRef = doc(users, auth.currentUser.uid);
-      await updateDoc(userDocRef, {
-          sends: arrayUnion({ route: routeId, tries: tryCount, sentAt: date }),
-      });
-
       console.log('Route marked as sent successfully!');
   } catch (error) {
       console.error('Error marking route as sent:', error);
   }
 };
+
+const cancelRouteAsSent = async (routeId, tryCount, sentAt) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        await updateDoc(routeDocRef, {
+            sentBy: arrayRemove({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: sentAt })
+        });
+
+        const userDocRef = doc(users, auth.currentUser.uid);
+        await updateDoc(userDocRef, {
+            sends: arrayRemove({ route: routeId, tries: tryCount, sentAt: sentAt }),
+        });
+
+        console.log('Route marked as not sent successfully!');
+    } catch (error) {
+        console.error('Error marking route as not sent:', error);
+    }
+}
 
 /**
  * Returns the creator ID of the route.
@@ -302,4 +320,24 @@ const retrieveBoulderHistory = async () => {
         return null;
     }
 }
-export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory }
+
+const getRouteTries = async (routeId) => {
+    try {
+        const userDocRef = doc(users, auth.currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            const sends = userDoc.data().sends;
+            if(sends.length === 0) return 0;
+            const tries = sends.find(send => send.route === routeId).tries;
+            return tries;
+        } else {
+            console.log('No user data found!');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        return null;
+    }
+}
+
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory, getRouteTries, cancelRouteAsSent }
