@@ -256,6 +256,34 @@ const markRouteAsSent = async (routeId, tryCount) => {
   }
 };
 
+const voteForGrade = async (routeId, existingVotes, gradeVote) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        let newVotes = [];
+        if(existingVotes.some(vote => vote.votedBy === auth.currentUser.uid)){
+            newVotes = existingVotes.map(vote => 
+                vote.votedBy === auth.currentUser.uid ? { ...vote, grade: gradeVote, votedAt: new Date().toISOString() } : vote
+            );
+        } else {
+            newVotes = [...existingVotes,{grade: gradeVote, votedAt: new Date().toISOString(), votedBy: auth.currentUser.uid}];
+            console.log('Updated routeGradeVotes:', newVotes);
+        }
+
+        const updatedGradeVotes = newVotes.map(vote => vote.grade);
+        // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
+        const averageGrade = convertGrade(updatedGradeVotes);
+        console.log('Calculated averageGrade:', averageGrade);
+
+        // Päivitys
+        await updateDoc(routeDocRef, {
+            routeGradeVotes: newVotes,
+            votedGrade: averageGrade
+        });
+    } catch (error) {
+        console.error('Error voting for grade:', error);
+    }
+};
+
 const cancelRouteAsSent = async (routeId, tryCount, sentAt) => {
     try {
         const routeDocRef = doc(routes, routeId);
@@ -340,4 +368,4 @@ const getRouteTries = async (routeId) => {
     }
 }
 
-export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory, getRouteTries, cancelRouteAsSent }
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory, getRouteTries, cancelRouteAsSent, voteForGrade }

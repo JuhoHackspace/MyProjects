@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteTries, cancelRouteAsSent } from '../firebase/FirebaseMethods';
+import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteTries, cancelRouteAsSent, voteForGrade } from '../firebase/FirebaseMethods';
 import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
@@ -71,8 +71,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     async function getTries() {
       try {
-        setRouteDone(false);
-        setRouteFlashed(false);
+        /*setRouteDone(false);
+        setRouteFlashed(false);*/
         if(routeData?.sentBy.some(sentBy => sentBy.senderId === userId)) {
           const tries = await getRouteTries(marker.routeId);
           const sentAt = routeData.sentBy.find(sentBy => sentBy.senderId === userId).sentAt;
@@ -91,6 +91,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           }
         }else {
           setFlashPressed(false);
+          setRouteFlashed(false);
+          setRouteDone(false);
         }
       } catch (error) {
         console.error(error);
@@ -99,6 +101,21 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     getTries();
   }, [routeData]);
+
+  useEffect(() => {
+    async function voteForGradeFunc() {
+      try {
+        if(gradeVote) {
+          await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
+          showNotification('Voted for grade successfully!', 4000);
+        }
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'Failed to vote for grade.');
+      }
+    }
+    voteForGradeFunc();
+  }, [gradeVote]);
 
   // Function to handle creating a new route
   const handleCreateRoute = () => {
@@ -260,8 +277,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <Text style={[styles.basicText, { color: colors.text }]}>Average Grade: {routeData?.votedGrade}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
-          {routeDone || routeFlashed && <Text style={[styles.basicText, { color: colors.text }]}>Suggest a grade:</Text>}
-          {routeDone || routeFlashed && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />}
+          {(routeDone || routeFlashed) && <Text style={[styles.basicText, { color: colors.text }]}>Suggest a grade:</Text>}
+          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />}
         </View>
       )}
       {showMarkAsSent && (
