@@ -49,7 +49,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [routeDone, setRouteDone] = useState(false);
   const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
   const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
-  const [flashPressed, setFlashPressed] = useState(false);
+  const flashPressed = useRef(false);
   const [hasVotedForDelete, setHasVotedForDelete] = useState(false);
   const [deleteVoteObject, setDeleteVoteObject] = useState(null);
 
@@ -98,16 +98,16 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
-            setFlashPressed(false);
+            flashPressed.current = false;
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
-            setFlashPressed(false);
+            flashPressed.current = false;
             console.log('Route done');
           }
         }else {
-          setFlashPressed(false);
+          flashPressed.current = false;
           setRouteFlashed(false);
           setRouteDone(false);
         }
@@ -122,7 +122,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   useEffect(() => {
     async function voteForGradeFunc() {
       try {
-        if(gradeVote != initialGrade.current) {
+        if(gradeVote != initialGrade.current && gradeVote != '') {
           await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
           showNotification('Voted for grade successfully!', 4000);
         }
@@ -177,8 +177,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   // Function to handle saving the route as flashed (climbed with one try)
   const handleRouteFlashed = async () => {
     console.log('Try count: ', tryCount);
-    if(!flashPressed) {
-      setFlashPressed(true);
+    if(!flashPressed.current) {
+      flashPressed.current = true;
       console.log('Flash pressed');
     }
     try {
@@ -343,7 +343,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 contentStyle={styles.buttonContent}
                 labelStyle={styles.buttonLabel}
                 onPress={() => {
-                  if(!flashPressed) {
+                  if(!flashPressed.current) {
                     handleRouteFlashed()
                   }
                 }}
@@ -401,7 +401,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               style={styles.buttonLonger}
               buttonColor={colors.accent}
               textColor="white"
-              icon="vote"
+              icon={() => (
+                <Icon name='vote' size={20} color={hasVotedForDelete ? 'green' : 'white'} />
+              )}
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
               onPress={handleVoteForDelete}
