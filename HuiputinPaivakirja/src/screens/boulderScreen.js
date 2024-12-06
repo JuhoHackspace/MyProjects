@@ -31,6 +31,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [loading, setLoading] = useState(route != undefined ? true : false);
   const [imageLoading, setImageLoading] = useState(route != undefined ? true : false);
   const [showMarkAsSent, setShowMarkAsSent] = useState(false);
+  const [initialGrade, setInitialGrade] = useState('');
   const [gradeVote, setGradeVote] = useState('');
   const [tryCount, setTryCount] = useState(1);
   const [newRouteName, setNewRouteName] = useState('');
@@ -69,6 +70,13 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       showNotification('Be the first to send this route!', 4000);
       notificationshown.current = true;
     }
+    if(routeData?.routeGradeVotes.some(vote => vote.votedBy === userId)) {
+      const grade = routeData?.routeGradeVotes.find(vote => vote.votedBy === userId).grade;
+      if(initialGrade === '') {
+        setInitialGrade(grade);
+      }
+      setGradeVote(grade);
+    }
     async function getTries() {
       try {
         /*setRouteDone(false);
@@ -105,7 +113,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   useEffect(() => {
     async function voteForGradeFunc() {
       try {
-        if(gradeVote) {
+        if(gradeVote != initialGrade) {
           await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
           showNotification('Voted for grade successfully!', 4000);
         }
@@ -223,7 +231,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       <LoadingIcon/>
     );
   }
-
+  const lastFiveSenders = routeData?.sentBy.slice(-5);
+  const moreSenders = routeData?.sentBy.length > 5;
   return (
     <ScrollView style={{ backgroundColor: colors.background }}>
       {modalVisible && (
@@ -273,7 +282,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       {!settingRouteData && !imageLoading && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Name: {routeData?.routeName}</Text>
-          <Text style={[styles.basicText, { color: colors.text }]}>Sent By: {routeData?.sentBy.map(entry => entry.senderName).join(', ')}</Text>
+          <Text style={[styles.basicText, { color: colors.text }]}>Sent By: {lastFiveSenders.map(entry => entry.senderName).join(', ')}{moreSenders && '...'} </Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Average Grade: {routeData?.votedGrade}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
