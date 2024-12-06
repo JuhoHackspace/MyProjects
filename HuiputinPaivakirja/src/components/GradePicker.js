@@ -4,7 +4,7 @@ import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
 import { View } from 'react-native';
 
-export default function GradePicker({newRouteGrade, setNewRouteGrade}) {
+export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGrade}) {
   const { colors } = useTheme();
   const { isDarkTheme } = useCustomTheme();
 
@@ -14,10 +14,11 @@ export default function GradePicker({newRouteGrade, setNewRouteGrade}) {
       setNewRouteGrade('4b');
     }
   }, [newRouteGrade, setNewRouteGrade]);*/
-  
+
   const handleChange = (itemValue) => {
     if(itemValue !== ''){
       setNewRouteGrade(itemValue);
+      initialGrade.current = ''
     }
   }
   return (

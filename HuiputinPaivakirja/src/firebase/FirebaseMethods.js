@@ -204,6 +204,17 @@ const voteForDelete = async (routeId) => {
     }
 };
 
+const cancelVoteForDelete = async (routeId, vote) => {
+    try {
+        const routeDocRef = doc(routes, routeId);
+        await updateDoc(routeDocRef, {
+            votedForDelete: arrayRemove(vote),
+        });
+        console.log('Voted for delete successfully!');
+    } catch (error) {
+        console.error('Error voting for delete:', error);
+    }
+}
 /**
  * Sets the route marker invisible in the map. The route is not deleted from the database.
  */
@@ -368,4 +379,4 @@ const getRouteTries = async (routeId) => {
     }
 }
 
-export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory, getRouteTries, cancelRouteAsSent, voteForGrade }
+export { addRouteAndMarker, AddUserInfo, fetchUserData, listenToMarkers, fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteCreatorId, retrieveBoulderHistory, getRouteTries, cancelRouteAsSent, voteForGrade, cancelVoteForDelete }

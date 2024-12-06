@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Image, StyleSheet, Alert, ActivityIndicator, ScrollView, Text } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteTries, cancelRouteAsSent, voteForGrade } from '../firebase/FirebaseMethods';
+import { fetchRouteData, voteForDelete, setRouteInvisible, markRouteAsSent, getRouteTries, cancelRouteAsSent, voteForGrade, cancelVoteForDelete } from '../firebase/FirebaseMethods';
 import LoadingIcon from '../components/LoadingIcon';
 import styles from '../styles/Styles';
 import { useTheme } from 'react-native-paper';
@@ -31,7 +31,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [loading, setLoading] = useState(route != undefined ? true : false);
   const [imageLoading, setImageLoading] = useState(route != undefined ? true : false);
   const [showMarkAsSent, setShowMarkAsSent] = useState(false);
-  const [initialGrade, setInitialGrade] = useState('');
+  const initialGrade = useRef('');
   const [gradeVote, setGradeVote] = useState('');
   const [tryCount, setTryCount] = useState(1);
   const [newRouteName, setNewRouteName] = useState('');
@@ -50,6 +50,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
   const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
   const [flashPressed, setFlashPressed] = useState(false);
+  const [hasVotedForDelete, setHasVotedForDelete] = useState(false);
+  const [deleteVoteObject, setDeleteVoteObject] = useState(null);
 
   // Fetch route data and listen to it continuously when the screen is loaded
   useEffect(() => {
@@ -72,10 +74,17 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     if(routeData?.routeGradeVotes.some(vote => vote.votedBy === userId)) {
       const grade = routeData?.routeGradeVotes.find(vote => vote.votedBy === userId).grade;
-      if(initialGrade === '') {
-        setInitialGrade(grade);
+      if(initialGrade.current === '') {
+        initialGrade.current = grade;
       }
       setGradeVote(grade);
+    }
+    if(routeData?.votedForDelete.some(vote => vote.votedBy === userId)) {
+      setHasVotedForDelete(true);
+      setDeleteVoteObject(routeData?.votedForDelete.find(vote => vote.votedBy === userId));
+    }else {
+      setHasVotedForDelete(false);
+      setDeleteVoteObject(null);
     }
     async function getTries() {
       try {
@@ -113,7 +122,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   useEffect(() => {
     async function voteForGradeFunc() {
       try {
-        if(gradeVote != initialGrade) {
+        if(gradeVote != initialGrade.current) {
           await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
           showNotification('Voted for grade successfully!', 4000);
         }
@@ -133,8 +142,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   // Function to handle voting for delete
   const handleVoteForDelete = async () => {
     // Check if the user has already voted for delete
-    if (routeData.votedForDelete.some(vote => vote.votedBy === userId)) {
-      Alert.alert('Error', 'You have already voted for delete.');
+    if (hasVotedForDelete) {
+      await cancelVoteForDelete(marker.routeId, deleteVoteObject);
+      showNotification('Canceled vote for delete successfully!', 4000); // Show a notification
       return;
     }
     try {
@@ -142,11 +152,11 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         setModalVisible(true); // Show the modal to confirm the delete on the last vote
       } else {
         await voteForDelete(marker.routeId);
-        Alert.alert('Success', 'Voted for delete successfully!');
+        showNotification('Voted for delete successfully!', 4000); // Show a notification
       }
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to vote for delete.');
+      showNotification('Failed to vote for delete.', 4000); // Show a notification
     }
   }
 
@@ -160,7 +170,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       navigation.goBack();
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to delete route.');
+      showNotification('Failed to delete route.', 4000); // Show a notification
     }
   }
   
@@ -287,7 +297,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
           {(routeDone || routeFlashed) && <Text style={[styles.basicText, { color: colors.text }]}>Suggest a grade:</Text>}
-          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />}
+          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} />}
         </View>
       )}
       {showMarkAsSent && (
@@ -396,7 +406,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               labelStyle={styles.buttonLabel}
               onPress={handleVoteForDelete}
             >
-              Vote for delete {routeData?.votedForDelete.length}/3
+              {hasVotedForDelete ? 'Cancel delete' : 'Vote for delete'} {routeData?.votedForDelete.length}/3
             </Button>
           )}
         </View>
