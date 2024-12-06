@@ -221,11 +221,11 @@ const setRouteInvisible = async (markerId) => {
  * Updates the route document to mark the route as sent by the user. The grade vote is added to the route document.
  * The user document is updated to include the sent route in the users document.
  */
-const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
+const markRouteAsSent = async (routeId, tryCount) => {
   const date = new Date().toISOString();
   try {
       const routeDocRef = doc(routes, routeId);
-      const routeDoc = await getDoc(routeDocRef);
+      /*const routeDoc = await getDoc(routeDocRef);
       const routeData = routeDoc.data();
 
       // Tarkistetaan, että reitti on olemassa
@@ -238,13 +238,11 @@ const markRouteAsSent = async (routeId, gradeVote, tryCount) => {
 
       // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
       const averageGrade = convertGrade(updatedGradeVotes);
-      console.log('Calculated averageGrade:', averageGrade);
+      console.log('Calculated averageGrade:', averageGrade);*/
 
       // Päivitys
       await updateDoc(routeDocRef, {
-          sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date }),
-          routeGradeVotes: arrayUnion(gradeVote),
-          votedGrade: averageGrade,
+          sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date })
       });
 
       const userDocRef = doc(users, auth.currentUser.uid);

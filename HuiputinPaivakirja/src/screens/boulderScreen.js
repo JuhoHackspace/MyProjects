@@ -32,7 +32,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [imageLoading, setImageLoading] = useState(route != undefined ? true : false);
   const [showMarkAsSent, setShowMarkAsSent] = useState(false);
   const [gradeVote, setGradeVote] = useState('');
-  const [tryCount, setTryCount] = useState('');
+  const [tryCount, setTryCount] = useState(1);
   const [newRouteName, setNewRouteName] = useState('');
   const [newRouteGrade, setNewRouteGrade] = useState('yellow');
   const [newRouteHoldColor, setNewRouteHoldColor] = useState('yellow');
@@ -107,10 +107,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   
   // Function to handle saving the route as sent
   const handleSave = async () => {
-    if (!gradeVote.trim() || !tryCount.trim()) {
+    /*if (!tryCount.trim()) {
       Alert.alert('Error', 'Please fill out all fields.');
       return;
-    }
+    }*/
     // Check if the user has already marked the route as sent
     if(routeData.sentBy.some(sentBy => sentBy.senderId === userId)) {
       setShowMarkAsSent(false);
@@ -118,7 +118,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       return;
     }
     try {
-      await markRouteAsSent(marker.routeId, gradeVote, tryCount); // Mark the route as sent
+      await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
       showNotification('Route marked as sent successfully!', 4000); // Show a notification
       navigation.goBack();
     } catch (error) {
@@ -206,7 +206,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       )}
       {showMarkAsSent && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
-          <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />
+          {/*<GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />*/}
           <TextInput
             mode="outlined"
             style={[styles.input, { 
@@ -234,9 +234,24 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       {!imageLoading && (
         <View style={[styles.buttonContainerVertical, { backgroundColor: colors.background }]}>
           {!settingRouteData && (
+            <View style={styles.buttonContainerHorizontal}>
+            {!showMarkAsSent && 
+              <Button
+                mode="contained"
+                style={styles.buttonLong}
+                buttonColor={colors.accent}
+                textColor="white"
+                icon="flash"
+                contentStyle={styles.buttonContent}
+                labelStyle={styles.buttonLabel}
+                onPress={() => handleSave()}
+              >
+                Flash
+              </Button>
+            }
             <Button
               mode="contained"
-              style={styles.buttonLonger}
+              style={styles.buttonLong}
               buttonColor={colors.accent}
               textColor="white"
               icon={showMarkAsSent ? "cancel" : "check"}
@@ -244,13 +259,14 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               labelStyle={styles.buttonLabel}
               onPress={handleShowMarkAsSent}
             >
-              {showMarkAsSent ? "Cancel" : "Mark as sent"}
+              {showMarkAsSent ? "Cancel" : "Done"}
             </Button>
+            </View>
           )}
           {(showMarkAsSent || settingRouteData) && (
             <Button
               mode="contained"
-              style={styles.buttonLonger}
+              style={styles.buttonLong}
               buttonColor={colors.accent}
               textColor="white"
               icon="content-save"
