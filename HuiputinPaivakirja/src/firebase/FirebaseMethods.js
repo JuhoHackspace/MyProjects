@@ -241,21 +241,6 @@ const markRouteAsSent = async (routeId, tryCount) => {
         sends: arrayUnion({ route: routeId, tries: tryCount, sentAt: date }),
       });
       const routeDocRef = doc(routes, routeId);
-      /*const routeDoc = await getDoc(routeDocRef);
-      const routeData = routeDoc.data();
-
-      // Tarkistetaan, että reitti on olemassa
-      const routeGradeVotes = routeData.routeGradeVotes || [];
-      console.log('Existing routeGradeVotes:', routeGradeVotes);
-
-      // Lisätään uusi ääni listaan
-      const updatedGradeVotes = [...routeGradeVotes, gradeVote];
-      console.log('Updated routeGradeVotes:', updatedGradeVotes);
-
-      // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
-      const averageGrade = convertGrade(updatedGradeVotes);
-      console.log('Calculated averageGrade:', averageGrade);*/
-
       // Päivitys
       await updateDoc(routeDocRef, {
           sentBy: arrayUnion({ senderId: auth.currentUser.uid, senderName: auth.currentUser.displayName, sentAt: date })

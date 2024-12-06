@@ -4,12 +4,12 @@ import { useTheme, TextInput, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { Picker } from '@react-native-picker/picker';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { useCustomTheme } from '../theme/CustomTheme';
 
 export default function UserInfoForm({userData, saveData, setShowForm}) {
 
     const { colors } = useTheme();
-    
+    const { isDarkTheme } = useCustomTheme();
     const [name, setName] = useState(userData? userData.name : "")
     const [age, setAge] = useState(userData? userData.age : "")
     const [country, setCountry] = useState(userData? userData.country : "")
@@ -50,15 +50,19 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
                 onChangeText={setAge}
             />
             
-      <Picker
-        selectedValue={gender}
-        onValueChange={(itemValue) => setGender(itemValue)}
-      >
-        <Picker.Item label="Gender" value="Unspecified" />
-        <Picker.Item label="Male" value="Male" />
-        <Picker.Item label="Female" value="Female" />
-        <Picker.Item label="Other" value="Other" />
-      </Picker>
+            <Picker
+                selectedValue={gender}
+                onValueChange={(itemValue) => setGender(itemValue)}
+                style={[styles.input,{
+                    color: colors.text,
+                    backgroundColor: isDarkTheme && colors.background,
+                }]}
+            >
+                <Picker.Item label="Gender" value="Unspecified" />
+                <Picker.Item label="Male" value="Male" />
+                <Picker.Item label="Female" value="Female" />
+                <Picker.Item label="Other" value="Other" />
+            </Picker>
             <TextInput
                 style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Country"
