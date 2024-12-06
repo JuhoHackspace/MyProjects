@@ -48,6 +48,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [routeDone, setRouteDone] = useState(false);
   const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
   const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
+  const [flashPressed, setFlashPressed] = useState(false);
+
   // Fetch route data and listen to it continuously when the screen is loaded
   useEffect(() => {
       let unsubscribe;
@@ -79,12 +81,16 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
+            setFlashPressed(false);
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
+            setFlashPressed(false);
             console.log('Route done');
           }
+        }else {
+          setFlashPressed(false);
         }
       } catch (error) {
         console.error(error);
@@ -133,27 +139,23 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
   }
   
-  // Function to handle saving the route as sent
-  const handleSave = async () => {
-    /*if (!tryCount.trim()) {
-      Alert.alert('Error', 'Please fill out all fields.');
-      return;
-    }*/
-    // Check if the user has already marked the route as sent
-    /*if(routeData.sentBy.some(sentBy => sentBy.senderId === userId)) {
-      setShowMarkAsSent(false);
-      Alert.alert('Error', 'You have already marked this route as sent.');
-      return;
-    }*/
+  // Function to handle saving the route as flashed (climbed with one try)
+  const handleRouteFlashed = async () => {
     console.log('Try count: ', tryCount);
+    if(!flashPressed) {
+      setFlashPressed(true);
+      console.log('Flash pressed');
+    }
     try {
-      if(routeFlashed || routeDone) {
+      if(routeFlashed) {
+        setTryCount(1);
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as flashed
+      } else if(routeDone) {
         setTryCount(1);
         await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
+        await markRouteAsSent(marker.routeId, 1); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
       } else {
-        if(showMarkAsSent) {
-          setShowMarkAsSent(false);
-        }
         await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
         showNotification('Route marked as sent successfully!', 4000); // Show a notification
       }
@@ -161,6 +163,26 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       console.error(error);
       Alert.alert('Error', 'Failed to mark route as sent.');
     }  
+  };
+  // Function to set the route as done
+  const handleRouteDone = async () => {
+    console.log('Try count: ', tryCount);
+    try {
+      if(routeDone) {
+        setTryCount(1);
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
+      } else if(routeFlashed) {
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as flashed
+        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
+      } else {
+        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to mark route as sent.');
+    }
   };
 
   // Function to handle image load
@@ -238,11 +260,12 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <Text style={[styles.basicText, { color: colors.text }]}>Average Grade: {routeData?.votedGrade}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
+          {routeDone || routeFlashed && <Text style={[styles.basicText, { color: colors.text }]}>Suggest a grade:</Text>}
+          {routeDone || routeFlashed && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />}
         </View>
       )}
       {showMarkAsSent && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
-          {/*<GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} />*/}
           <TextInput
             mode="outlined"
             style={[styles.input, { 
@@ -283,7 +306,11 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 iconColor='green'
                 contentStyle={styles.buttonContent}
                 labelStyle={styles.buttonLabel}
-                onPress={() => handleSave()}
+                onPress={() => {
+                  if(!flashPressed) {
+                    handleRouteFlashed()
+                  }
+                }}
               >
                 Flash
               </Button>
@@ -301,7 +328,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               labelStyle={styles.buttonLabel}
               onPress={() => {
                 if(routeDone && !showMarkAsSent) {
-                  handleSave();
+                  handleRouteDone();
                 }else {
                   handleShowMarkAsSent();
                 }
@@ -324,7 +351,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 if (settingRouteData) {
                   handleCreateRoute();
                 } else {
-                  handleSave();
+                  setShowMarkAsSent(false);
+                  handleRouteDone();
                 }
               }}
             >
