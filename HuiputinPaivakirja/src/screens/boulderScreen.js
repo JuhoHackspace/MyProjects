@@ -370,7 +370,9 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 if(routeDone && !showMarkAsSent) {
                   handleRouteDone();
                 }else {
-                  handleShowMarkAsSent();
+                  if(!flashOrDonePressed.current) {
+                    handleShowMarkAsSent();
+                  }
                 }
               }}
             >
