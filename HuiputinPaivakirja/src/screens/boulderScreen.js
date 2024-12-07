@@ -49,7 +49,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [routeDone, setRouteDone] = useState(false);
   const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
   const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
-  const flashOrDonePressed = useRef(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [hasVotedForDelete, setHasVotedForDelete] = useState(false);
   const [deleteVoteObject, setDeleteVoteObject] = useState(null);
 
@@ -98,16 +98,16 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
-            flashOrDonePressed.current = false;
+            setButtonDisabled(false);
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
-            flashOrDonePressed.current = false;
+            setButtonDisabled(false);
             console.log('Route done');
           }
         }else {
-          flashOrDonePressed.current = false;
+          setButtonDisabled(false);
           setRouteFlashed(false);
           setRouteDone(false);
         }
@@ -176,11 +176,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   
   // Function to handle saving the route as flashed (climbed with one try)
   const handleRouteFlashed = async () => {
-    console.log('Try count: ', tryCount);
-    if(!flashOrDonePressed.current) {
-      flashOrDonePressed.current = true;
-      console.log('Flash pressed');
-    }
+    if(buttonDisabled) return;
+    setButtonDisabled(true);
     try {
       if(routeFlashed) {
         setTryCount(1);
@@ -201,11 +198,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   };
   // Function to set the route as done
   const handleRouteDone = async () => {
-    console.log('Try count: ', tryCount);
-    if(!flashOrDonePressed.current) {
-      flashOrDonePressed.current = true;
-      console.log('Flash pressed');
-    }
+    if(buttonDisabled) return;
+    setButtonDisabled(true);
     try {
       if(routeDone) {
         setTryCount(1);
@@ -346,11 +340,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 iconColor='green'
                 contentStyle={styles.buttonContent}
                 labelStyle={styles.buttonLabel}
-                onPress={() => {
-                  if(!flashOrDonePressed.current) {
-                    handleRouteFlashed()
-                  }
-                }}
+                disabled={buttonDisabled}
+                onPress={handleRouteFlashed}
               >
                 Flash
               </Button>
@@ -366,13 +357,12 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
+              disabled={buttonDisabled}
               onPress={() => {
                 if(routeDone && !showMarkAsSent) {
                   handleRouteDone();
                 }else {
-                  if(!flashOrDonePressed.current) {
-                    handleShowMarkAsSent();
-                  }
+                  handleShowMarkAsSent();
                 }
               }}
             >
