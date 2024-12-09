@@ -4,30 +4,35 @@ import { useTheme, TextInput, Button } from 'react-native-paper';
 import styles from '../styles/Styles';
 import { Picker } from '@react-native-picker/picker';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { useCustomTheme } from '../theme/CustomTheme';
 
 export default function UserInfoForm({userData, saveData, setShowForm}) {
 
     const { colors } = useTheme();
-    
-    const [name, setName] = useState(userData? userData.name : "")
-    const [age, setAge] = useState(userData? userData.age : "")
-    const [country, setCountry] = useState(userData? userData.country : "")
-    const [height, setHeight] = useState(userData? userData.height : "")
-    const [weight, setWeight] = useState(userData? userData.weight : "")
-    const [apeIndex, setApeIndex] = useState(userData? userData.apeindex : "")
-    const [gender, setGender] = useState(userData? userData.gender : "")
-    const [sends, setSends] = useState(userData? userData.sends : "")
+    const { isDarkTheme } = useCustomTheme();
+    const [name, setName] = useState(userData.name? userData.name : "")
+    const [age, setAge] = useState(userData.age? userData.age : "")
+    const [country, setCountry] = useState(userData.country? userData.country : "")
+    const [height, setHeight] = useState(userData.height? userData.height : "")
+    const [weight, setWeight] = useState(userData.weight? userData.weight : "")
+    const [apeIndex, setApeIndex] = useState(userData.apeindex? userData.apeIndex : "")
+    const [gender, setGender] = useState(userData.gender? userData.gender : "")
+    const [sends, setSends] = useState(userData.sends? userData.sends : "")
 
-    const newUserData = {
-        name: name,
-        age: age,
-        gender: gender,
-        country: country,
-        height: height,
-        weight: weight,
-        apeindex: apeIndex,
-        sends: sends
+    const handleSave = () => {
+        const newUserData = {
+            name: name,
+            age: age,
+            gender: gender,
+            country: country,
+            height: height,
+            weight: weight,
+            apeindex: apeIndex,
+            sends: sends
+        }
+
+        const filteredData = Object.fromEntries(Object.entries(newUserData).filter(([key, value]) => value !== ""));
+        saveData(filteredData);
     }
 
     return (
@@ -50,15 +55,19 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
                 onChangeText={setAge}
             />
             
-      <Picker
-        selectedValue={gender}
-        onValueChange={(itemValue) => setGender(itemValue)}
-      >
-        <Picker.Item label="Gender" value="Unspecified" />
-        <Picker.Item label="Male" value="Male" />
-        <Picker.Item label="Female" value="Female" />
-        <Picker.Item label="Other" value="Other" />
-      </Picker>
+            <Picker
+                selectedValue={gender}
+                onValueChange={(itemValue) => setGender(itemValue)}
+                style={[styles.input,{
+                    color: colors.text,
+                    backgroundColor: isDarkTheme && colors.background,
+                }]}
+            >
+                <Picker.Item label="Gender" value="Unspecified" />
+                <Picker.Item label="Male" value="Male" />
+                <Picker.Item label="Female" value="Female" />
+                <Picker.Item label="Other" value="Other" />
+            </Picker>
             <TextInput
                 style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Country"
@@ -99,7 +108,7 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
                     icon = "content-save"
                     contentStyle={styles.buttonContent}
                     labelStyle={styles.buttonLabel}
-                    onPress={() => saveData(newUserData)}
+                    onPress={handleSave}
                 >Save</Button>
                 <Button
                     style={styles.buttonLong}

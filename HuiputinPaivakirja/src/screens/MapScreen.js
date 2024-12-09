@@ -98,9 +98,12 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
               style={styles.buttonLong}
               mode="contained"
               onPress={handleAddNewRoute}
+              icon="plus"
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
               buttonColor={colors.accent}
             >
-              Add new route
+              New route
             </Button>
           </View>
         )}

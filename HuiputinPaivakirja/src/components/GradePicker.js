@@ -4,17 +4,23 @@ import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
 import { View } from 'react-native';
 
-export default function GradePicker({newRouteGrade, setNewRouteGrade}) {
+export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGrade}) {
   const { colors } = useTheme();
   const { isDarkTheme } = useCustomTheme();
 
-  useEffect(() => {
+  /*useEffect(() => {
     // Set the first value as the default value if newRouteGrade is not set
     if (!newRouteGrade) {
       setNewRouteGrade('4b');
     }
-  }, [newRouteGrade, setNewRouteGrade]);
+  }, [newRouteGrade, setNewRouteGrade]);*/
 
+  const handleChange = (itemValue) => {
+    if(itemValue !== ''){
+      setNewRouteGrade(itemValue);
+      initialGrade.current = ''
+    }
+  }
   return (
     <View style={{
       backgroundColor: isDarkTheme ? colors.background : 'white'
@@ -28,8 +34,9 @@ export default function GradePicker({newRouteGrade, setNewRouteGrade}) {
           width: '100%'
         }}
         dropdownIconColor={colors.text}
-        onValueChange={(itemValue) => setNewRouteGrade(itemValue)}
+        onValueChange={(itemValue) => handleChange(itemValue)}
       >
+        <Picker.Item label="Suggest a grade" value="" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
         <Picker.Item label="4b" value="4b" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
         <Picker.Item label="4c" value="4c" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
         <Picker.Item label="5a" value="5a" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />

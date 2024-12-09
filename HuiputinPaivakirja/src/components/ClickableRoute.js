@@ -2,6 +2,7 @@ import { View, Text as Text, Pressable } from 'react-native'
 import React from 'react'
 import styles from '../styles/Styles'
 import RoutePolygon from './RoutePolygon';
+import { routes } from '../firebase/Config';
 
 export default function ClickableRoute({data, onPress}) {
   const formatDate = (isoString) => {
@@ -23,6 +24,9 @@ export default function ClickableRoute({data, onPress}) {
             <View style={styles.verticalContainerRouteInfo}>
                 <Text style={styles.smallText}>{data.route.routeName}</Text>
                 <Text style={styles.smallText}>{formatDate(data.send.sentAt)}</Text>
+            </View>
+            <View style={styles.routeTriesContainer}>
+                <Text style={styles.routeTriesIndicator}>{data.send.tries}</Text>
             </View>
         </View>
     )}
