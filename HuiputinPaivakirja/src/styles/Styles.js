@@ -152,6 +152,16 @@ export const styles = StyleSheet.create({
         marginTop: 4,
         marginBottom: 4,
     },
+    routeTriesContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+    routeTriesIndicator: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginRight: 20,
+    },
     smallText: {
         fontSize: 14,
         fontWeight: 'bold',
@@ -162,7 +172,13 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-    },  
+    },
+    counterContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 20,
+    },
 });
 
 export default styles;
