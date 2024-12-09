@@ -49,7 +49,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [routeDone, setRouteDone] = useState(false);
   const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
   const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [hasVotedForDelete, setHasVotedForDelete] = useState(false);
   const [deleteVoteObject, setDeleteVoteObject] = useState(null);
 
@@ -88,8 +87,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     async function getTries() {
       try {
-        /*setRouteDone(false);
-        setRouteFlashed(false);*/
         if(routeData?.sentBy.some(sentBy => sentBy.senderId === userId)) {
           const tries = await getRouteTries(marker.routeId);
           const sentAt = routeData.sentBy.find(sentBy => sentBy.senderId === userId).sentAt;
@@ -98,16 +95,13 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
-            setButtonDisabled(false);
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
-            setButtonDisabled(false);
             console.log('Route done');
           }
         }else {
-          setButtonDisabled(false);
           setRouteFlashed(false);
           setRouteDone(false);
         }
@@ -118,21 +112,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     getTries();
   }, [routeData]);
-
-  useEffect(() => {
-    async function voteForGradeFunc() {
-      try {
-        if(gradeVote != initialGrade.current && gradeVote != '') {
-          await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
-          showNotification('Voted for grade successfully!', 4000);
-        }
-      } catch (error) {
-        console.error(error);
-        Alert.alert('Error', 'Failed to vote for grade.');
-      }
-    }
-    voteForGradeFunc();
-  }, [gradeVote]);
 
   // Function to handle creating a new route
   const handleCreateRoute = () => {
@@ -175,64 +154,63 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }
   
   // Function to handle saving the route as flashed (climbed with one try)
-  const handleRouteFlashed = async () => {
-    if(buttonDisabled) return;
-    setButtonDisabled(true);
-    try {
-      if(routeFlashed) {
-        setTryCount(1);
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as flashed
-      } else if(routeDone) {
-        setTryCount(1);
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
-        await markRouteAsSent(marker.routeId, 1); // Mark the route as sent
-        showNotification('Route marked as sent successfully!', 4000); // Show a notification
-      } else {
-        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
-        showNotification('Route marked as sent successfully!', 4000); // Show a notification
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Failed to mark route as sent.');
-    }  
-  };
-  // Function to set the route as done
-  const handleRouteDone = async () => {
-    if(buttonDisabled) return;
-    setButtonDisabled(true);
-    try {
-      if(routeDone) {
-        setTryCount(1);
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
-      } else if(routeFlashed) {
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as flashed
-        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
-        showNotification('Route marked as sent successfully!', 4000); // Show a notification
-      } else {
-        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
-        showNotification('Route marked as sent successfully!', 4000); // Show a notification
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'Failed to mark route as sent.');
+  const handleRouteFlashed = () => {
+    if(routeFlashed) {
+      setRouteFlashed(false);
+    }else if(routeDone) {
+      setTryCount(1);
+      setRouteDone(false);
+      setRouteFlashed(true);
+    }else {
+      setRouteFlashed(true);
     }
   };
+  // Function to set the route as done
+  const handleRouteDone = () => {
+    if(routeDone) {
+      setRouteDone(false);
+    }else if(routeFlashed) {
+      setRouteFlashed(false);
+      setRouteDone(true);
+    }else {
+      setRouteDone(true);
+    }
+  };
+
+  const handleSaveRoute = async () => {
+    try {
+      navigation.goBack();
+      if((routeFlashed || routeDone) && gradeVote !== initialGrade.current) {
+        await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
+      }
+      if(routeFlashed && doneRouteTryCount === 0) {
+        await markRouteAsSent(marker.routeId, tryCount);
+      } else if(routeDone && doneRouteTryCount === 0) {
+        await markRouteAsSent(marker.routeId, tryCount);
+      } else if(routeFlashed && doneRouteTryCount > 1) {
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
+        await markRouteAsSent(marker.routeId, tryCount);
+      } else if(routeDone && doneRouteTryCount === 1) {
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
+        await markRouteAsSent(marker.routeId, tryCount);
+      } else if(routeDone && doneRouteTryCount > 1 && doneRouteTryCount !== tryCount) {
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
+        await markRouteAsSent(marker.routeId, tryCount);
+      } else if(!routeFlashed && !routeDone && doneRouteTryCount > 0) {
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
+      }
+      showNotification('Route saved successfully!', 4000); // Show a notification
+
+    } catch (error) {
+      console.error(error);
+      showNotification('Failed to mark route as sent.', 4000); // Show a notification
+    }
+  }
 
   // Function to handle image load
   const handleImageLoad = () => {
         setImageLoading(false);
   };
-  
-  // Function to show or hide the mark as sent form
-  const handleShowMarkAsSent = () => {
-    if(!showMarkAsSent) {
-      setGradeVote('');
-      setTryCount(1);
-      setShowMarkAsSent(true);
-    }else {
-      setShowMarkAsSent(false);
-    }
-  }
 
   if (loading) {
     return (
@@ -298,7 +276,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} />}
         </View>
       )}
-      {showMarkAsSent && (
+      {routeDone && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <TextInput
             mode="outlined"
@@ -335,12 +313,11 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 buttonColor={colors.accent}
                 textColor="white"
                 icon={() => (
-                  <Icon name='check' size={20} color={!showMarkAsSent && routeFlashed ? 'green' : 'white'} />
+                  <Icon name='check' size={20} color={routeFlashed ? 'green' : 'white'} />
                 )}
                 iconColor='green'
                 contentStyle={styles.buttonContent}
                 labelStyle={styles.buttonLabel}
-                disabled={buttonDisabled}
                 onPress={handleRouteFlashed}
               >
                 Flash
@@ -352,44 +329,16 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               buttonColor={colors.accent}
               textColor="white"
               icon={() => (
-                <Icon name={showMarkAsSent ? 'cancel' : 'check'} size={20} color={!showMarkAsSent && routeDone ? 'green' : 'white'} />
+                <Icon name='check' size={20} color={routeDone ? 'green' : 'white'} />
               )}
               iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
-              disabled={buttonDisabled}
-              onPress={() => {
-                if(routeDone && !showMarkAsSent) {
-                  handleRouteDone();
-                }else {
-                  handleShowMarkAsSent();
-                }
-              }}
+              onPress={handleRouteDone}
             >
-              {showMarkAsSent ? "Cancel" : "Done"}
+              Done
             </Button>
             </View>
-          )}
-          {(showMarkAsSent || settingRouteData) && (
-            <Button
-              mode="contained"
-              style={styles.buttonLong}
-              buttonColor={colors.accent}
-              textColor="white"
-              icon="content-save"
-              contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
-              onPress={() => {
-                if (settingRouteData) {
-                  handleCreateRoute();
-                } else {
-                  setShowMarkAsSent(false);
-                  handleRouteDone();
-                }
-              }}
-            >
-              {settingRouteData ? "Create" : "Save"}
-            </Button>
           )}
           {!showMarkAsSent && !settingRouteData && (
             <Button
@@ -407,6 +356,24 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               {hasVotedForDelete ? 'Cancel delete' : 'Vote for delete'} {routeData?.votedForDelete.length}/3
             </Button>
           )}
+          <Button
+              mode="contained"
+              style={styles.buttonLonger}
+              buttonColor={colors.accent}
+              textColor="white"
+              icon="content-save"
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
+              onPress={() => {
+                if (settingRouteData) {
+                  handleCreateRoute();
+                } else {
+                  handleSaveRoute();
+                }
+              }}
+            >
+              {settingRouteData ? "Create" : "Save"}
+            </Button>
         </View>
       )}
     </ScrollView>
