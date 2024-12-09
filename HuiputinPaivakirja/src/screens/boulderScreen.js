@@ -305,8 +305,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       {!imageLoading && (
         <View style={[styles.buttonContainerVertical, { backgroundColor: colors.background }]}>
           {!settingRouteData && (
+            <React.Fragment>
             <View style={styles.buttonContainerHorizontal}>
-            {!showMarkAsSent && 
               <Button
                 mode="contained"
                 style={styles.buttonLong}
@@ -322,25 +322,22 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               >
                 Flash
               </Button>
-            }
-            <Button
-              mode="contained"
-              style={styles.buttonLong}
-              buttonColor={colors.accent}
-              textColor="white"
-              icon={() => (
-                <Icon name='check' size={20} color={routeDone ? 'green' : 'white'} />
-              )}
-              iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
-              contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
-              onPress={handleRouteDone}
-            >
-              Done
-            </Button>
+              <Button
+                mode="contained"
+                style={styles.buttonLong}
+                buttonColor={colors.accent}
+                textColor="white"
+                icon={() => (
+                  <Icon name='check' size={20} color={routeDone ? 'green' : 'white'} />
+                )}
+                iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
+                contentStyle={styles.buttonContent}
+                labelStyle={styles.buttonLabel}
+                onPress={handleRouteDone}
+              >
+                Done
+              </Button>
             </View>
-          )}
-          {!showMarkAsSent && !settingRouteData && (
             <Button
               mode="contained"
               style={styles.buttonLonger}
@@ -355,6 +352,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             >
               {hasVotedForDelete ? 'Cancel delete' : 'Vote for delete'} {routeData?.votedForDelete.length}/3
             </Button>
+            </React.Fragment>
           )}
           <Button
               mode="contained"
