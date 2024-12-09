@@ -14,6 +14,7 @@ import { useNotification } from '../context/NotificationProvider';
 import GradePicker from '../components/GradePicker';
 import ColorPicker from '../components/ColorPicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import TryCountCounter from '../components/TryCountCounter';
 /** 
  * BoulderScreen component serves two purposes: Creating a new route and displaying an existing route.
  * When creating a new route, the user can input the route name, grade, and hold color.
@@ -95,10 +96,12 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
+            setTryCount(1);
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
+            setTryCount(tries);
             console.log('Route done');
           }
         }else {
@@ -278,7 +281,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       )}
       {routeDone && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
-          <TextInput
+          {/*<TextInput
             mode="outlined"
             style={[styles.input, { 
               backgroundColor: isDarkTheme ? colors.background : 'white',
@@ -299,7 +302,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 primary: colors.accent,
               },
             }}
-          />
+          />*/}
+          <TryCountCounter tryCount={tryCount} setTryCount={setTryCount} />
         </View>
       )}
       {!imageLoading && (
