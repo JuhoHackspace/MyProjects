@@ -281,28 +281,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       )}
       {routeDone && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
-          {/*<TextInput
-            mode="outlined"
-            style={[styles.input, { 
-              backgroundColor: isDarkTheme ? colors.background : 'white',
-              marginTop: 16 
-            }]}
-            placeholder="Try Count"
-            value={tryCount}
-            keyboardType="numeric"
-            onChangeText={setTryCount}
-            placeholderTextColor={colors.text}
-            textColor={colors.text}
-            outlineColor={colors.text}
-            activeOutlineColor={colors.accent}
-            theme={{
-              colors: {
-                text: colors.text,
-                placeholder: colors.text,
-                primary: colors.accent,
-              },
-            }}
-          />*/}
           <TryCountCounter tryCount={tryCount} setTryCount={setTryCount} />
         </View>
       )}
