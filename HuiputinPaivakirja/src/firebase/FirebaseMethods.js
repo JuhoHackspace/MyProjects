@@ -265,7 +265,8 @@ const voteForGrade = async (routeId, existingVotes, gradeVote) => {
             newVotes = [...existingVotes,{grade: gradeVote, votedAt: new Date().toISOString(), votedBy: auth.currentUser.uid}];
             console.log('Updated routeGradeVotes:', newVotes);
         }
-
+        console.log('new vote:', gradeVote);
+        console.log('Existing routeGradeVotes:', existingVotes);
         const updatedGradeVotes = newVotes.map(vote => vote.grade);
         // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
         const averageGrade = convertGrade(updatedGradeVotes);

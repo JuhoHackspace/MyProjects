@@ -142,7 +142,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
 
   // Function to handle voting for delete
   const handleVoteForDelete = async () => {
-    // Check if the user has already voted for delete
+    if(buttonDisabled) return;
+    setButtonDisabled(true)
     if (hasVotedForDelete) {
       await cancelVoteForDelete(marker.routeId, deleteVoteObject);
       showNotification('Canceled vote for delete successfully!', 4000); // Show a notification
@@ -151,6 +152,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     try {
       if(routeData.votedForDelete.length + 1 === 3) {
         setModalVisible(true); // Show the modal to confirm the delete on the last vote
+        setButtonDisabled(false);
       } else {
         await voteForDelete(marker.routeId);
         showNotification('Voted for delete successfully!', 4000); // Show a notification
@@ -296,7 +298,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
           {(routeDone || routeFlashed) && <Text style={[styles.basicText, { color: colors.text }]}>Suggest a grade:</Text>}
-          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} />}
+          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} buttonDisabled={setButtonDisabled} />}
         </View>
       )}
       {showMarkAsSent && (
