@@ -397,6 +397,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               style={styles.buttonLonger}
               buttonColor={colors.accent}
               textColor="white"
+              disabled={buttonDisabled}
               icon={() => (
                 <Icon name='vote' size={20} color={hasVotedForDelete ? 'green' : 'white'} />
               )}
