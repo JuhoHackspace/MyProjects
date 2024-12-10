@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Picker } from '@react-native-picker/picker';
 import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
@@ -7,13 +7,6 @@ import { View } from 'react-native';
 export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGrade, buttonDisabled}) {
   const { colors } = useTheme();
   const { isDarkTheme } = useCustomTheme();
-
-  /*useEffect(() => {
-    // Set the first value as the default value if newRouteGrade is not set
-    if (!newRouteGrade) {
-        setNewRouteGrade('3');
-    }
-  }, [newRouteGrade, setNewRouteGrade]);*/
 
   const handleChange = (itemValue) => {
     if(itemValue !== ''){
