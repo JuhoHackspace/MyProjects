@@ -253,7 +253,7 @@ const markRouteAsSent = async (routeId, tryCount) => {
   }
 };
 
-const voteForGrade = async (routeId, existingVotes, gradeVote) => {
+const voteForGrade = async (routeId, existingVotes, gradeVote, gradeColor) => {
     try {
         const routeDocRef = doc(routes, routeId);
         let newVotes = [];
@@ -269,7 +269,7 @@ const voteForGrade = async (routeId, existingVotes, gradeVote) => {
         console.log('Existing routeGradeVotes:', existingVotes);
         const updatedGradeVotes = newVotes.map(vote => vote.grade);
         // Lasketaan keskiarvo ConvertGrade funktiolla -> Calculate.js
-        const averageGrade = convertGrade(updatedGradeVotes);
+        const averageGrade = convertGrade(updatedGradeVotes, gradeColor);
         console.log('Calculated averageGrade:', averageGrade);
 
         // Päivitys
