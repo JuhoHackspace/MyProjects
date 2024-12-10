@@ -311,15 +311,21 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             {!showMarkAsSent && 
               <Button
                 mode="contained"
-                style={styles.buttonLong}
+                style={[
+                  styles.buttonLong,
+                  buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+                ]}
                 buttonColor={colors.accent}
-                textColor="white"
+                textColor={buttonDisabled ? colors.onDisabled : "white"}
                 icon={() => (
-                  <Icon name='check' size={20} color={!showMarkAsSent && routeFlashed ? 'green' : 'white'} />
+                  <Icon name='check' size={20} color={!showMarkAsSent && routeFlashed ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')} />
                 )}
-                iconColor='green'
+                iconColor={!showMarkAsSent && routeFlashed ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')}
                 contentStyle={styles.buttonContent}
-                labelStyle={styles.buttonLabel}
+                labelStyle={[
+                  styles.buttonLabel,
+                  buttonDisabled && { color: colors.onDisabled }
+                ]}
                 disabled={buttonDisabled}
                 onPress={() => {
                   setButtonDisabled(true);
@@ -331,15 +337,21 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             }
             <Button
               mode="contained"
-              style={styles.buttonLong}
+              style={[
+                styles.buttonLong,
+                buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+              ]}
               buttonColor={colors.accent}
-              textColor="white"
+              textColor={buttonDisabled ? colors.onDisabled : "white"}
               icon={() => (
-                <Icon name={showMarkAsSent ? 'cancel' : 'check'} size={20} color={!showMarkAsSent && routeDone ? 'green' : 'white'} />
+                <Icon name={showMarkAsSent ? 'cancel' : 'check'} size={20} color={!showMarkAsSent && routeDone ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')} />
               )}
-              iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
+              iconColor={!showMarkAsSent && routeDone ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')}
               contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
+              labelStyle={[
+                styles.buttonLabel,
+                buttonDisabled && { color: colors.onDisabled }
+              ]}
               disabled={buttonDisabled}
               onPress={() => {
                 if(routeDone && !showMarkAsSent) {
@@ -357,12 +369,19 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           {(showMarkAsSent || settingRouteData) && (
             <Button
               mode="contained"
-              style={styles.buttonLong}
+              style={[
+                styles.buttonLong,
+                buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+              ]}
               buttonColor={colors.accent}
-              textColor="white"
+              textColor={buttonDisabled ? colors.onDisabled : "white"}
               icon="content-save"
               contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
+              labelStyle={[
+                styles.buttonLabel,
+                buttonDisabled && { color: colors.onDisabled }
+              ]}
+              disabled={buttonDisabled}
               onPress={() => {
                 if (settingRouteData) {
                   handleCreateRoute();
@@ -379,15 +398,21 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           {!showMarkAsSent && !settingRouteData && (
             <Button
               mode="contained"
-              style={styles.buttonLonger}
+              style={[
+                styles.buttonLonger,
+                buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+              ]}
               buttonColor={colors.accent}
-              textColor="white"
+              textColor={buttonDisabled ? colors.onDisabled : "white"}
               disabled={buttonDisabled}
               icon={() => (
-                <Icon name='vote' size={20} color={hasVotedForDelete ? 'green' : 'white'} />
+                <Icon name='vote' size={20} color={hasVotedForDelete ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')} />
               )}
               contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
+              labelStyle={[
+                styles.buttonLabel,
+                buttonDisabled && { color: colors.onDisabled }
+              ]}
               onPress={handleVoteForDelete}
             >
               {hasVotedForDelete ? 'Cancel delete' : 'Vote for delete'} {routeData?.votedForDelete.length}/3

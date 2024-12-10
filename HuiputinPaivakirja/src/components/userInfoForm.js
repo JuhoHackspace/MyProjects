@@ -15,7 +15,7 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
     const [country, setCountry] = useState(userData.country? userData.country : "")
     const [height, setHeight] = useState(userData.height? userData.height : "")
     const [weight, setWeight] = useState(userData.weight? userData.weight : "")
-    const [apeIndex, setApeIndex] = useState(userData.apeindex? userData.apeIndex : "")
+    const [apeIndex, setApeIndex] = useState(userData.apeindex? userData.apeindex : "")
     const [gender, setGender] = useState(userData.gender? userData.gender : "")
     const [sends, setSends] = useState(userData.sends? userData.sends : "")
 
