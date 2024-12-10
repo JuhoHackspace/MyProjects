@@ -99,16 +99,13 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
-            setButtonDisabled(false);
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
-            setButtonDisabled(false);
             console.log('Route done');
           }
         }else {
-          setButtonDisabled(false);
           setRouteFlashed(false);
           setRouteDone(false);
         }
@@ -126,6 +123,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         if(gradeVote != initialGrade.current && gradeVote != '') {
           await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
           showNotification('Voted for grade successfully!', 4000);
+          setButtonDisabled(false);
         }
       } catch (error) {
         console.error(error);
@@ -147,6 +145,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     if (hasVotedForDelete) {
       await cancelVoteForDelete(marker.routeId, deleteVoteObject);
       showNotification('Canceled vote for delete successfully!', 4000); // Show a notification
+      setButtonDisabled(false);
       return;
     }
     try {
@@ -156,6 +155,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       } else {
         await voteForDelete(marker.routeId);
         showNotification('Voted for delete successfully!', 4000); // Show a notification
+        setButtonDisabled(false);
       }
     } catch (error) {
       console.error(error);
@@ -179,8 +179,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   
   // Function to handle saving the route as flashed (climbed with one try)
   const handleRouteFlashed = async () => {
-    if(buttonDisabled) return;
-    setButtonDisabled(true);
     try {
       if(routeFlashed) {
         setTryCount(1);
@@ -194,6 +192,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
         showNotification('Route marked as sent successfully!', 4000); // Show a notification
       }
+      setButtonDisabled(false);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to mark route as sent.');
@@ -201,8 +200,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   };
   // Function to set the route as done
   const handleRouteDone = async () => {
-    if(buttonDisabled) return;
-    setButtonDisabled(true);
     try {
       if(routeDone) {
         setTryCount(1);
@@ -215,6 +212,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
         await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
         showNotification('Route marked as sent successfully!', 4000); // Show a notification
       }
+      setButtonDisabled(false);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to mark route as sent.');
@@ -323,7 +321,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                 contentStyle={styles.buttonContent}
                 labelStyle={styles.buttonLabel}
                 disabled={buttonDisabled}
-                onPress={handleRouteFlashed}
+                onPress={() => {
+                  setButtonDisabled(true);
+                  handleRouteFlashed()
+                }}
               >
                 Flash
               </Button>
@@ -342,6 +343,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
               disabled={buttonDisabled}
               onPress={() => {
                 if(routeDone && !showMarkAsSent) {
+                  setButtonDisabled(true);
                   handleRouteDone();
                 }else {
                   handleShowMarkAsSent();
@@ -366,6 +368,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
                   handleCreateRoute();
                 } else {
                   setShowMarkAsSent(false);
+                  setButtonDisabled(true)
                   handleRouteDone();
                 }
               }}
