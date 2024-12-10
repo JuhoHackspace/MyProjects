@@ -14,6 +14,7 @@ const lightTheme = {
     accent2: '#2196F3',
     background: '#d3d3d3',
     text: '#000000',
+    disabled: '#a9a9a9',
   },
   fonts: {
     ...DefaultTheme.fonts,
@@ -34,6 +35,7 @@ const darkTheme = {
     accent2: '#2196F3',
     background: '#121212',
     text: '#ffffff',
+    disabled: '#555555',
   },
   fonts: {
     ...DefaultTheme.fonts,

@@ -50,6 +50,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   const [routeDone, setRouteDone] = useState(false);
   const [doneRouteTryCount, setDoneRouteTryCount] = useState(0);
   const [doneRouteSentAt, setDoneRouteSentAt] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [hasVotedForDelete, setHasVotedForDelete] = useState(false);
   const [deleteVoteObject, setDeleteVoteObject] = useState(null);
 
@@ -88,6 +89,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     async function getTries() {
       try {
+        /*setRouteDone(false);
+        setRouteFlashed(false);*/
         if(routeData?.sentBy.some(sentBy => sentBy.senderId === userId)) {
           const tries = await getRouteTries(marker.routeId);
           const sentAt = routeData.sentBy.find(sentBy => sentBy.senderId === userId).sentAt;
@@ -96,12 +99,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           if(parseInt(tries) == 1) {
             setRouteFlashed(true);
             setDoneRouteTryCount(tries);
-            setTryCount(1);
             console.log('Route flashed');
           } else if(parseInt(tries) > 1) {
             setRouteDone(true);
             setDoneRouteTryCount(tries);
-            setTryCount(tries);
             console.log('Route done');
           }
         }else {
@@ -116,6 +117,22 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     getTries();
   }, [routeData]);
 
+  useEffect(() => {
+    async function voteForGradeFunc() {
+      try {
+        if(gradeVote != initialGrade.current && gradeVote != '') {
+          await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
+          showNotification('Voted for grade successfully!', 4000);
+          setButtonDisabled(false);
+        }
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'Failed to vote for grade.');
+      }
+    }
+    voteForGradeFunc();
+  }, [gradeVote]);
+
   // Function to handle creating a new route
   const handleCreateRoute = () => {
       setNewRouteData({name: newRouteName, grade: newRouteGrade, holdColor: newRouteHoldColor});
@@ -123,18 +140,22 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
 
   // Function to handle voting for delete
   const handleVoteForDelete = async () => {
-    // Check if the user has already voted for delete
+    if(buttonDisabled) return;
+    setButtonDisabled(true)
     if (hasVotedForDelete) {
       await cancelVoteForDelete(marker.routeId, deleteVoteObject);
       showNotification('Canceled vote for delete successfully!', 4000); // Show a notification
+      setButtonDisabled(false);
       return;
     }
     try {
       if(routeData.votedForDelete.length + 1 === 3) {
         setModalVisible(true); // Show the modal to confirm the delete on the last vote
+        setButtonDisabled(false);
       } else {
         await voteForDelete(marker.routeId);
         showNotification('Voted for delete successfully!', 4000); // Show a notification
+        setButtonDisabled(false);
       }
     } catch (error) {
       console.error(error);
@@ -157,63 +178,62 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
   }
   
   // Function to handle saving the route as flashed (climbed with one try)
-  const handleRouteFlashed = () => {
-    if(routeFlashed) {
-      setRouteFlashed(false);
-    }else if(routeDone) {
-      setTryCount(1);
-      setRouteDone(false);
-      setRouteFlashed(true);
-    }else {
-      setRouteFlashed(true);
-    }
-  };
-  // Function to set the route as done
-  const handleRouteDone = () => {
-    if(routeDone) {
-      setRouteDone(false);
-    }else if(routeFlashed) {
-      setRouteFlashed(false);
-      setRouteDone(true);
-    }else {
-      setRouteDone(true);
-    }
-  };
-
-  const handleSaveRoute = async () => {
+  const handleRouteFlashed = async () => {
     try {
-      navigation.goBack();
-      if((routeFlashed || routeDone) && gradeVote !== initialGrade.current) {
-        await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote);
+      if(routeFlashed) {
+        setTryCount(1);
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as flashed
+      } else if(routeDone) {
+        setTryCount(1);
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
+        await markRouteAsSent(marker.routeId, 1); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
+      } else {
+        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
       }
-      if(routeFlashed && doneRouteTryCount === 0) {
-        await markRouteAsSent(marker.routeId, tryCount);
-      } else if(routeDone && doneRouteTryCount === 0) {
-        await markRouteAsSent(marker.routeId, tryCount);
-      } else if(routeFlashed && doneRouteTryCount > 1) {
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
-        await markRouteAsSent(marker.routeId, tryCount);
-      } else if(routeDone && doneRouteTryCount === 1) {
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
-        await markRouteAsSent(marker.routeId, tryCount);
-      } else if(routeDone && doneRouteTryCount > 1 && doneRouteTryCount !== tryCount) {
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
-        await markRouteAsSent(marker.routeId, tryCount);
-      } else if(!routeFlashed && !routeDone && doneRouteTryCount > 0) {
-        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt);
-      }
-      showNotification('Route saved successfully!', 4000); // Show a notification
-
+      setButtonDisabled(false);
     } catch (error) {
       console.error(error);
-      showNotification('Failed to mark route as sent.', 4000); // Show a notification
+      Alert.alert('Error', 'Failed to mark route as sent.');
+    }  
+  };
+  // Function to set the route as done
+  const handleRouteDone = async () => {
+    try {
+      if(routeDone) {
+        setTryCount(1);
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as sent
+      } else if(routeFlashed) {
+        await cancelRouteAsSent(marker.routeId, doneRouteTryCount, doneRouteSentAt ); // Cancel the route as flashed
+        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
+      } else {
+        await markRouteAsSent(marker.routeId, tryCount); // Mark the route as sent
+        showNotification('Route marked as sent successfully!', 4000); // Show a notification
+      }
+      setButtonDisabled(false);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to mark route as sent.');
     }
-  }
+  };
 
   // Function to handle image load
   const handleImageLoad = () => {
         setImageLoading(false);
   };
+  
+  // Function to show or hide the mark as sent form
+  const handleShowMarkAsSent = () => {
+    if(!showMarkAsSent) {
+      setGradeVote('');
+      setTryCount(1);
+      setShowMarkAsSent(true);
+    }else {
+      setShowMarkAsSent(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -276,10 +296,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <Text style={[styles.basicText, { color: colors.text }]}>Route Hold Color: {routeData?.routeHoldColor}</Text>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Grade Color: {routeData?.routeGradeColor}</Text>
           {(routeDone || routeFlashed) && <Text style={[styles.basicText, { color: colors.text }]}>Suggest a grade:</Text>}
-          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} />}
+          {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} buttonDisabled={setButtonDisabled} />}
         </View>
       )}
-      {routeDone && (
+      {showMarkAsSent && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <TryCountCounter tryCount={tryCount} setTryCount={setTryCount} />
         </View>
@@ -287,73 +307,117 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       {!imageLoading && (
         <View style={[styles.buttonContainerVertical, { backgroundColor: colors.background }]}>
           {!settingRouteData && (
-            <React.Fragment>
             <View style={styles.buttonContainerHorizontal}>
+            {!showMarkAsSent && 
               <Button
                 mode="contained"
-                style={styles.buttonLong}
+                style={[
+                  styles.buttonLong,
+                  buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+                ]}
                 buttonColor={colors.accent}
-                textColor="white"
+                textColor={buttonDisabled ? colors.onDisabled : "white"}
                 icon={() => (
-                  <Icon name='check' size={20} color={routeFlashed ? 'green' : 'white'} />
+                  <Icon name='check' size={20} color={!showMarkAsSent && routeFlashed ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')} />
                 )}
-                iconColor='green'
+                iconColor={!showMarkAsSent && routeFlashed ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')}
                 contentStyle={styles.buttonContent}
-                labelStyle={styles.buttonLabel}
-                onPress={handleRouteFlashed}
+                labelStyle={[
+                  styles.buttonLabel,
+                  buttonDisabled && { color: colors.onDisabled }
+                ]}
+                disabled={buttonDisabled}
+                onPress={() => {
+                  setButtonDisabled(true);
+                  handleRouteFlashed()
+                }}
               >
                 Flash
               </Button>
-              <Button
-                mode="contained"
-                style={styles.buttonLong}
-                buttonColor={colors.accent}
-                textColor="white"
-                icon={() => (
-                  <Icon name='check' size={20} color={routeDone ? 'green' : 'white'} />
-                )}
-                iconColor={!showMarkAsSent && routeDone ? 'green' : 'white'}
-                contentStyle={styles.buttonContent}
-                labelStyle={styles.buttonLabel}
-                onPress={handleRouteDone}
-              >
-                Done
-              </Button>
-            </View>
+            }
             <Button
               mode="contained"
-              style={styles.buttonLonger}
+              style={[
+                styles.buttonLong,
+                buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+              ]}
               buttonColor={colors.accent}
-              textColor="white"
+              textColor={buttonDisabled ? colors.onDisabled : "white"}
               icon={() => (
-                <Icon name='vote' size={20} color={hasVotedForDelete ? 'green' : 'white'} />
+                <Icon name={showMarkAsSent ? 'cancel' : 'check'} size={20} color={!showMarkAsSent && routeDone ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')} />
               )}
+              iconColor={!showMarkAsSent && routeDone ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')}
               contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
-              onPress={handleVoteForDelete}
+              labelStyle={[
+                styles.buttonLabel,
+                buttonDisabled && { color: colors.onDisabled }
+              ]}
+              disabled={buttonDisabled}
+              onPress={() => {
+                if(routeDone && !showMarkAsSent) {
+                  setButtonDisabled(true);
+                  handleRouteDone();
+                }else {
+                  handleShowMarkAsSent();
+                }
+              }}
             >
-              {hasVotedForDelete ? 'Cancel delete' : 'Vote for delete'} {routeData?.votedForDelete.length}/3
+              {showMarkAsSent ? "Cancel" : "Done"}
             </Button>
-            </React.Fragment>
+            </View>
           )}
-          <Button
+          {(showMarkAsSent || settingRouteData) && (
+            <Button
               mode="contained"
-              style={styles.buttonLonger}
+              style={[
+                styles.buttonLong,
+                buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+              ]}
               buttonColor={colors.accent}
-              textColor="white"
+              textColor={buttonDisabled ? colors.onDisabled : "white"}
               icon="content-save"
               contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
+              labelStyle={[
+                styles.buttonLabel,
+                buttonDisabled && { color: colors.onDisabled }
+              ]}
+              disabled={buttonDisabled}
               onPress={() => {
                 if (settingRouteData) {
                   handleCreateRoute();
                 } else {
-                  handleSaveRoute();
+                  setShowMarkAsSent(false);
+                  setButtonDisabled(true)
+                  handleRouteDone();
                 }
               }}
             >
               {settingRouteData ? "Create" : "Save"}
             </Button>
+          )}
+          {!showMarkAsSent && !settingRouteData && (
+            <Button
+              mode="contained"
+              style={[
+                styles.buttonLonger,
+                buttonDisabled && { backgroundColor: colors.disabled, opacity: 0.7 }
+              ]}
+              buttonColor={colors.accent}
+              textColor={buttonDisabled ? colors.onDisabled : "white"}
+              disabled={buttonDisabled}
+              icon={() => (
+                <Icon name='vote' size={20} color={hasVotedForDelete ? 'green' : (buttonDisabled ? colors.onDisabled : 'white')} />
+              )}
+              contentStyle={styles.buttonContent}
+              labelStyle={[
+                styles.buttonLabel,
+                buttonDisabled && { color: colors.onDisabled }
+              ]}
+              onPress={handleVoteForDelete}
+            >
+              {hasVotedForDelete ? 'Cancel delete' : 'Vote for delete'} {routeData?.votedForDelete.length}/3
+            </Button>
+          )}
         </View>
       )}
     </ScrollView>
