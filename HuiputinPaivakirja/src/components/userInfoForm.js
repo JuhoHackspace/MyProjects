@@ -38,7 +38,7 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
     return (
         
         <ScrollView style={styles.inputContainer}>
-            <Text style={styles.basicText}>Update user information:</Text>
+            <Text style={[styles.basicText, { color: colors.text }]}>Update user information:</Text>
             <TextInput
                 style={[styles.input, { borderColor: colors.primary }]}
                 placeholder="Name"
@@ -60,7 +60,7 @@ export default function UserInfoForm({userData, saveData, setShowForm}) {
                 onValueChange={(itemValue) => setGender(itemValue)}
                 style={[styles.input,{
                     color: colors.text,
-                    backgroundColor: isDarkTheme && colors.background,
+                    backgroundColor: colors.background,
                 }]}
             >
                 <Picker.Item label="Gender" value="Unspecified" />
