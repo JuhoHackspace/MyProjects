@@ -23,7 +23,7 @@ export default function RoutePolygon({gradeColor, holdColor, votedGrade}) {
             textAnchor="middle"
             fontWeight="bold"
             alignmentBaseline="middle"
-        >{votedGrade}
+        >{votedGrade.split('')[0]}
         </Text>
     </Svg>
   )

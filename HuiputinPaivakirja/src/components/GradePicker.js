@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Picker } from '@react-native-picker/picker';
 import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
@@ -7,13 +7,6 @@ import { View } from 'react-native';
 export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGrade, buttonDisabled}) {
   const { colors } = useTheme();
   const { isDarkTheme } = useCustomTheme();
-
-  /*useEffect(() => {
-    // Set the first value as the default value if newRouteGrade is not set
-    if (!newRouteGrade) {
-      setNewRouteGrade('4b');
-    }
-  }, [newRouteGrade, setNewRouteGrade]);*/
 
   const handleChange = (itemValue) => {
     if(itemValue !== ''){
@@ -38,14 +31,11 @@ export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGra
         onValueChange={(itemValue) => handleChange(itemValue)}
       >
         <Picker.Item label="Suggest a grade" value="" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="4b" value="4b" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="4c" value="4c" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="5a" value="5a" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="5a+" value="5a+" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="5b" value="5b" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="5b+" value="5b+" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="5c" value="5c" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
-        <Picker.Item label="5c+" value="5c+" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
+        <Picker.Item label="3" value="3" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
+        <Picker.Item label="4" value="4" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
+        <Picker.Item label="4+" value="4+" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
+        <Picker.Item label="5" value="5" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
+        <Picker.Item label="5+" value="5+" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
         <Picker.Item label="6a" value="6a" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
         <Picker.Item label="6a+" value="6a+" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
         <Picker.Item label="6b" value="6b" color={isDarkTheme ? '#ffffff' : '#000000'} style={{backgroundColor: isDarkTheme ? '#121212' : 'white'}} />
