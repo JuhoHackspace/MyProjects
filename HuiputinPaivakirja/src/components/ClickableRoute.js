@@ -2,6 +2,7 @@ import { View, Text as Text, Pressable } from 'react-native'
 import React from 'react'
 import styles from '../styles/Styles'
 import RoutePolygon from './RoutePolygon';
+import { routes } from '../firebase/Config';
 
 export default function ClickableRoute({data, onPress}) {
   const formatDate = (isoString) => {
@@ -15,13 +16,17 @@ export default function ClickableRoute({data, onPress}) {
   };
 
   return (
-    <Pressable onPress={onPress}>   
+    <Pressable onPress={onPress}> 
+    {/*Pressable route component within boulder history list*/}  
     {({ pressed }) => (
         <View style={[styles.ClickableRouteContainer, { backgroundColor: pressed ? 'lightgray' : 'white' }]}>
             <RoutePolygon gradeColor={data.route.routeGradeColor} holdColor={data.route.routeHoldColor} votedGrade={data.route.votedGrade}/>
             <View style={styles.verticalContainerRouteInfo}>
                 <Text style={styles.smallText}>{data.route.routeName}</Text>
                 <Text style={styles.smallText}>{formatDate(data.send.sentAt)}</Text>
+            </View>
+            <View style={styles.routeTriesContainer}>
+                <Text style={styles.routeTriesIndicator}>{data.send.tries}</Text>
             </View>
         </View>
     )}

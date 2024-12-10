@@ -5,10 +5,9 @@ export const modalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', 
   },
   modalView: {
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 30, 
     alignItems: 'center',
@@ -27,14 +26,12 @@ export const modalStyles = StyleSheet.create({
   },
   modalButton: {
     flex: 1, 
-    backgroundColor: '#2196F3',
     borderRadius: 10,
     padding: 10,
     marginHorizontal: 5, 
   },
   modalButtonDanger: {
     flex: 1, 
-    backgroundColor: '#FF3B30',
     borderRadius: 10,
     padding: 10,
     marginHorizontal: 5,
@@ -49,7 +46,6 @@ export const modalStyles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '500',
-    color: '#333',
     marginBottom: 10,
   },
   input: {
@@ -57,7 +53,6 @@ export const modalStyles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 5,
   },
   picureModalButtonView: {

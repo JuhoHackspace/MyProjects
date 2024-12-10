@@ -61,14 +61,14 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   };
 
   return (
-    <View style={styles.screenBaseContainer}>
+    <View style={[styles.screenBaseContainer, { backgroundColor: colors.background }]}>
       <DrawerButton navigation={navigation} />
       <Map
         handleLongPress={handleMapLongPress}
         newMarker={newMarker}
         markers={markers}
         clusters={clusters}
-        handleMarkerPress={handleMarkerPress} // Pass handleMarkerPress to Map component
+        handleMarkerPress={handleMarkerPress}
         setScaleFactors={setScaleFactors}
       />
       <View style={styles.containerBottom}>
@@ -98,9 +98,12 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
               style={styles.buttonLong}
               mode="contained"
               onPress={handleAddNewRoute}
+              icon="plus"
+              contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
               buttonColor={colors.accent}
             >
-              Add new route
+              New route
             </Button>
           </View>
         )}

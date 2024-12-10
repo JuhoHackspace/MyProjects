@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 16,
     },
     containerBottom: {
         position: 'absolute',
@@ -69,7 +68,7 @@ export const styles = StyleSheet.create({
     },
     input: {
         marginBottom: 10,
-        backgroundColor: 'white',
+        //color: 'white',
     },
     greetingContainer: {
         marginTop: 100,
@@ -98,7 +97,7 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
         padding: 10,
         zIndex: 1,
-      },
+    },
     notificationText: {
         color: 'white',
         textAlign: 'center',
@@ -137,16 +136,13 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: 'gray', // Gray border color
-        borderWidth: 1, // Border width
-        borderRadius: 10, // Border radius
-        shadowColor: '#000', // Shadow color
-        shadowOffset: { width: 0, height: 2 }, // Shadow offset
-        shadowOpacity: 0.25, // Shadow opacity
-        shadowRadius: 3.84, // Shadow radius
-        elevation: 5, // Elevation for Android shadow
-        backgroundColor: 'white', // Background color
-        
+        borderWidth: 1,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     verticalContainerRouteInfo: {
         flexDirection: 'column',
@@ -155,6 +151,16 @@ export const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: 4,
         marginBottom: 4,
+    },
+    routeTriesContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+    },
+    routeTriesIndicator: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginRight: 20,
     },
     smallText: {
         fontSize: 14,
@@ -166,7 +172,13 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-    },  
+    },
+    counterContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 20,
+    },
 });
 
 export default styles;

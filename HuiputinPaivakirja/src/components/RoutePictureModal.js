@@ -1,12 +1,15 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import modalStyles from '../styles/ModalStyles';
+import { useTheme } from 'react-native-paper';
 
 export default function ModalView({
   visible,
   onClose,
   routeImageUrl,
 }) {
+  const { colors } = useTheme();
+
   return (
     <Modal
       animationType="slide"
@@ -15,15 +18,15 @@ export default function ModalView({
       onRequestClose={onClose}
     >
       <View style={modalStyles.centeredView}>
-            <Image source={{uri: routeImageUrl}} style={{width: '80%', height: 550, margin: 10}}/>
-            <View style={modalStyles.picureModalButtonView}>
-            <TouchableOpacity
-                style={modalStyles.modalButton}
-                onPress={onClose}
-            >
-                <Text style={modalStyles.modalButtonText}>Close</Text>
-            </TouchableOpacity>
-            </View>
+        <Image source={{uri: routeImageUrl}} style={modalStyles.modalPicture}/>
+        <View style={modalStyles.picureModalButtonView}>
+          <TouchableOpacity
+            style={[modalStyles.modalButton, { backgroundColor: colors.accent }]}
+            onPress={onClose}
+          >
+            <Text style={modalStyles.modalButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );

@@ -50,20 +50,28 @@ export default function BoulderHistoryScreen() {
 
   return (
     <View style={[styles.screenBaseContainer,{backgroundColor: colors.background}]}>
+      {/*Modal that opens a picture of the route*/}
       <RoutePictureModal visible={modalVisible} onClose={()=>{setModalVisible(false)}} routeImageUrl={imageUri} />
       <DrawerButton navigation={navigation} />
       <View style={styles.headerContainer}>
-        <Text style={{fontFamily: fonts.special.fontFamily, fontSize: 28 }}>Boulder History</Text>
+        <Text style={{
+          fontFamily: fonts.special.fontFamily,
+          fontSize: 28,
+          textAlign: 'center',
+          color: fonts.special.color
+        }}>Boulder History</Text>
       </View>
       <View style={styles.horizontalSpaceBetween}>
-        <Text style={[styles.basicText, styles.bold]}>Your last sends:</Text>
-        <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
-            <Text style={[styles.basicText, styles.bold, styles.marginLeft16, {color: 'blue'}]}>
+        <Text style={[styles.basicText, styles.bold, { color: colors.text }]}>Your last sends:</Text>
+        {/*Show the "See all" button only if there are more than 5 sends*/}
+        {history.length != allHistory.length && <Pressable onPress={() => setSeeAllHistory(!seeAllHistory)}>
+            <Text style={[styles.basicText, styles.bold, styles.marginLeft16, { color: colors.accent2 }]}>
                 {!seeAllHistory ? "See all" : "See less"}
             </Text>
-        </Pressable>
+        </Pressable>}
       </View>
       <ScrollView style={styles.inputContainer}>
+        {/*Show the last 5 sends or all sends depending on the seeAllHistory state*/}
         {!seeAllHistory && history.length > 0 && history.map((item, index) => (
             <ClickableRoute key={index} data={item} onPress={() => {handleRoutePress(item.route.routeImageUrl)}} />
         ))}
