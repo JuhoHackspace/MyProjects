@@ -3,7 +3,9 @@ import React from 'react'
 import { useAuth } from '../firebase/AuthProvider'
 import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper'
-
+/**
+ * Display user information on the profile screen.
+ */
 export default function UserInfo({userData}) {
   const { user } = useAuth()
   const { colors } = useTheme()

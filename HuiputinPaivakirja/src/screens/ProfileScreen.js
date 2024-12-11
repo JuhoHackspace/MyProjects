@@ -37,6 +37,7 @@ export default function ProfileScreen({ navigation }) {
     }
   };
   
+  // Listen for changes in the user's data
   useEffect(() => {
       const unsubscribe = fetchUserData(userId, (data) => {
           setUserData(data);
@@ -45,6 +46,7 @@ export default function ProfileScreen({ navigation }) {
       return () => unsubscribe();
   }, [userId])
 
+  // Save the user data when the form is submitted
   const saveData = async (userData) => {
     setLoading(true);
     setShowForm(false);
@@ -57,6 +59,7 @@ export default function ProfileScreen({ navigation }) {
     }
   }
   
+  // Navigate to the BoulderHistoryScreen
   const handleBoulderHistory = () => {
     navigation.navigate('BoulderHistoryScreen');
   }

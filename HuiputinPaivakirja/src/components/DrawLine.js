@@ -4,6 +4,10 @@ import { Svg, Path } from 'react-native-svg';
 import styles from '../styles/CameraAndImageStyles';
 import Button from './Button';
 
+/**
+ * DrawLine component is used to draw a line on top of an image using SVG Path.
+ */
+
 export default function DrawLine({ hideButtons}) {
   const [paths, setPaths] = useState([]);
   const [currentPath, setCurrentPath] = useState([]);

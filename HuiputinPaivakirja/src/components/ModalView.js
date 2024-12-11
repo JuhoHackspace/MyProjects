@@ -3,6 +3,10 @@ import { Modal, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import modalStyles from '../styles/ModalStyles';
 import { useTheme } from 'react-native-paper';
 
+/**
+ * ModalView displays a modal for confirmation of account deletion.
+ */
+
 export default function ModalView({
   visible,
   onClose,

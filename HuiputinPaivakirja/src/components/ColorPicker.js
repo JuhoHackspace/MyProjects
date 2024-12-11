@@ -4,6 +4,10 @@ import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
 import { View } from 'react-native';
 
+/**
+ * ColorPicker is a component that allows the user to select a color from a dropdown menu.
+ */
+
 export default function ColorPicker({ value, setValue, isGrade }) {
   const { colors } = useTheme();
   const { isDarkTheme } = useCustomTheme();

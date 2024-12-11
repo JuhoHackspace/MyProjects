@@ -6,6 +6,10 @@ import { Picker } from '@react-native-picker/picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useCustomTheme } from '../theme/CustomTheme';
 
+/**
+ * Form for updating user information
+ */
+
 export default function UserInfoForm({userData, saveData, setShowForm}) {
 
     const { colors } = useTheme();

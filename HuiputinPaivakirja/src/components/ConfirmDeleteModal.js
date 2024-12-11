@@ -4,6 +4,10 @@ import modalStyles from '../styles/ModalStyles';
 import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
 
+/**
+ * ConfirmDeleteModal displays a modal to confirm deletion of a route.
+ */
+
 export default function ConfirmDeleteModal({
   visible,
   onClose,

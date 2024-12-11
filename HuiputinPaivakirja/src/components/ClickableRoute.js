@@ -4,6 +4,10 @@ import styles from '../styles/Styles'
 import RoutePolygon from './RoutePolygon';
 import { routes } from '../firebase/Config';
 
+/**
+ * ClickableRoute displays a route in the boulder history list.
+ */
+
 export default function ClickableRoute({data, onPress}) {
   const formatDate = (isoString) => {
     const date = new Date(isoString);

@@ -4,6 +4,11 @@ import React, { useState } from 'react'
 import styles from '../styles/Styles'
 import { useTheme } from 'react-native-paper'
 import { useCustomTheme } from '../theme/CustomTheme'
+
+/**
+ * A counter component that allows the user to increment and decrement a count.
+ */
+
 export default function TryCountCounter({tryCount, setTryCount}) {
   const { colors } = useTheme()
   const { isDarkTheme } = useCustomTheme()
