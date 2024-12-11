@@ -7,14 +7,16 @@ import { addRouteAndMarker } from '../firebase/FirebaseMethods'
 import LoadingIcon from '../components/LoadingIcon'
 import { useNotification } from '../context/NotificationProvider'
 import BoulderScreen from '../screens/boulderScreen'
+
 /**
- * This component is the main controller for viewing routes and adding new routes
+ * This component is the main controller for adding new routes and viewing the map.
  * It keeps track of the current state of the app and manages the transitions
  * between the MapScreen and CameraScreen and the BoulderScreen.
- * It manages the state of the marker and image (and in the future, the route information)
+ * It manages the state of the marker, image and route data
  * and calls the addRouteAndMarker function to add the route and marker to the database
  * @returns MainViewController component
  */
+
 export default function MainViewController() {
   const [showCamera, setShowCamera] = useState(false)
   const [showMap, setShowMap] = useState(true)
@@ -49,15 +51,14 @@ export default function MainViewController() {
     return () => backHandler.remove();
   }, [showBoulderScreen, showCamera]);
 
-  // This function is called when the user hides the camera screen. This is called once we have the marker
-  // data and the imageUri. This function could set the boulderScreen visible. Another async function
-  // defined here, could be called from the boulderScreen to finally add the route to the database.
+  // Function to handle hiding the camera screen and showing the boulder screen
   const handleHideCamera = async (imageUri) => {
     setShowCamera(false)
     setImage(imageUri)
     setShowBoulderScreen(true)
   }
 
+  // Function to set the new route data and add the route to the database
   const setNewRouteData = async (routeData) => {
     setShowBoulderScreen(false)
     setLoading(true)
@@ -75,15 +76,8 @@ export default function MainViewController() {
         console.log('Error adding route and marker: ', error)
     }
 }
-// Once the marker and image are set, the idea is to render boulderScreen
-// for the user to add more information about the route
-// Once all information is added, we can call addRouteAndMarker to add the route to the database
-// AddRouteAndMarker will return the id of the marker for demonstration purposes only, there is no real
-// need for it in the app.
-// We can create a state variable and implement setters for the route information. The setters will be called
-// from the boulderScreen to set the route information. After all this is done, the idea is to return to the
-// mapScreen to view routes or add new ones. We can display loading while the route is being added to the database
-// Juho, 19-11-2024
+
+// Return the main view controller component
 return (
     <View style={styles.screenBaseContainer}>
         {showMap &&

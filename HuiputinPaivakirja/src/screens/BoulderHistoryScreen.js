@@ -9,6 +9,11 @@ import DrawerButton from '../components/DrawerButton'
 import { useNavigation } from '@react-navigation/native'
 import RoutePictureModal from '../components/RoutePictureModal'
 
+/**
+ * BoulderHistoryScreen displays the user's boulder history.
+ * @returns {JSX.Element}
+ */
+
 export default function BoulderHistoryScreen() {
   const { colors, fonts } = useTheme()
   const [history, setHistory] = useState([])
@@ -18,7 +23,8 @@ export default function BoulderHistoryScreen() {
   const navigation = useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
   const [imageUri, setImageUri] = useState(null)
-
+  
+  // Fetch the user's boulder history
   useEffect(() => {
     const fetchHistory = async () => {
         const data = await retrieveBoulderHistory();
@@ -35,7 +41,7 @@ export default function BoulderHistoryScreen() {
 
     fetchHistory();
   }, []);
-
+  
   const handleRoutePress = (imageUrl) => {
     console.log('Image URL: ', imageUrl);
     setImageUri(imageUrl);

@@ -67,7 +67,11 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       };
   }, []);
 
-  // Show a notification if the route has no sends
+  /**
+   * When the route data changes, check if the user has sent the route and if the user has voted for the route grade
+   * If the user has sent the route, set the route as sent or flashed
+   * Display a notification if the user is the first to potentially send the route
+  */
   useEffect(() => {
     if (routeData?.sentBy.length === 0 && !notificationshown.current) {
       showNotification('Be the first to send this route!', 4000);
@@ -89,8 +93,6 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     }
     async function getTries() {
       try {
-        /*setRouteDone(false);
-        setRouteFlashed(false);*/
         if(routeData?.sentBy.some(sentBy => sentBy.senderId === userId)) {
           const tries = await getRouteTries(marker.routeId);
           const sentAt = routeData.sentBy.find(sentBy => sentBy.senderId === userId).sentAt;
@@ -117,12 +119,16 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
     getTries();
   }, [routeData]);
 
+  // Vote for the grade when the gradeVote changes
   useEffect(() => {
     async function voteForGradeFunc() {
       try {
         if(gradeVote != initialGrade.current && gradeVote != '') {
           await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote, routeData?.routeGradeColor);
+          initialGrade.current = gradeVote;
           showNotification('Voted for grade successfully!', 4000);
+          setButtonDisabled(false);
+        }else {
           setButtonDisabled(false);
         }
       } catch (error) {
@@ -198,7 +204,8 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       Alert.alert('Error', 'Failed to mark route as sent.');
     }  
   };
-  // Function to set the route as done
+
+  // Function to set the route as done (climbed with multiple tries)
   const handleRouteDone = async () => {
     try {
       if(routeDone) {
@@ -240,10 +247,13 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       <LoadingIcon/>
     );
   }
+
+  // Display the last five senders of the route
   const lastFiveSenders = routeData?.sentBy.slice(-5);
   const moreSenders = routeData?.sentBy.length > 5;
   return (
     <ScrollView style={{ backgroundColor: colors.background }}>
+      {/*Modal to confirm or cancel the route deletion on the last vote*/}
       {modalVisible && (
         <ConfirmDeleteModal
           visible={modalVisible}
@@ -251,6 +261,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           onDelete={onDeleteRoute}
         />
       )}
+      {/*Display the image of the route*/}
       <Image
         source={{ uri: settingRouteData ? imageUri : routeData?.routeImageUrl }}
         style={!imageLoading ? styles.image : { display: 'none' }}
@@ -262,6 +273,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <LoadingIcon />
         </View>
       )}
+      {/*Display the input fields for creating a new route*/}
       {settingRouteData && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <TextInput
@@ -288,6 +300,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           <ColorPicker value={newRouteHoldColor} setValue={setNewRouteHoldColor} isGrade={false} />
         </View>
       )}
+      {/*Display the route data when not creating a new route*/}
       {!settingRouteData && !imageLoading && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <Text style={[styles.basicText, { color: colors.text }]}>Route Name: {routeData?.routeName}</Text>
@@ -299,6 +312,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
           {(routeDone || routeFlashed) && <GradePicker newRouteGrade={gradeVote} setNewRouteGrade={setGradeVote} initialGrade={initialGrade} buttonDisabled={setButtonDisabled} />}
         </View>
       )}
+      {/*Display the try count counter when marking the route as done*/}
       {showMarkAsSent && (
         <View style={[styles.inputContainer, { backgroundColor: colors.background }]}>
           <TryCountCounter tryCount={tryCount} setTryCount={setTryCount} />
@@ -306,6 +320,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       )}
       {!imageLoading && (
         <View style={[styles.buttonContainerVertical, { backgroundColor: colors.background }]}>
+          {/*Display the buttons for marking the route as sent, voting for delete, and saving the data*/}
           {!settingRouteData && (
             <View style={styles.buttonContainerHorizontal}>
             {!showMarkAsSent && 
@@ -366,6 +381,7 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
             </Button>
             </View>
           )}
+          {/*Display Create/Save buttons and Vote for delete button depending on the state*/}
           {(showMarkAsSent || settingRouteData) && (
             <Button
               mode="contained"

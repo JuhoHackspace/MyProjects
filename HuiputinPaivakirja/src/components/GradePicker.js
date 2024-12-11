@@ -4,15 +4,18 @@ import { useTheme } from 'react-native-paper';
 import { useCustomTheme } from '../theme/CustomTheme';
 import { View } from 'react-native';
 
+/**
+ * GradePicker is a component that allows the user to select a grade for voting on a routes difficulty.
+ */
+
 export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGrade, buttonDisabled}) {
   const { colors } = useTheme();
   const { isDarkTheme } = useCustomTheme();
 
   const handleChange = (itemValue) => {
-    if(itemValue !== ''){
+    if(itemValue !== '' && itemValue !== initialGrade.current) {
       buttonDisabled(true);
       setNewRouteGrade(itemValue);
-      initialGrade.current = ''
     }
   }
   return (

@@ -6,6 +6,13 @@ import sectors from '../Helpers/Sectors';
 import { getRouteCreatorId } from '../firebase/FirebaseMethods';
 import { useAuth } from '../firebase/AuthProvider';
 
+/**
+ * MarkerProvider is a context provider that provides a marker context to its children.
+ * The marker context is used to manage markers and clusters of markers.
+ * It provides notifications to the user when new routes are added to a sector.
+ * @param {Object} children - The children components that will be wrapped by the MarkerProvider.
+ * @returns {Object} - The MarkerProvider component.
+ */
 const MarkerContext = createContext();
 
 export default function MarkerProvider({children}) {

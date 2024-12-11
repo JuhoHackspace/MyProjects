@@ -2,6 +2,11 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { Entypo, } from '@expo/vector-icons'
 
+/**
+ * Button is a component that displays a button with an icon and a title.
+ * Used in the Camera component.
+ */
+
 export default function Button({title, onPress, icon, color, onLongPress}) {
   return (
     // Display the button with the icon and title

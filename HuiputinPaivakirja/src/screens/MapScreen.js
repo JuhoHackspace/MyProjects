@@ -9,7 +9,12 @@ import DrawerButton from '../components/DrawerButton';
 import { listenToMarkers } from '../firebase/FirebaseMethods';
 import { useNotification } from '../context/NotificationProvider';
 import { useMarkers } from '../context/MarkerProvider';
-
+/**
+ * MapScreen displays the map with boulder markers and allows the user to add new markers.
+ * @param {Function} setMarker - Function to set the new marker data
+ * @param {Function} setShowMap - Function to show or hide the map screen
+ * @param {Function} setShowCamera - Function to show or hide the camera screen
+ */
 const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
   const [addingMarker, setAddingMarker] = useState(false);
   const [newMarker, setNewMarker] = useState(null);
@@ -24,6 +29,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
     showNotification('Long press on the map to add a new route', 3000);
   };
 
+  // Handle long press on the map to add a new marker
   const handleMapLongPress = (event) => {
     if (addingMarker) {
       try {
@@ -36,6 +42,7 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
     }
   };
 
+  // Handle setting the new marker and scaling the coordinates
   const handleSetMarker = () => {
     const { scaleFactorX = 1, scaleFactorY = 1 } = scaleFactors;
     
@@ -51,11 +58,13 @@ const MapScreen = ({ setMarker, setShowMap, setShowCamera }) => {
     setShowCamera(true);
   };
 
+  // Handle canceling the new marker
   const handleCancelMarker = () => {
     setAddingMarker(false);
     setNewMarker(null);
   };
 
+  // Handle marker press.
   const handleMarkerPress = (marker) => {
     navigation.navigate('BoulderScreen', { marker }); // Navigate to BoulderScreen and pass marker data
   };

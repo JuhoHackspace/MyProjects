@@ -5,6 +5,11 @@ import styles from '../styles/CameraAndImageStyles';
 import { captureRef } from 'react-native-view-shot';
 import DrawLine from './DrawLine';
 
+/**
+ * ImagePreview component to display the image taken by the camera.
+ * Enables the user to re-take the picture, save it or draw a route on top of it.
+ */
+
 export default function ImagePreview({ image, setImage, savePicture}) { // -N
   const captureRefView = useRef(null);
   const [hideButtons, setHideButtons] = useState(true);
