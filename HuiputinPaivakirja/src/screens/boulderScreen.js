@@ -125,7 +125,10 @@ const BoulderScreen = ({ route, setNewRouteData, imageUri }) => {
       try {
         if(gradeVote != initialGrade.current && gradeVote != '') {
           await voteForGrade(marker.routeId, routeData?.routeGradeVotes, gradeVote, routeData?.routeGradeColor);
+          initialGrade.current = gradeVote;
           showNotification('Voted for grade successfully!', 4000);
+          setButtonDisabled(false);
+        }else {
           setButtonDisabled(false);
         }
       } catch (error) {

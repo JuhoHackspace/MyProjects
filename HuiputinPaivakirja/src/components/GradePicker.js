@@ -13,10 +13,9 @@ export default function GradePicker({newRouteGrade, setNewRouteGrade, initialGra
   const { isDarkTheme } = useCustomTheme();
 
   const handleChange = (itemValue) => {
-    if(itemValue !== ''){
+    if(itemValue !== '' && itemValue !== initialGrade.current) {
       buttonDisabled(true);
       setNewRouteGrade(itemValue);
-      initialGrade.current = ''
     }
   }
   return (
