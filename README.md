@@ -85,7 +85,7 @@ This is a mobile application built using React Native and Google Firebase servic
 > Route creation and user interaction
 
 - Juho Hietala: Software Developer
-> Gesture Handling and UI/UX design
+> Gesture Handling and UI/UX
 
 ## App Structure
 Folders:
