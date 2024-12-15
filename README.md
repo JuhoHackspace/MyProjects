@@ -11,7 +11,8 @@ In this repository there are three school application projects done under the IC
 + Second year Web development application project [**Muuvit**](https://github.com/JuhoHackspace/MyProjects/tree/main/2024-Q2-Muuvit)
 
 Other school projects:
-+ Second year - Final project for the course Basics of Web Development [**Learning JavaScript**](https://github.com/JuhoHackspace/MyProjects/tree/main/Final-Project-Basics-of-Web-Development) 
++ Second year - Final project for the course Basics of Web Development [**Learning JavaScript**](https://github.com/JuhoHackspace/MyProjects/tree/main/Final-Project-Basics-of-Web-Development)
++ Second year - Final project for the course Mobile Programming With Native Technologies [**Movie Search**](https://github.com/JuhoHackspace/MyProjects/tree/main/Final-Project-Mobile-Programming-With-Native-Technologies)
 
 More school projects and assignments will be added as I progress in my studies. Some personal projects will hopefully also find their way here.
 
