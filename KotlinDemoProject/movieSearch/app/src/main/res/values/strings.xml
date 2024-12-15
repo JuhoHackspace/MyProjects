@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">movieSearch</string>
+    <string name="enter_movie_title">Enter movie title</string>
+    <string name="search">Search</string>
+    <string name="info">Info</string>
+    <string name="movie_search">Movie Search</string>
+    <string name="no_movies_found">No movies found</string>
+    <string name="search_for_movies">Search for movies</string>
+    <string name="details">Details</string>
+    <string name="poster_base_url">https://image.tmdb.org/t/p/w500</string>
+    <string name="info_1">This app is a simple movie search app that uses TMDB API to fetch movie data.</string>
+    <string name="info_2">The app is built using Jetpack Compose and Kotlin.</string>
+</resources>
