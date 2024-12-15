@@ -6,7 +6,7 @@ Im a second year ICT engineering student at Oulu University of Applied Sciences.
 <img src = "https://oamk.fi/wp-content/uploads/2019/05/Toimistokayttoon_Suomeksi-02.png">
 
 In this repository there are three school application projects done under the ICT engineering degree programme:
-+ First year IT application project **Project Theremin 2.0**
++ First year IT application project [**Project Theremin 2.0**](https://github.com/JuhoHackspace/MyProjects/tree/main/2023-Q2-Projekti%20Theremin%202.0)
 + First year Software development application project **Bank-automat**
 + Second year Web development application project **Muuvit**
 
