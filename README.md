@@ -31,6 +31,8 @@ More school projects and assignments will be added as I progress in my studies. 
 
 > Java
 
+> Kotlin
+
 ## Runtime Environments and IDEs
 > Node.js
 
@@ -42,7 +44,11 @@ More school projects and assignments will be added as I progress in my studies. 
 
 > MySQL Workbench
 
+> Android Studio
+
 ## Frameworks and Libraries
 > React
 
 > Springboot
+
+> Jetpack Compose
