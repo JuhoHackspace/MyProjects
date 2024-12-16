@@ -36,5 +36,3 @@ yarn-error.*
 *.tsbuildinfo
 
 app.config.js
-
-eas.json
