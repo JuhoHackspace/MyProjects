@@ -9,7 +9,7 @@ import Login from '@pages/Login';
 import MyAccount from '@pages/MyAccount';
 import ScreenError from '@content/ScreenError';
 import Navi from '@components/header/Navi';
-import Footer from '@components/footer/Footer';
+import Footer from '@components/Footer/Footer';
 import Header from './components/header/Header';
 import LoginDataProvider from './context/LoginDataProvider';
 import PrivateRoute from './pages/PrivateRoute';
