@@ -102,7 +102,7 @@ REST-API dokumentaatio on luettavissa [täältä](https://documenter.getpostman.
 
 ## Linkki palvelimelle
 
-Voit kokeilla sovellusta osoitteessa [muuvit.onrender.com](https://muuvit.onrender.com/).
+Voit kokeilla sovellusta osoitteessa [https://muuvit-dbml.onrender.com/myaccount](https://muuvit-dbml.onrender.com/myaccount).
 
 ## Sovelluksen esittelyvideo
 
