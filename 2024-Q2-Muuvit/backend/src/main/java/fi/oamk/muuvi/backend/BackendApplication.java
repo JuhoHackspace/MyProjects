@@ -21,7 +21,7 @@ public class BackendApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://localhost:5175")
+						.allowedOrigins("https://muuvit-dbml.onrender.com")
 						.allowedMethods("GET", "POST", "PUT", "DELETE")
 						.allowCredentials(true);
 			}
